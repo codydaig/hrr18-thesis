@@ -9,14 +9,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/TherApp/hrr18-thesis.git"
+    "url": "http://github.com/TherApp/hrr18-thesis.git"
   },
   "author": "",
   "license": "ISC",
   "bugs": 
-    "url": "https://github.com/TherApp/hrr18-thesis/issues"
+    "url": "http://github.com/TherApp/hrr18-thesis/issues"
   },
-  "homepage": "https://github.com/TherApp/hrr18-thesis#readme",
+  "homepage": "http://github.com/TherApp/hrr18-thesis#readme",
   "dependencies": {
     "babel-core": "^6.14.0",
     "babel-loader": "^6.2.5",
