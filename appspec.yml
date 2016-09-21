@@ -4,8 +4,6 @@ files:
   - source: client/
   - source: server/
 hooks:
-  BeforeInstall:
-    - location: webpack -d
   ApplicationStart:
     - location: server/server.js
       timeout: 3600
