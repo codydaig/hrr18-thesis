@@ -5,6 +5,6 @@ files:
     destination: /var/api/
 hooks:
   ApplicationStart:
-    - location: npm-start.sh
+    - location: npm start
       runas: root
       timeout: 60
