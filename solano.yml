@@ -1,4 +1,6 @@
 hooks:
-  pre:npm install
-  tests:
-  -npm test
+  pre: npm install
+nodejs:
+  version: '0.10.31'
+tests:
+  - npm test
