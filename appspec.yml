@@ -1,9 +1,10 @@
 version: 0.0
 os: linux
 files:
-  - source: client/
-  - source: server/
+  - source: /
+    destination: /var/api/
 hooks:
   ApplicationStart:
-    - location: server/server.js
-      timeout: 3600
+    - location: scripts/npm-start.sh
+      runas: root
+      timeout: 60
