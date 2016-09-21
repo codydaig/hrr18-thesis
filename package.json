@@ -13,10 +13,7 @@
   },
   "author": "",
   "license": "ISC",
-  "bugs": 
-    "url": "http://github.com/TherApp/hrr18-thesis/issues"
-  },
-  "homepage": "http://github.com/TherApp/hrr18-thesis#readme",
+   "homepage": "http://github.com/TherApp/hrr18-thesis#readme",
   "dependencies": {
     "babel-core": "^6.14.0",
     "babel-loader": "^6.2.5",
