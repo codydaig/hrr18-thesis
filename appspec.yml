@@ -2,7 +2,7 @@ version: 0.0
 os: linux
 files:
   - source: /
-    destination: /var/api/
+    destination: /var/app/
 hooks:
   ApplicationStart:
-    - location: npm start
+    - location: npm-start.sh
