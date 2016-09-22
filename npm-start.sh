@@ -1,1 +1,1 @@
-/usr/local/lib/node_modules/forever/bin/forever start server/server.js
+/usr/local/lib/node_modules/forever/bin/forever start /var/app/server/server.js
