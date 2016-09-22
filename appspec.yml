@@ -6,3 +6,4 @@ files:
 hooks:
   ApplicationStart:
     - location: npm-start.sh
+   - timeout: 20
