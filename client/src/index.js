@@ -1,11 +1,11 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { render } from 'react-dom';
+import App from './components/App/App'
+
+
+
 
 ReactDOM.render(
-  <h1>Hello, world!!</h1>,
+  <App />,
       document.getElementById('app')
     )
-
-
-console.log('testing')
