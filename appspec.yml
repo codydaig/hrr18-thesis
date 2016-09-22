@@ -6,4 +6,5 @@ files:
 hooks:
   ApplicationStart:
     - location: npm-start.sh
-   - timeout: 20
+      timeout: 10
+      runas: ec2-user
