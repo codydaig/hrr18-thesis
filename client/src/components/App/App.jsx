@@ -4,7 +4,7 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
 import getMuiTheme from 'material-ui/styles/getMuiTheme'
 import Header from '../Header/Header'
 import Foot from '../Footer/Footer'
-
+import Main from '../Main/Main'
 
 export default class App extends React.Component {
   render () {
@@ -12,6 +12,7 @@ export default class App extends React.Component {
       <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
         <div>
           <Header />
+          <Main />
           <Foot />
         </div>
       </MuiThemeProvider>
