@@ -10,12 +10,17 @@ import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
+<<<<<<< HEAD
 
+=======
+import SignupForm from '../Forms/SignupForm'
+>>>>>>> 6b07159cf10af2969869df72565f37a3a641da93
 
 export default class Menu extends React.Component {
    constructor(){
      super()
      this.state = {
+<<<<<<< HEAD
       open: false,
       value: ''
 
@@ -50,6 +55,64 @@ testFunc(){
   console.log(this)
 }
 
+=======
+      firstName: '',
+      lastName: '',
+      email: '',
+      password: '',  
+      open: false
+}
+   this.handleOpen = this.handleOpen.bind(this)
+   this.handleClose =this.handleClose.bind(this)
+   this.onFirstNameChange = this.onFirstNameChange.bind(this)
+   this.onLastNameChange = this.onLastNameChange.bind(this)
+   this.onEmailChange = this.onEmailChange.bind(this)
+   this.onPasswordChange = this.onPasswordChange.bind(this)
+   this.submitForm = this.submitForm.bind(this)
+  }
+
+  onFirstNameChange(event){
+    this.setState({
+      firstName: event.target.value
+    });
+  }
+
+  onLastNameChange(event){
+    this.setState({
+      lastName: event.target.value
+    });
+  }
+
+  onEmailChange(event){
+    this.setState({
+      email: event.target.value
+    });
+  }
+
+  onPasswordChange(event){
+    this.setState({
+      password: event.target.value
+    });
+  }
+  
+ handleOpen (){
+    this.setState({open: true});
+ }
+
+  handleClose(){
+    this.setState({open: false});
+ }
+
+  submitForm () {
+  const payload = {
+    firstName: this.state.firstName,
+    lastName: this.state.lastName,
+    email: this.state.email,
+    password: this.state.password
+  }
+ console.log(payload)
+} 
+
   render () {
 
     const actions = [
@@ -62,8 +125,7 @@ testFunc(){
         label="Submit"
         primary={true}
         keyboardFocused={true}
-        onTouchTap={this.handleClose}
-        onClick={this.testFunc}
+        onTouchTap={this.submitForm}
       />,
     ]
 
@@ -82,8 +144,8 @@ testFunc(){
         <TextField
           id="text-field-controlled"
           title ="First Name"
-          value={this.state.value}
-          onChange={this.handleChange}
+          value={this.state.firstName}
+          onChange={this.onFirstNameChange}
           hintText="First Name"
           floatingLabelFixed={true}
         />
@@ -92,8 +154,9 @@ testFunc(){
          <TextField
           id="text-field-controlled"
           title ="name"
-          value={this.state.value}
-          onChange={this.handleChange}
+          title ="Last Name"
+          value={this.state.lastName}
+          onChange={this.onLastNameChange}
            hintText="Last Name"
            floatingLabelFixed={true}
         />
@@ -103,8 +166,8 @@ testFunc(){
       <TextField
        id="text-field-controlled"
           title ="email"
-          value={this.state.value}
-          onChange={this.handleChange}
+          value={this.state.email}
+          onChange={this.onEmailChange}
           hintText="Email"
           floatingLabelFixed={true}
         />
@@ -114,14 +177,13 @@ testFunc(){
 <TextField
        id="text-field-controlled"
           title ="password"
-          value={this.state.value}
-          onChange={this.handleChange}
+          value={this.state.password}
+          onChange={this.onPasswordChange}
           hintText="Password"
           floatingLabelFixed={true}
         />
 
-      
-      </span>
+         </span>
       </div>
 
         </Dialog>     
