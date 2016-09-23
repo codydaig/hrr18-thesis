@@ -10,52 +10,12 @@ import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
-<<<<<<< HEAD
-
-=======
 import SignupForm from '../Forms/SignupForm'
->>>>>>> 6b07159cf10af2969869df72565f37a3a641da93
 
 export default class Menu extends React.Component {
    constructor(){
      super()
      this.state = {
-<<<<<<< HEAD
-      open: false,
-      value: ''
-
-   
-}
-  this.handleOpen = this.handleOpen.bind(this)
-  this.handleClosed =this.handleClosed.bind(this)
-  this.handleChange = this.handleChange.bind(this)
-  this.testFunc = this.testFunc.bind(this)
-  }
-
-
-  handleChange(){
-    this.setState({
-      value: event.target.value,
-    });
-  };
-
-  
- handleOpen (){
-    this.setState({open: true});
-    console.log(this.state)
- }
-
-  handleClosed(){
-    this.setState({open: false});
-    console.log(this.state)
- }
- 
-
-testFunc(){
-  console.log(this)
-}
-
-=======
       firstName: '',
       lastName: '',
       email: '',
@@ -111,8 +71,8 @@ testFunc(){
     password: this.state.password
   }
  console.log(payload)
-} 
-
+}
+ 
   render () {
 
     const actions = [
@@ -153,7 +113,6 @@ testFunc(){
        <br/>
          <TextField
           id="text-field-controlled"
-          title ="name"
           title ="Last Name"
           value={this.state.lastName}
           onChange={this.onLastNameChange}
@@ -183,7 +142,8 @@ testFunc(){
           floatingLabelFixed={true}
         />
 
-         </span>
+      
+      </span>
       </div>
 
         </Dialog>     
