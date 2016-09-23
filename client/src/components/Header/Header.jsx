@@ -19,9 +19,9 @@ export default class Header extends React.Component {
     return (
       <AppBar title='TherApp'
         style={headerStyle}
-   iconElementLeft={
-    <Menu />
-    }
+        iconElementLeft={
+          <Menu />
+        }
       />
     )
   }

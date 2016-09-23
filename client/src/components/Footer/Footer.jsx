@@ -1,11 +1,12 @@
 import React from 'react'
-import {cyan200} from 'material-ui/styles/colors'
+import {cyan200,grey800} from 'material-ui/styles/colors'
 import { Footer, FooterSection, FooterLinkList } from 'react-mdl'
 const footerStyle = {
   position: 'fixed',
   width: '100%',
   bottom: 0,
-  backgroundColor: cyan200
+  backgroundColor: cyan200,
+  color: grey800
 }
 export default class Foot extends React.Component {
   render () {
