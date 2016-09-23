@@ -4,6 +4,10 @@ files:
   - source: /
     destination: /var/app/
 hooks:
+ BeforeInstall:
+    - location: webpack.sh
+      timeout: 120
+      runas: ec2-user
   ApplicationStart:
     - location: npm-start.sh
       timeout: 60
