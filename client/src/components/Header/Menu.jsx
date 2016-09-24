@@ -11,6 +11,7 @@ import FlatButton from 'material-ui/FlatButton';
 import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import SignupForm from '../Forms/SignupForm'
+import Auth0 from 'auth0-js'
 
 export default class Menu extends React.Component {
    constructor(){
@@ -70,7 +71,32 @@ export default class Menu extends React.Component {
     email: this.state.email,
     password: this.state.password
   }
- console.log(payload)
+
+
+  var auth0 = new Auth0({
+    domain:       'therapp.auth0.com',
+    clientID:     'TAYOP5XUQkVnG6kLBmsZaibULtjXaLAn',
+    callbackURL:  'http://localhost:8080',
+    responseType: 'token',
+    forceJSONP:   false
+
+  });
+
+auth0.signup({
+  connection:'therappmongo',
+  email: this.state.email,
+  password: this.state.password
+}, function(err){
+  console.log(err.message)
+})
+
+  this.setState({email: '',password:''});
+  this.handleClose()
+
+
+
+
+
 }
  
   render () {
@@ -136,6 +162,7 @@ export default class Menu extends React.Component {
 <TextField
        id="text-field-controlled"
           title ="password"
+          type= "password"
           value={this.state.password}
           onChange={this.onPasswordChange}
           hintText="Password"
@@ -156,7 +183,19 @@ export default class Menu extends React.Component {
          label="Dialog"
           />
       <MenuItem primaryText="Sign In" />
-      <MenuItem primaryText="Practitioners" />
+     
+     
+      <MenuItem primaryText="Practitioners" 
+      
+         menuItems={[
+          <MenuItem primaryText="Sign Up" />,
+          <MenuItem primaryText="Sign In" />
+        ]}
+      
+      
+      />
+   
+   
     </IconMenu>
   </div>
     )
