@@ -13,7 +13,8 @@ import TextField from 'material-ui/TextField';
 import SignupForm from '../Forms/SignupForm'
 import Auth0 from 'auth0-js'
 import cred from '../../../../creds'
-console.log(cred)
+import axios from 'axios'
+import Snackbar from 'material-ui/Snackbar';
 
 export default class Menu extends React.Component {
    constructor(){
@@ -23,15 +24,18 @@ export default class Menu extends React.Component {
       lastName: '',
       email: '',
       password: '',  
-      open: false
+      userSignUpOpen: false,
+      snackBarOpen: false
 }
-   this.handleOpen = this.handleOpen.bind(this)
-   this.handleClose =this.handleClose.bind(this)
+   this.userHandleOpen = this.userHandleOpen.bind(this)
+   this.userHandleClose = this.userHandleClose.bind(this)
    this.onFirstNameChange = this.onFirstNameChange.bind(this)
    this.onLastNameChange = this.onLastNameChange.bind(this)
    this.onEmailChange = this.onEmailChange.bind(this)
    this.onPasswordChange = this.onPasswordChange.bind(this)
    this.submitForm = this.submitForm.bind(this)
+   this.userSnackbarOpen = this.userSnackbarOpen.bind(this)
+   this.userSnackbarClose = this.userSnackbarClose.bind(this)
   }
 
   onFirstNameChange(event){
@@ -52,18 +56,25 @@ export default class Menu extends React.Component {
     });
   }
 
-  onPasswordChange(event){
+  onPasswordChange (event) {
     this.setState({
       password: event.target.value
     });
   }
   
- handleOpen (){
-    this.setState({open: true});
+    userHandleOpen () {
+    this.setState({userSignUpOpen: true});
  }
 
-  handleClose(){
-    this.setState({open: false});
+     userHandleClose () {
+    this.setState({userSignUpOpen: false});
+ }
+    userSnackbarOpen () {
+    this.setState({snackBarOpen: true});
+ }
+
+  userSnackbarClose () {
+    this.setState({snackBarOpen: false});
  }
 
   submitForm () {
@@ -76,9 +87,9 @@ export default class Menu extends React.Component {
 
 
   var auth0 = new Auth0({
-    domain:       'therapp.auth0.com',
+    domain:      cred.Auth0options.domain,
     clientID:     cred.Auth0options.clientID,
-    callbackURL:  'http://localhost:8080',
+    callbackURL:  cred.Auth0options.callbackURL,
     responseType: 'token',
     forceJSONP:   false
 
@@ -89,19 +100,31 @@ auth0.signup({
   email: this.state.email,
   password: this.state.password
 }, function(err){
-  console.log(err.message)
+  //console.log(err.message)
 })
-  this.setState({email: '',password:''});
-  this.handleClose()
+const userurl = `/veruser/${this.state.email}`
+
+
+setTimeout(()=>{
+  axios.get(userurl)
+   .then((status)=>{
+      if(status){
+        this.userSnackbarOpen()
+        this.setState({email: '',password:'', firstName: '', lastName: ''});
+        this.userHandleClose()
+      }
+   })
+},2000)
+
+
 }
  
   render () {
-
     const actions = [
       <FlatButton
         label="Cancel"
         primary={true}
-        onTouchTap={this.handleClose}
+        onTouchTap={this.userHandleClose}
               />,
       <FlatButton
         label="Submit"
@@ -113,12 +136,20 @@ auth0.signup({
 
     return (
      <div>
+
+         <Snackbar
+          open={this.state.snackBarOpen}
+          message="User Account Created, please check your email to confirm "
+          autoHideDuration={5000}
+          onRequestClose={this.userSnackbarClose}
+        />
+     
         <Dialog
           title="So Tell me about yourself"
           actions={actions}
           modal={false}
-          open={this.state.open}
-          onRequestClose={this.handleClose}
+          open={this.state.userSignUpOpen}
+          onRequestClose={this.userHandleClose}
         >
           <div>
 
@@ -142,7 +173,7 @@ auth0.signup({
            floatingLabelFixed={true}
         />
 
-<br/>
+       <br/>
 
       <TextField
        id="text-field-controlled"
@@ -155,8 +186,8 @@ auth0.signup({
    
       <br/>
 
-<TextField
-       id="text-field-controlled"
+      <TextField
+          id="text-field-controlled"
           title ="password"
           type= "password"
           value={this.state.password}
@@ -168,14 +199,14 @@ auth0.signup({
       </span>
       </div>
 
-        </Dialog>     
+    </Dialog>     
     <IconMenu
       iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
       anchorOrigin={{horizontal: 'right', vertical: 'top'}}
       targetOrigin={{horizontal: 'right', vertical: 'top'}}
     >
       <MenuItem primaryText="Sign Up"
-         onTouchTap={this.handleOpen}
+         onTouchTap={this.userHandleOpen}
          label="Dialog"
           />
       <MenuItem primaryText="Sign In" />
@@ -187,11 +218,8 @@ auth0.signup({
           <MenuItem primaryText="Sign Up" />,
           <MenuItem primaryText="Sign In" />
         ]}
-      
-      
       />
-   
-   
+     
     </IconMenu>
   </div>
     )
