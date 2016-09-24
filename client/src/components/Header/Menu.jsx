@@ -12,6 +12,8 @@ import RaisedButton from 'material-ui/RaisedButton';
 import TextField from 'material-ui/TextField';
 import SignupForm from '../Forms/SignupForm'
 import Auth0 from 'auth0-js'
+import cred from '../../../../creds'
+console.log(cred)
 
 export default class Menu extends React.Component {
    constructor(){
@@ -75,7 +77,7 @@ export default class Menu extends React.Component {
 
   var auth0 = new Auth0({
     domain:       'therapp.auth0.com',
-    clientID:     'TAYOP5XUQkVnG6kLBmsZaibULtjXaLAn',
+    clientID:     cred.Auth0options.clientID,
     callbackURL:  'http://localhost:8080',
     responseType: 'token',
     forceJSONP:   false
@@ -89,14 +91,8 @@ auth0.signup({
 }, function(err){
   console.log(err.message)
 })
-
   this.setState({email: '',password:''});
   this.handleClose()
-
-
-
-
-
 }
  
   render () {

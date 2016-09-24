@@ -2,7 +2,8 @@ const express = require('express')
 const mongoose = require('mongoose')
 const path = require('path')
 const app = express()
-const cred = '../creds'
+const cred = require('../creds')
+
 app.use(express.static(path.join(__dirname, '../client')))
 
 app.all('*', function (req, res) {
@@ -11,7 +12,7 @@ app.all('*', function (req, res) {
 
 // MongoDb
 
-mongoose.connect('mongodb://ds035806.mlab.com:35806/therapp', cred.bOptions)
+mongoose.connect('mongodb://ds035806.mlab.com:35806/therapp', cred.dbOptions)
 
 mongoose.connection.on('connected', function () {
   app.listen('8080')
