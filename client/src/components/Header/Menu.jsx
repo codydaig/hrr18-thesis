@@ -23,7 +23,8 @@ export default class Menu extends React.Component {
       firstName: '',
       lastName: '',
       email: '',
-      password: '',  
+      password: '',
+      postalcode: '',  
       userSignUpOpen: false,
       snackBarOpen: false
 }
@@ -36,6 +37,7 @@ export default class Menu extends React.Component {
    this.submitForm = this.submitForm.bind(this)
    this.userSnackbarOpen = this.userSnackbarOpen.bind(this)
    this.userSnackbarClose = this.userSnackbarClose.bind(this)
+   this. onPostalChange = this.onPostalChange.bind(this)
   }
 
   onFirstNameChange(event){
@@ -56,6 +58,12 @@ export default class Menu extends React.Component {
     });
   }
 
+  onPostalChange(event){
+    this.setState({
+      postalcode: event.target.value
+    });
+  }
+
   onPasswordChange (event) {
     this.setState({
       password: event.target.value
@@ -69,6 +77,7 @@ export default class Menu extends React.Component {
      userHandleClose () {
     this.setState({userSignUpOpen: false});
  }
+
     userSnackbarOpen () {
     this.setState({snackBarOpen: true});
  }
@@ -83,6 +92,7 @@ export default class Menu extends React.Component {
     lastName: this.state.lastName,
     email: this.state.email,
     password: this.state.password
+  
   }
 
 
@@ -98,12 +108,17 @@ export default class Menu extends React.Component {
 auth0.signup({
   connection:'therappmongo',
   email: this.state.email,
-  password: this.state.password
+  password: this.state.password,
+  user_metadata: {
+     firstName: this.state.firstName,
+     lastName: this.state.lastName,
+     postalcode: this.state.postalcode
+  }
+ 
 }, function(err){
   //console.log(err.message)
 })
 const userurl = `/veruser/${this.state.email}`
-
 
 setTimeout(()=>{
   axios.get(userurl)
@@ -113,6 +128,8 @@ setTimeout(()=>{
         this.setState({email: '',password:'', firstName: '', lastName: ''});
         this.userHandleClose()
       }
+    
+   
    })
 },2000)
 
@@ -141,7 +158,7 @@ setTimeout(()=>{
           open={this.state.snackBarOpen}
           message="User Account Created, please check your email to confirm "
           autoHideDuration={5000}
-          onRequestClose={this.userSnackbarClose}
+           onRequestClose={this.userSnackbarClose}
         />
      
         <Dialog
@@ -185,6 +202,17 @@ setTimeout(()=>{
         />
    
       <br/>
+
+       <TextField
+       id="text-field-controlled"
+          title ="postalCode"
+          value={this.state.postalcode}
+          onChange={this.onPostalChange}
+          hintText="Postal Code"
+          floatingLabelFixed={true}
+        />
+
+        <br/>
 
       <TextField
           id="text-field-controlled"
