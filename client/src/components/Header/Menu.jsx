@@ -123,14 +123,12 @@ const userurl = `/veruser/${this.state.email}`
 setTimeout(()=>{
   axios.get(userurl)
    .then((status)=>{
-      if(status){
+      if(status.data.registered){
         this.userSnackbarOpen()
         this.setState({email: '',password:'', firstName: '', lastName: ''});
         this.userHandleClose()
       }
-    
-   
-   })
+    })
 },2000)
 
 
