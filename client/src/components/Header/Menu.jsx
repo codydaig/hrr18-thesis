@@ -26,18 +26,27 @@ export default class Menu extends React.Component {
       password: '',
       postalcode: '',  
       userSignUpOpen: false,
-      snackBarOpen: false
+      userSigninOpen: false,
+      snackBarOpen: false,
+      userEmail: '',
+      userPassword: ''
 }
    this.userHandleOpen = this.userHandleOpen.bind(this)
    this.userHandleClose = this.userHandleClose.bind(this)
    this.onFirstNameChange = this.onFirstNameChange.bind(this)
    this.onLastNameChange = this.onLastNameChange.bind(this)
    this.onEmailChange = this.onEmailChange.bind(this)
+   this.onEmailLoginChange = this.onEmailLoginChange.bind(this)
    this.onPasswordChange = this.onPasswordChange.bind(this)
    this.submitForm = this.submitForm.bind(this)
    this.userSnackbarOpen = this.userSnackbarOpen.bind(this)
    this.userSnackbarClose = this.userSnackbarClose.bind(this)
-   this. onPostalChange = this.onPostalChange.bind(this)
+   this.onPostalChange = this.onPostalChange.bind(this)
+   this.userSigninOpen = this.userSigninOpen.bind(this)
+   this.userSigninClose = this.userSigninClose.bind(this)
+   this.onPasswordLoginChange = this.onPasswordLoginChange.bind(this)
+   this.login = this.login.bind(this)
+
   }
 
   onFirstNameChange(event){
@@ -55,6 +64,18 @@ export default class Menu extends React.Component {
   onEmailChange(event){
     this.setState({
       email: event.target.value
+    });
+  }
+
+  onEmailLoginChange(event){
+    this.setState({
+      userEmail: event.target.value
+    });
+  }
+
+  onPasswordLoginChange(event){
+    this.setState({
+      userPassword: event.target.value
     });
   }
 
@@ -78,6 +99,16 @@ export default class Menu extends React.Component {
     this.setState({userSignUpOpen: false});
  }
 
+
+    userSigninOpen () {
+    this.setState({userSigninOpen: true});
+ }
+
+    userSigninClose () {
+
+    this.setState({userSigninOpen: false});
+ }
+
     userSnackbarOpen () {
     this.setState({snackBarOpen: true});
  }
@@ -86,23 +117,40 @@ export default class Menu extends React.Component {
     this.setState({snackBarOpen: false});
  }
 
-  submitForm () {
-  const payload = {
-    firstName: this.state.firstName,
-    lastName: this.state.lastName,
-    email: this.state.email,
-    password: this.state.password
-  
-  }
+  login(){
+    console.log(this.state)
 
-
-  var auth0 = new Auth0({
+    const auth0 = new Auth0({
     domain:      cred.Auth0options.domain,
     clientID:     cred.Auth0options.clientID,
     callbackURL:  cred.Auth0options.callbackURL,
     responseType: 'token',
-    forceJSONP:   false
 
+
+  });
+
+    auth0.login({
+      connection: 'therappmongo',
+      username:  this.state.userEmail,
+      password:   this.state.userPassword
+    }, (err, profile, id_token, access_token)=>{
+      localStorage.setItem('id_token', profile.idToken)
+       auth0.getProfile(profile.idToken, (err, profile) => {
+         if(err) {
+           console.log(err)
+         }
+       localStorage.setItem('user_id', profile.identities[0].user_id)
+       });
+    });
+  }
+
+  submitForm () {
+    const auth0 = new Auth0({
+      domain:      cred.Auth0options.domain,
+      clientID:     cred.Auth0options.clientID,
+      callbackURL:  cred.Auth0options.callbackURL,
+      responseType: 'token',
+      forceJSONP:   false
   });
 
 auth0.signup({
@@ -125,17 +173,16 @@ setTimeout(()=>{
    .then((status)=>{
       if(status.data.registered){
         this.userSnackbarOpen()
-        this.setState({email: '',password:'', firstName: '', lastName: ''});
+        this.setState({email: '',password:'', firstName: '', lastName: '', postalcode: ''});
         this.userHandleClose()
       }
     })
 },2000)
 
-
 }
  
   render () {
-    const actions = [
+    const SignUpActions = [
       <FlatButton
         label="Cancel"
         primary={true}
@@ -149,6 +196,24 @@ setTimeout(()=>{
       />,
     ]
 
+    const SignInActions = [
+      <FlatButton
+        label="Cancel"
+        primary={true}
+        onTouchTap={this.userSigninClose}
+              />,
+      <FlatButton
+        label="Submit"
+        primary={true}
+        keyboardFocused={true}
+        onTouchTap={this.login}
+      />,
+    ]
+
+
+
+
+
     return (
      <div>
 
@@ -161,7 +226,7 @@ setTimeout(()=>{
      
         <Dialog
           title="So Tell me about yourself"
-          actions={actions}
+          actions={SignUpActions}
           modal={false}
           open={this.state.userSignUpOpen}
           onRequestClose={this.userHandleClose}
@@ -217,7 +282,7 @@ setTimeout(()=>{
           title ="password"
           type= "password"
           value={this.state.password}
-          onChange={this.onPasswordChange}
+          onChange={this.onPasswordLoginChange}
           hintText="Password"
           floatingLabelFixed={true}
         />
@@ -225,7 +290,41 @@ setTimeout(()=>{
       </span>
       </div>
 
+    </Dialog>    
+
+         <Dialog
+         title="Please enter email and password"
+          actions={SignInActions}
+          modal={false}
+          open={this.state.userSigninOpen}
+          onRequestClose={this.userHandleClose}
+        >
+          <span>
+
+        <TextField
+          id="text-field-controlled"
+          title ="email"
+          value={this.state.userEmail}
+          onChange={this.onEmailLoginChange}
+          hintText="Email"
+          floatingLabelFixed={true}
+        />
+   
+      <br/>
+          <TextField
+          id="text-field-controlled"
+          title ="password"
+          type= "password"
+          value={this.state.userPassword}
+          onChange={this.onPasswordLoginChange}
+          hintText="Password"
+          floatingLabelFixed={true}
+        />
+
+      </span>
+    
     </Dialog>     
+
     <IconMenu
       iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
       anchorOrigin={{horizontal: 'right', vertical: 'top'}}
@@ -235,7 +334,10 @@ setTimeout(()=>{
          onTouchTap={this.userHandleOpen}
          label="Dialog"
           />
-      <MenuItem primaryText="Sign In" />
+      <MenuItem primaryText="Sign In"
+         onTouchTap={this.userSigninOpen}
+         label="Dialog"
+       />
      
      
       <MenuItem primaryText="Practitioners" 
@@ -247,6 +349,7 @@ setTimeout(()=>{
       />
      
     </IconMenu>
+
   </div>
     )
   }

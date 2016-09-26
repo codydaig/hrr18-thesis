@@ -14,18 +14,13 @@ import TextField from 'material-ui/TextField';
 export default class SignupForm extends React.Component {
    constructor(props){
      super(props)
-     this.state = {
-      value: ''
-}
+
   this.handleOpen = this.handleOpen.bind(this)
   this.handleClosed =this.handleClosed.bind(this)
   this.handleChange = this.handleChange.bind(this)
   
       console.log('props', this.props, props)
-
-
 }
-
 
   handleChange(){
     this.setState({
@@ -61,61 +56,11 @@ export default class SignupForm extends React.Component {
     ]
 
     return (
-         <Dialog
-          title="So Tell me about yourself"
-          actions={actions}
-          modal={false}
-          open={this.state.open}
-          onRequestClose={this.handleClose}
-        >
-          <div>
-
-          <span>
-        <TextField
-          id="text-field-controlled"
-          title ="First Name"
-          value={this.state.value}
-          onChange={this.handleChange}
-          hintText="First Name"
-          floatingLabelFixed={true}
-        />
-
-       <br/>
-         <TextField
-          id="text-field-controlled"
-          title ="name"
-          value={this.state.value}
-          onChange={this.handleChange}
-           hintText="Last Name"
-           floatingLabelFixed={true}
-        />
-
-<br/>
-
-      <TextField
-       id="text-field-controlled"
-          title ="email"
-          value={this.state.value}
-          onChange={this.handleChange}
-          hintText="Email"
-          floatingLabelFixed={true}
-        />
-   
-      <br/>
-
-       <TextField
-       id="text-field-controlled"
-          title ="password"
-          value={this.state.value}
-          onChange={this.handleChange}
-          hintText="Password"
-          floatingLabelFixed={true}
-        />
-
+      <div>
+      <h1> Testing</h1>
+      {console.log(this)}
+      </div>
       
-      </span>
-        </div>
-        </Dialog>     
-    )
+         )
   }
 }

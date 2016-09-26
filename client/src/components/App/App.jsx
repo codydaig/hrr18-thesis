@@ -12,10 +12,11 @@ export default class App extends React.Component {
       <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
         <div>
           <Header />
-          <Main />
-          <Foot />
+          {this.props.children}
+           <Foot />
         </div>
       </MuiThemeProvider>
+
      )
   }
 }
