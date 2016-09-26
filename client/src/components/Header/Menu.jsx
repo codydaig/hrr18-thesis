@@ -15,6 +15,10 @@ import Auth0 from 'auth0-js'
 import cred from '../../../../creds'
 import axios from 'axios'
 import Snackbar from 'material-ui/Snackbar';
+import {blueGrey200} from 'material-ui/styles/colors'
+import {browserHistory} from 'react-router'
+
+//this file needs and entire refactor, will be done when state management with Redux/Apollo is implimented
 
 export default class Menu extends React.Component {
    constructor(){
@@ -29,8 +33,16 @@ export default class Menu extends React.Component {
       userSigninOpen: false,
       snackBarOpen: false,
       userEmail: '',
-      userPassword: ''
+      userPassword: '',
+      pSignupOpen: false,
+      pSigninOpen: false,
+      psfirstName: '',
+      pslastName: '',
+      psEmail: '',
+      psPostal: '',
+      psPassword: ''
 }
+
    this.userHandleOpen = this.userHandleOpen.bind(this)
    this.userHandleClose = this.userHandleClose.bind(this)
    this.onFirstNameChange = this.onFirstNameChange.bind(this)
@@ -38,7 +50,7 @@ export default class Menu extends React.Component {
    this.onEmailChange = this.onEmailChange.bind(this)
    this.onEmailLoginChange = this.onEmailLoginChange.bind(this)
    this.onPasswordChange = this.onPasswordChange.bind(this)
-   this.submitForm = this.submitForm.bind(this)
+   this.userSignup = this.userSignup.bind(this)
    this.userSnackbarOpen = this.userSnackbarOpen.bind(this)
    this.userSnackbarClose = this.userSnackbarClose.bind(this)
    this.onPostalChange = this.onPostalChange.bind(this)
@@ -46,84 +58,120 @@ export default class Menu extends React.Component {
    this.userSigninClose = this.userSigninClose.bind(this)
    this.onPasswordLoginChange = this.onPasswordLoginChange.bind(this)
    this.login = this.login.bind(this)
-
+   this.home = this.home.bind(this)
+   this.pSignupOpen = this.pSignupOpen.bind(this)
+   this.pSignupClose = this.pSignupClose.bind(this)
+   this.pSignup = this.pSignup.bind(this)
+   this.onPsFirstNameChange = this.onPsFirstNameChange.bind(this)
+   this.onPsLastNameChange = this.onPsLastNameChange.bind(this)
+   this.onPsEmailChange = this.onPsEmailChange.bind(this)
+   this.onPsPostalChange = this.onPsPostalChange.bind(this)
+   this.onPsPasswordChange = this.onPsPasswordChange.bind(this)
   }
 
+
+ // Menubar Actions
+
+  userHandleOpen () {
+    this.setState({userSignUpOpen: true});
+  }
+  userHandleClose () {
+    this.setState({userSignUpOpen: false});
+  }
+  userSigninOpen () {
+    this.setState({userSigninOpen: true});
+  }
+  userSigninClose () {
+    this.setState({userSigninOpen: false});
+  }
+  pSignupOpen (){
+    this.setState({pSignupOpen: true})
+  }
+  pSignupClose (){
+    this.setState({pSignupOpen: false})
+  }
+  userSnackbarOpen () {
+    this.setState({snackBarOpen: true});
+  }
+  userSnackbarClose () {
+    this.setState({snackBarOpen: false});
+  }
+
+
+//Form changes to state user signup
   onFirstNameChange(event){
     this.setState({
       firstName: event.target.value
     });
   }
-
   onLastNameChange(event){
     this.setState({
       lastName: event.target.value
     });
   }
-
   onEmailChange(event){
     this.setState({
       email: event.target.value
     });
   }
+  onPostalChange(event){
+    this.setState({
+      postalcode: event.target.value
+    });
+  }
+  onPasswordChange (event) {
+    this.setState({
+      password: event.target.value
+    });
+  }
 
+//Form changes to state pracitioner signup
+  onPsFirstNameChange (event) {
+    this.setState({
+      psfirstName: event.target.value
+    });
+  }
+  onPsLastNameChange(event){
+    this.setState({
+      pslastName: event.target.value
+    });
+  }
+  onPsEmailChange(event){
+    this.setState({
+      psEmail: event.target.value
+    });
+  }
+  onPsPostalChange(event){
+    this.setState({
+      psPostal: event.target.value
+    });
+  }
+  onPsPasswordChange (event) {
+    this.setState({
+      psPassword: event.target.value
+    });
+  }
+
+
+ // user login changes
   onEmailLoginChange(event){
     this.setState({
       userEmail: event.target.value
     });
   }
-
   onPasswordLoginChange(event){
     this.setState({
       userPassword: event.target.value
     });
   }
 
-  onPostalChange(event){
-    this.setState({
-      postalcode: event.target.value
-    });
-  }
 
-  onPasswordChange (event) {
-    this.setState({
-      password: event.target.value
-    });
-  }
-  
-    userHandleOpen () {
-    this.setState({userSignUpOpen: true});
- }
-
-     userHandleClose () {
-    this.setState({userSignUpOpen: false});
- }
-
-
-    userSigninOpen () {
-    this.setState({userSigninOpen: true});
- }
-
-    userSigninClose () {
-
-    this.setState({userSigninOpen: false});
- }
-
-    userSnackbarOpen () {
-    this.setState({snackBarOpen: true});
- }
-
-  userSnackbarClose () {
-    this.setState({snackBarOpen: false});
- }
 
   login(){
-    console.log(this.state)
-
     const auth0 = new Auth0({
-    domain:      cred.Auth0options.domain,
-    clientID:     cred.Auth0options.clientID,
-    callbackURL:  cred.Auth0options.callbackURL,
+    domain:      cred.Auth0options.client.domain,
+    clientID:     cred.Auth0options.client.clientID,
+    callbackURL:  cred.Auth0options.client.callbackURL,
     responseType: 'token',
 
 
@@ -139,22 +187,110 @@ export default class Menu extends React.Component {
          if(err) {
            console.log(err)
          }
+         console.log(profile)
        localStorage.setItem('user_id', profile.identities[0].user_id)
+       localStorage.setItem('type', 'client')
+       localStorage.setItem('name', profile.user_metadata.firstName + ' '  + profile.user_metadata.lastName)
+
        });
     });
-  }
+ 
+     this.userSigninClose()
+    browserHistory.push('/clientmain')
 
-  submitForm () {
+ }
+
+plogin(){
     const auth0 = new Auth0({
-      domain:      cred.Auth0options.domain,
-      clientID:     cred.Auth0options.clientID,
-      callbackURL:  cred.Auth0options.callbackURL,
+    domain:      cred.Auth0options.p.domain,
+    clientID:     cred.Auth0options.p.clientID,
+    callbackURL:  cred.Auth0options.p.callbackURL,
+    responseType: 'token',
+
+
+  });
+
+    auth0.login({
+      connection: 'therappmongo',
+      username:  this.state.userEmail,
+      password:   this.state.userPassword
+    }, (err, profile, id_token, access_token)=>{
+      localStorage.setItem('id_token', profile.idToken)
+       auth0.getProfile(profile.idToken, (err, profile) => {
+         if(err) {
+           console.log(err)
+         }
+         console.log(profile)
+       localStorage.setItem('user_id', profile.identities[0].user_id)
+       localStorage.setItem('type', 'client')
+       localStorage.setItem('name', profile.user_metadata.firstName + ' '  + profile.user_metadata.lastName)
+
+       });
+    });
+ 
+     this.userSigninClose()
+    browserHistory.push('/clientmain')
+
+ }
+
+
+
+
+  home(){
+    browserHistory.push('/main')
+
+  }
+  
+ pSignup () {
+    console.log(cred)
+  const auth0 = new Auth0({
+      domain:      cred.Auth0options.p.domain,
+      clientID:     cred.Auth0options.p.clientID,
+      callbackURL:  cred.Auth0options.p.callbackURL,
       responseType: 'token',
       forceJSONP:   false
   });
 
 auth0.signup({
-  connection:'therappmongo',
+  auto_login: false,
+  connection:'therappmongopractitioners',
+  email: this.state.psEmail,
+  password: this.state.psPassword,
+  user_metadata: {
+     firstName: this.state.psfirstName,
+     lastName: this.state.pslastName,
+     postalcode: this.state.psPostal,
+     profileCreated: false
+  }
+ 
+}, function(err){
+  //console.log(err.message)
+})
+const userurl = `/veruser/${this.state.psEmail}`
+
+setTimeout(()=>{
+  axios.get(userurl)
+   .then((status)=>{
+      if(status.data.registered){
+        this.userSnackbarOpen()
+        this.setState({psEmail: '',psPassword:'', psfirstName: '', pslastName: '', psPostal: ''});
+        this.pSignupClose()
+      }
+    })
+},2000)
+ } 
+
+  userSignup () {
+    const auth0 = new Auth0({
+      domain:      cred.Auth0options.client.domain,
+      clientID:     cred.Auth0options.client.clientID,
+      callbackURL:  cred.Auth0options.client.callbackURL,
+      responseType: 'token',
+      forceJSONP:   false
+  });
+
+auth0.signup({
+   connection:'therappmongo',
   email: this.state.email,
   password: this.state.password,
   user_metadata: {
@@ -182,6 +318,8 @@ setTimeout(()=>{
 }
  
   render () {
+
+//user signup and login
     const SignUpActions = [
       <FlatButton
         label="Cancel"
@@ -192,7 +330,7 @@ setTimeout(()=>{
         label="Submit"
         primary={true}
         keyboardFocused={true}
-        onTouchTap={this.submitForm}
+        onTouchTap={this.userSignup}
       />,
     ]
 
@@ -210,14 +348,39 @@ setTimeout(()=>{
       />,
     ]
 
+// pracitioner sign up and login
 
+   const pSignUpActions = [
+      <FlatButton
+        label="Cancel"
+        primary={true}
+        onTouchTap={this.pSignupClose}
+              />,
+      <FlatButton
+        label="Submit"
+        primary={true}
+        keyboardFocused={true}
+        onTouchTap={this.pSignup}
+      />,
+    ]
 
-
+    const pSignInActions = [
+      <FlatButton
+        label="Cancel"
+        primary={true}
+        onTouchTap={this.userSigninClose}
+              />,
+      <FlatButton
+        label="Submit"
+        primary={true}
+        keyboardFocused={true}
+        onTouchTap={this.login}
+      />,
+    ]
 
     return (
      <div>
-
-         <Snackbar
+        <Snackbar
           open={this.state.snackBarOpen}
           message="User Account Created, please check your email to confirm "
           autoHideDuration={5000}
@@ -230,6 +393,8 @@ setTimeout(()=>{
           modal={false}
           open={this.state.userSignUpOpen}
           onRequestClose={this.userHandleClose}
+          style={{backgroundColor:blueGrey200}}
+
         >
           <div>
 
@@ -282,7 +447,7 @@ setTimeout(()=>{
           title ="password"
           type= "password"
           value={this.state.password}
-          onChange={this.onPasswordLoginChange}
+          onChange={this.onPasswordChange}
           hintText="Password"
           floatingLabelFixed={true}
         />
@@ -298,6 +463,8 @@ setTimeout(()=>{
           modal={false}
           open={this.state.userSigninOpen}
           onRequestClose={this.userHandleClose}
+          style={{backgroundColor:blueGrey200}}
+
         >
           <span>
 
@@ -325,11 +492,89 @@ setTimeout(()=>{
     
     </Dialog>     
 
+        <Dialog
+          title="Practitioner Signup"
+          actions={pSignUpActions}
+          modal={false}
+          open={this.state.pSignupOpen}
+          onRequestClose={this.userHandleClose}
+          style={{backgroundColor:blueGrey200}}
+        >
+          <div>
+
+          <span>
+        <TextField
+          id="text-field-controlled"
+          title ="First Name"
+          value={this.state.psfirstName}
+          onChange={this.onPsFirstNameChange}
+          hintText="First Name"
+          floatingLabelFixed={true}
+        />
+
+       <br/>
+         <TextField
+          id="text-field-controlled"
+          title ="Last Name"
+          value={this.state.pslastName}
+          onChange={this.onPsLastNameChange}
+           hintText="Last Name"
+           floatingLabelFixed={true}
+        />
+
+       <br/>
+
+      <TextField
+       id="text-field-controlled"
+          title ="email"
+          value={this.state.psEmail}
+          onChange={this.onPsEmailChange}
+          hintText="Email"
+          floatingLabelFixed={true}
+        />
+   
+      <br/>
+
+       <TextField
+       id="text-field-controlled"
+          title ="postalCode"
+          value={this.state.psPostal}
+          onChange={this.onPsPostalChange}
+          hintText="Postal Code"
+          floatingLabelFixed={true}
+        />
+
+        <br/>
+
+      <TextField
+          id="text-field-controlled"
+          title ="password"
+          type= "password"
+          value={this.state.psPassword}
+          onChange={this.onPsPasswordChange}
+          hintText="Password"
+          floatingLabelFixed={true}
+        />
+
+      </span>
+      </div>
+
+    </Dialog>    
+
+
+
+
     <IconMenu
       iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
       anchorOrigin={{horizontal: 'right', vertical: 'top'}}
       targetOrigin={{horizontal: 'right', vertical: 'top'}}
     >
+       
+      <MenuItem primaryText="Home"
+         onTouchTap={this.home}
+         label="Dialog"
+          />
+
       <MenuItem primaryText="Sign Up"
          onTouchTap={this.userHandleOpen}
          label="Dialog"
@@ -339,11 +584,13 @@ setTimeout(()=>{
          label="Dialog"
        />
      
-     
-      <MenuItem primaryText="Practitioners" 
+           <MenuItem primaryText="Practitioners"
       
          menuItems={[
-          <MenuItem primaryText="Sign Up" />,
+          <MenuItem primaryText="Sign Up"
+             onTouchTap={this.pSignupOpen}
+          
+           />,
           <MenuItem primaryText="Sign In" />
         ]}
       />
