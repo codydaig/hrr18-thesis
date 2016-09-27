@@ -8,10 +8,12 @@ export default class directoryMain extends React.Component {
   constructor (props){
     super(props)
     this.state = {
-        practitioners: []
+        practitioners: [],
+        currentSelection: ''
     }
     this.componentDidMount = this.componentDidMount.bind(this)
     this.componentWillUnmount = this.componentWillUnmount.bind(this)
+    this.bookApointment = this.bookApointment.bind(this)
   }
   componentDidMount () {
     const that = this
@@ -24,6 +26,13 @@ export default class directoryMain extends React.Component {
   }
   componentWillUnmount () {
     this.serverRequest.abort()
+  }
+
+  bookApointment(currentSelection){
+     this.setState({
+       currentSelection: currentSelection
+     })    
+   
   }
 
   render () {
@@ -43,7 +52,8 @@ export default class directoryMain extends React.Component {
              <FlatButton 
               label="Book An Appointment" 
               primary={true}
-              />
+              onTouchTap={this.bookApointment.bind(this, practitioner._id)  }
+           />
             </Card>
           )  
       })}
