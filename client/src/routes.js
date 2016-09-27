@@ -13,7 +13,5 @@ export default (
 <Route path="/main" component={Main} />
 <Route path='/pdash' component={pDash}/>
 </Route>
-
-
 )
 
