@@ -17,7 +17,7 @@ export default class pForm extends React.Component {
          website: '',
          certtype: '',
          certbody: '',
-         certnuber: '',
+         certnumber: '',
          bio: ''
        }
       this.submitform = this.submitform.bind(this)
@@ -61,7 +61,7 @@ onChangeCertBody(event){
 
 onChangeCertNumber(event){
   this.setState({
-     certnuber: event.target.value
+     certnumber: event.target.value
   })
  }
 
@@ -79,7 +79,7 @@ submitform () {
   website: this.state.website,
   certtype: this.state.certtype,
   certbody: this.state.certbody,
-  certnuber: this.state.certnuber,
+  certnumber: this.state.certnumber,
   bio: this.state.bio,
   profilecreated: true
 }
@@ -100,7 +100,7 @@ const style = {
  flexDirection: 'column',
  width: 500,
  margin: 'auto',
- marginTop: 30
+ marginTop: 15
 };
     return (
    <div>
@@ -115,15 +115,17 @@ const style = {
     />
 
     <TextField 
-      hintText="One line introduction" 
+      hintText="One line introduction"
+      style={{fontSize:12}}
       underlineShow={true} 
       value={this.state.oneline }
-       onChange={this.onChangeIntro}
+      onChange={this.onChangeIntro}
     />
     <Divider />
 
     <TextField 
-     hintText="Website" 
+     hintText="Website"
+     style={{fontSize:12}}
      underlineShow={true} 
      value={this.state.website }
      onChange={this.onChangeWebsite}
@@ -131,7 +133,8 @@ const style = {
 
     <Divider />
     <TextField 
-      hintText="Certification Type" 
+      hintText="Certification Type"
+      style={{fontSize:12}}
       underlineShow={true} 
       value={this.state.certtype }
       onChange={this.onChangeCertType}
@@ -140,10 +143,11 @@ const style = {
     <Divider />
 
     <TextField 
-      hintText="Certiifcation Body"  
+      hintText="Certiifcation Body"
+      style={{fontSize:12}}
       underlineShow={true}
       value={this.state.certbody }
-       onChange={this.onChangeCertBody}
+      onChange={this.onChangeCertBody}
        />
       
     <Divider />
@@ -152,17 +156,18 @@ const style = {
 
     <TextField 
     hintText="Certiifcation Number"  
-    value={this.state.certnuber }
+    style={{fontSize:12}}
+    value={this.state.certnumber }
     onChange={this.onChangeCertNumber}
     underlineShow={true} />
     <Divider />
     
-    
     <Divider />
     <TextField 
-    hintText="Professional Biography" 
+    floatingLabelText="Professional Biography" 
     multiLine="true"
     rows="5"
+    style={{fontSize:10}}
     underlineShow={true}
     value={this.state.bio}
     onChange={this.onChangeBio}

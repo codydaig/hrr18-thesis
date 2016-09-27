@@ -42,8 +42,20 @@ app.get('/verprofile/:_id', (req, res) => {
   })
 })
 
+
+app.get('/getall', (req, res) => {
+
+  console.log(req.params)
+    pUserModel.find().then((practitioner) => {
+     res.send(practitioner)
+  })
+  .catch((err) => {
+    console.log(err)
+  })
+})
+
 app.post('/updateprofile/:_id', (req, res) => {
- const payload = req.body
+console.log(req.body)
   pUserModel.findOneAndUpdate({'_id':req.params._id}, req.body)
      .then(res.sendStatus(200))
    })
