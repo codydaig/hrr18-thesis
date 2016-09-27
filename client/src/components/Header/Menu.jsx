@@ -398,7 +398,7 @@ setTimeout(()=>{
       <FlatButton
         label="Cancel"
         primary={true}
-        onTouchTap={this.userSigninClose}
+        onTouchTap={this.pSigninClose}
               />,
       <FlatButton
         label="Submit"
