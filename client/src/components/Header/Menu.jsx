@@ -40,7 +40,9 @@ export default class Menu extends React.Component {
       pslastName: '',
       psEmail: '',
       psPostal: '',
-      psPassword: ''
+      psPassword: '',
+      psLoginEmail:'',
+      psLoginPassword:''
 }
 
    this.userHandleOpen = this.userHandleOpen.bind(this)
@@ -58,6 +60,7 @@ export default class Menu extends React.Component {
    this.userSigninClose = this.userSigninClose.bind(this)
    this.onPasswordLoginChange = this.onPasswordLoginChange.bind(this)
    this.login = this.login.bind(this)
+   this.plogin = this.plogin.bind(this)
    this.home = this.home.bind(this)
    this.pSignupOpen = this.pSignupOpen.bind(this)
    this.pSignupClose = this.pSignupClose.bind(this)
@@ -67,7 +70,12 @@ export default class Menu extends React.Component {
    this.onPsEmailChange = this.onPsEmailChange.bind(this)
    this.onPsPostalChange = this.onPsPostalChange.bind(this)
    this.onPsPasswordChange = this.onPsPasswordChange.bind(this)
-  }
+   this.pSigninOpen = this.pSigninOpen.bind(this)
+   this.pSigninClose = this.pSigninClose.bind(this)
+
+   this.onPsEmailLoginChange = this.onPsEmailLoginChange.bind(this)
+   this.onPsPasswordLoginChange = this.onPsPasswordLoginChange.bind(this)  
+ }
 
 
  // Menubar Actions
@@ -90,6 +98,14 @@ export default class Menu extends React.Component {
   pSignupClose (){
     this.setState({pSignupOpen: false})
   }
+
+ pSigninOpen (){
+    this.setState({pSigninOpen: true})
+  }
+  pSigninClose (){
+    this.setState({pSigninOpen: false})
+  }
+
   userSnackbarOpen () {
     this.setState({snackBarOpen: true});
   }
@@ -165,7 +181,18 @@ export default class Menu extends React.Component {
     });
   }
 
+ // pracitioner login changes
+  onPsEmailLoginChange(event){
+    this.setState({
+      psLoginEmail: event.target.value
+    });
+  }
 
+   onPsPasswordLoginChange(event){
+      this.setState({
+        psLoginPassword:event.target.value 
+      })
+   }
 
   login(){
     const auth0 = new Auth0({
@@ -187,7 +214,6 @@ export default class Menu extends React.Component {
          if(err) {
            console.log(err)
          }
-         console.log(profile)
        localStorage.setItem('user_id', profile.identities[0].user_id)
        localStorage.setItem('type', 'client')
        localStorage.setItem('name', profile.user_metadata.firstName + ' '  + profile.user_metadata.lastName)
@@ -211,30 +237,34 @@ plogin(){
   });
 
     auth0.login({
-      connection: 'therappmongo',
-      username:  this.state.userEmail,
-      password:   this.state.userPassword
+      connection: 'therappmongopractitioners',
+      username:  this.state.psLoginEmail,
+      password:   this.state.psLoginPassword
     }, (err, profile, id_token, access_token)=>{
       localStorage.setItem('id_token', profile.idToken)
        auth0.getProfile(profile.idToken, (err, profile) => {
          if(err) {
            console.log(err)
          }
-         console.log(profile)
+         console.log('meta', profile.user_metadata.profileCreated)
        localStorage.setItem('user_id', profile.identities[0].user_id)
-       localStorage.setItem('type', 'client')
        localStorage.setItem('name', profile.user_metadata.firstName + ' '  + profile.user_metadata.lastName)
+
+       if(profile.user_metadata.profileCreated === true){
+            browserHistory.push('/pdash')
+       } else{
+         browserHistory.push('/pform')
+       }
 
        });
     });
- 
-     this.userSigninClose()
-    browserHistory.push('/clientmain')
-
- }
-
-
-
+      this.pSigninClose()
+     
+      this.setState = {
+        psLoginEmail: '',
+        psLoginPassword: ''
+      }
+  }
 
   home(){
     browserHistory.push('/main')
@@ -374,7 +404,7 @@ setTimeout(()=>{
         label="Submit"
         primary={true}
         keyboardFocused={true}
-        onTouchTap={this.login}
+        onTouchTap={this.plogin}
       />,
     ]
 
@@ -561,8 +591,40 @@ setTimeout(()=>{
 
     </Dialog>    
 
+   <Dialog
+         title="Please enter email and password"
+          actions={pSignInActions}
+          modal={false}
+          open={this.state.pSigninOpen}
+          onRequestClose={this.pSigninClose}
+          style={{backgroundColor:blueGrey200}}
 
+        >
+          <span>
 
+        <TextField
+          id="text-field-controlled"
+          title ="email"
+          value={this.state.psLoginEmail}
+          onChange={this.onPsEmailLoginChange}
+          hintText="Email"
+          floatingLabelFixed={true}
+        />
+ 
+      <br/>
+          <TextField
+          id="text-field-controlled"
+          title ="password"
+          type= "password"
+          value={this.state.psLoginPassword}
+          onChange={this.onPsPasswordLoginChange}
+          hintText="Password"
+          floatingLabelFixed={true}
+        />
+
+      </span>
+    
+    </Dialog>   
 
     <IconMenu
       iconButtonElement={<IconButton><MoreVertIcon /></IconButton>}
@@ -591,7 +653,9 @@ setTimeout(()=>{
              onTouchTap={this.pSignupOpen}
           
            />,
-          <MenuItem primaryText="Sign In" />
+          <MenuItem primaryText="Sign In" 
+            onTouchTap={this.pSigninOpen}
+          />
         ]}
       />
      

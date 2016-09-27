@@ -4,6 +4,7 @@ const path = require('path')
 const app = express()
 const cred = require('../creds')
 const clientUserModel = require('./models/clientUser')
+const pUserModel = require('./models/pUser')
 
 mongoose.Promise = require('bluebird')
 
@@ -21,6 +22,20 @@ app.get('/veruser/:email', (req, res) => {
     res.send({registered: false})
   })
 })
+
+app.get('/verprofile/:_id', (req, res) => {
+
+  console.log(req.params)
+    pUserModel.find({'_id': req.params._id}).then((user) => {
+     console.log(user)
+       //res.send({user: user[0]})
+  })
+  .catch((err) => {
+    console.log(err)
+  })
+})
+
+
 
 app.get('/*', (req, res) => {
     res.sendFile(path.join(__dirname, '../client/index.html'))
