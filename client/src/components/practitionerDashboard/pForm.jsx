@@ -3,6 +3,7 @@ import {Card, CardTitle, CardActions, CardText, Button}  from 'react-mdl'
 import TextField from 'material-ui/TextField';
 import Paper from 'material-ui/Paper';
 import Divider from 'material-ui/Divider';
+import ReactS3Uploader from 'react-s3-uploader';
 
 export default class pForm extends React.Component {
   render () {
@@ -22,6 +23,17 @@ const style = {
     return (
    <div>
      <Paper style={style} zDepth={2}>
+
+<ReactS3Uploader
+    signingUrl="/s3/sign"
+    accept="image/*"
+    uploadRequestHeaders={{ 'x-amz-acl': 'public-read' }}
+    contentDisposition="auto"
+    server="http://192.168.1.134:8080" 
+    />
+
+
+
     <TextField hintText="One line introduction" underlineShow={true} />
     <Divider />
     <TextField hintText="Website"  underlineShow={true} />

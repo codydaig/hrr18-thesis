@@ -3,6 +3,8 @@ import {Card, CardTitle, CardActions, CardText, Button}  from 'react-mdl'
 import TextField from 'material-ui/TextField';
 import Paper from 'material-ui/Paper';
 import Divider from 'material-ui/Divider';
+import Dialog from 'material-ui/Dialog';
+
 
 export default class pDash extends React.Component {
   render () {

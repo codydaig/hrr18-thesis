@@ -1,4 +1,5 @@
 const express = require('express')
+const aws = require('aws-sdk')
 const mongoose = require('mongoose')
 const path = require('path')
 const app = express()
@@ -12,6 +13,14 @@ app.set('port', (process.env.PORT || 8080));
 app.use(express.static(path.join(__dirname, '../client')))
 
 mongoose.connect('mongodb://ds035806.mlab.com:35806/therapp', cred.dbOptions)
+
+console.log(cred.aws)
+
+
+aws.config.update(cred.aws)
+
+const s3 = new aws.S3()
+
 
 // clientUser account verification 
 app.get('/veruser/:email', (req, res) => {
@@ -27,15 +36,19 @@ app.get('/verprofile/:_id', (req, res) => {
 
   console.log(req.params)
     pUserModel.find({'_id': req.params._id}).then((user) => {
-     console.log(user)
-       //res.send({user: user[0]})
+     res.send({user: user[0]})
   })
   .catch((err) => {
     console.log(err)
   })
 })
 
-
+app.use('/s3', require('react-s3-uploader/s3router')({
+    bucket: "therappimages",
+    region: 'us-west-2', //optional
+    headers: {'Access-Control-Allow-Origin': '*'}, // optional
+    ACL: 'private' // this is default
+}))
 
 app.get('/*', (req, res) => {
     res.sendFile(path.join(__dirname, '../client/index.html'))

@@ -45,6 +45,7 @@
     "react-dropzone": "^3.6.0",
     "react-mdl": "^1.7.2",
     "react-router": "^2.8.1",
+    "react-s3-uploader": "^3.3.0",
     "react-tap-event-plugin": "^1.0.0",
     "stripe": "^4.11.0",
     "supertest": "^2.0.0",
