@@ -60,6 +60,14 @@ console.log(req.body)
      .then(res.sendStatus(200))
    })
 
+
+app.post('/book', (req, res) => {
+     console.log(req.body)
+
+
+
+ })
+
 app.use('/s3', require('react-s3-uploader/s3router')({
     bucket: "therappimages",
     region: 'us-west-2', //optional

@@ -15,17 +15,23 @@ export default class directoryMain extends React.Component {
     this.state = {
         practitioners: [],
         currentSelection: '',
-        bookOpen: false
+        bookOpen: false,
+        bookTime: '',
+        bookDate: ''
     }
+
     this.componentDidMount = this.componentDidMount.bind(this)
     this.componentWillUnmount = this.componentWillUnmount.bind(this)
     this.bookApointment = this.bookApointment.bind(this)
-    this. handleClose = this.handleClose.bind(this)
+    this.handleClose = this.handleClose.bind(this)
+    this.onChangeDate = this.onChangeDate.bind(this)
+    this.onChangeTime = this.onChangeTime.bind(this)
+    this.submitAppointment = this.submitAppointment.bind(this)
+
   }
   componentDidMount () {
     const that = this
-    
-    this.serverRequest = axios.get('/getall').then((practitioners)=> {
+     this.serverRequest = axios.get('/getall').then((practitioners) => {
         that.setState({
             practitioners: practitioners.data
         })
@@ -34,6 +40,31 @@ export default class directoryMain extends React.Component {
   componentWillUnmount () {
     this.serverRequest.abort()
   }
+
+  onChangeDate (event, date) { 
+     this.setState({
+       bookDate: date
+     })
+
+  }
+
+  onChangeTime (event, time) {
+      this.setState({
+       bookTime: time
+     })
+  }
+   
+  submitAppointment () {
+   const payload = {
+     practId: this.state.currentSelection,
+     clientId: localStorage.user_id,
+     name: localStorage.name,
+     date: this.state.bookDate,
+     time: this.state.bookTime
+   }
+    axios.post('/book', payload)
+    this.handleClose()
+  } 
 
   bookApointment(currentSelection){
      this.setState({
@@ -54,20 +85,15 @@ export default class directoryMain extends React.Component {
         label="Book"
         primary={true}
         keyboardFocused={true}
-        onTouchTap={this.handleClose}
-      />,
+        onTouchTap={this.submitAppointment}
+      />
     ];
-
-
 
     return (
       <div>
-      
-     
-     {this.state.practitioners.map((practitioner)=>{
-       
-      return (
-
+      {this.state.practitioners.map((practitioner)=>{
+ 
+       return (
         <div>
            <Card>  
              <CardHeader
@@ -91,8 +117,16 @@ export default class directoryMain extends React.Component {
           onRequestClose={this.handleClose}
         >
           Open a Date Picker dialog from within a dialog.
-          <DatePicker hintText="Date" />
-          <TimePicker  hintText="Time" />
+          <DatePicker 
+            hintText="Date"
+            onChange={this.onChangeDate}
+             />
+          
+          <TimePicker  
+            hintText="Time"
+            onChange={this.onChangeTime}
+             />
+
           </Dialog>
           </div>
           )  
