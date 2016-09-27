@@ -24,10 +24,8 @@ const style = {
     return (
    <div>
      <Paper style={style} zDepth={2}>
-<h1> Practitioner DashBoard</h1>
-
+    <h1>Practitioner DashBoard</h1>
   </Paper>
-
   </div>
    )
   }
