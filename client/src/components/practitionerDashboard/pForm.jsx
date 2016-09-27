@@ -5,6 +5,7 @@ import Paper from 'material-ui/Paper';
 import Divider from 'material-ui/Divider';
 import ReactS3Uploader from 'react-s3-uploader';
 import RaisedButton from 'material-ui/RaisedButton';
+import {browserHistory} from 'react-router';
 import axios from 'axios';
 
 export default class pForm extends React.Component {
@@ -83,11 +84,9 @@ submitform () {
   profilecreated: true
 }
 
-axios.post(url, payload)
-
-
-console.log(url)
-console.log(this.state)
+  axios.post(url, payload).then(()=>{
+    browserHistory.push('/pdash')
+  })
 
 }
 
