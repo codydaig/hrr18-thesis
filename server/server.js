@@ -2,6 +2,7 @@ const express = require('express')
 const aws = require('aws-sdk')
 const mongoose = require('mongoose')
 const path = require('path')
+var bodyParser = require('body-parser');
 const app = express()
 const cred = require('../creds')
 const clientUserModel = require('./models/clientUser')
@@ -10,17 +11,15 @@ const pUserModel = require('./models/pUser')
 mongoose.Promise = require('bluebird')
 
 app.set('port', (process.env.PORT || 8080));
+
+app.use(bodyParser.json());
+
 app.use(express.static(path.join(__dirname, '../client')))
 
 mongoose.connect('mongodb://ds035806.mlab.com:35806/therapp', cred.dbOptions)
 
-console.log(cred.aws)
-
 
 aws.config.update(cred.aws)
-
-const s3 = new aws.S3()
-
 
 // clientUser account verification 
 app.get('/veruser/:email', (req, res) => {
@@ -42,6 +41,12 @@ app.get('/verprofile/:_id', (req, res) => {
     console.log(err)
   })
 })
+
+app.post('/updateprofile/:_id', (req, res) => {
+ const payload = req.body
+  pUserModel.findOneAndUpdate({'_id':req.params._id}, req.body)
+     .then(res.sendStatus(200))
+   })
 
 app.use('/s3', require('react-s3-uploader/s3router')({
     bucket: "therappimages",

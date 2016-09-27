@@ -5,7 +5,14 @@ var pUserSchema = new mongoose.Schema({
   connection: String,
   email: String,
   password: String,
-  request_language: String
+  request_language: String,
+  intro: String,
+  website: String,
+  certtype: String,
+  certbody: String,
+  certnumber: String,
+  bio: String,
+  profilecreated:Boolean
 })
 
 

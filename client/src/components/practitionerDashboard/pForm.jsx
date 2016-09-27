@@ -5,7 +5,7 @@ import Paper from 'material-ui/Paper';
 import Divider from 'material-ui/Divider';
 import ReactS3Uploader from 'react-s3-uploader';
 import RaisedButton from 'material-ui/RaisedButton';
-
+import axios from 'axios';
 
 export default class pForm extends React.Component {
    constructor(props){
@@ -64,16 +64,31 @@ onChangeCertNumber(event){
   })
  }
 
-onChangeBio(){
+onChangeBio (event){
  this.setState({
    bio: event.target.value
  })
 }
 
 
-submitform(){
-  console.log(this)
- this.setState({})
+submitform () {
+  const url = `/updateprofile/${localStorage.user_id}`
+  const payload = {
+  oneline: this.state.oneline,
+  website: this.state.website,
+  certtype: this.state.certtype,
+  certbody: this.state.certbody,
+  certnuber: this.state.certnuber,
+  bio: this.state.bio,
+  profilecreated: true
+}
+
+axios.post(url, payload)
+
+
+console.log(url)
+console.log(this.state)
+
 }
 
   render () {
