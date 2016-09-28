@@ -17,7 +17,7 @@ export default class pDash extends React.Component {
      }
         this.componentDidMount = this.componentDidMount.bind(this)
         this.componentWillUnmount = this.componentWillUnmount.bind(this)
-   }
+     }
 
 
   componentDidMount () {
@@ -27,8 +27,6 @@ export default class pDash extends React.Component {
         that.setState({
           appointments: practitioners.data.appointments
         })
-    }).then(()=>{
-      console.log(this.state)
     })
   
   }

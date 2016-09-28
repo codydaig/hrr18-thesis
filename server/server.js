@@ -46,11 +46,14 @@ app.get('/verprofile/:_id', (req, res) => {
     console.log(err)
   })
 })
-
-app.get('/getpractitionername/:_id', (req, res) => {
+  //get name
+app.get('/getpname/:_id', (req, res) => {
    console.log(req.params._id)
     pUserModel.findOne({'_id': req.params._id}).then((data) => {
-       res.send(data.user_metadata)
+      const name = data.user_metadata.firstName + data.user_metadata.lastName
+      const payload = {name: name}
+      console.log(payload)
+      res.send(payload)
     })
  })
 
@@ -61,7 +64,12 @@ app.get('/getpractitionerdata/:_id', (req, res) => {
     })
  })
 
-
+app.get('/getclientdata/:_id', (req, res) => {
+   console.log(req.params._id)
+    clientUserModel.findOne({'_id': req.params._id}).then((data) => {
+       res.send(data)
+    })
+ })
 
 app.get('/getall', (req, res) => {
   pUserModel.find().then((practitioner) => {
@@ -80,13 +88,20 @@ app.post('/updateprofile/:_id', (req, res) => {
 
 // add apointment to both practitioner and client array
  app.post('/book', (req, res) => {
-   const aptId = randomstring.generate()
-   const payload = extend(req.body, {aptId:aptId})
+  const aptId = randomstring.generate()
+  var payload = extend(req.body, {aptId:aptId})
+  var practname 
 
-  clientUserModel.findOne({ _id : req.body.clientId}).then((client) => {
-    client.appointments.push(payload)
-    client.save()
-  })  
+  pUserModel.findOne({ _id : payload.practId}).then((practitioner) => {
+    const name = practitioner.user_metadata.firstName + ' ' + practitioner.user_metadata.lastName
+     practname = name})
+      .then(()=>{
+        payload.practname = practname
+        clientUserModel.findOne({ _id : req.body.clientId}).then((client) => {
+          client.appointments.push(payload)
+          client.save()
+        }) 
+     })  
 
   pUserModel.findOne({ _id : req.body.practId}).then((practitioner) => {
     practitioner.appointments.push(payload)
@@ -102,6 +117,8 @@ app.post('/updateprofile/:_id', (req, res) => {
       })
      Session.save()
   })
+  
+
 })
 
 app.use('/s3', require('react-s3-uploader/s3router')({
