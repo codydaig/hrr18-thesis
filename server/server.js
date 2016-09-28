@@ -2,14 +2,20 @@ const express = require('express')
 const aws = require('aws-sdk')
 const mongoose = require('mongoose')
 const path = require('path')
-var bodyParser = require('body-parser');
+const bodyParser = require('body-parser');
 const app = express()
 const cred = require('../creds')
 const clientUserModel = require('./models/clientUser')
 const pUserModel = require('./models/pUser')
+const sessionModel = require('./models/sessions')
+const OpenTok = require('opentok')
+const opentok = new OpenTok(cred.tokbox.apikey, cred.tokbox.secret)
+const randomstring = require("randomstring");
+const extend = require('extend')
+
+console.log(randomstring.generate())
 
 mongoose.Promise = require('bluebird')
-
 app.set('port', (process.env.PORT || 8080));
 
 app.use(bodyParser.json());
@@ -17,7 +23,6 @@ app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, '../client')))
 
 mongoose.connect('mongodb://ds035806.mlab.com:35806/therapp', cred.dbOptions)
-
 
 aws.config.update(cred.aws)
 
@@ -55,21 +60,43 @@ app.get('/getall', (req, res) => {
 })
 
 app.post('/updateprofile/:_id', (req, res) => {
-console.log(req.body)
+
+
+
   pUserModel.findOneAndUpdate({'_id':req.params._id}, req.body)
      .then(res.sendStatus(200))
    })
 
 // add apointment to both practitioner and client array
-app.post('/book', (req, res) => {
+ app.post('/book', (req, res) => {
+ const aptId = randomstring.generate()
+ const payload = extend(req.body, {aptId:aptId})
+  console.log(payload)
+
   clientUserModel.findOne({ _id : req.body.clientId}).then((client)=>{
-    client.appointments.push(req.body)
+    client.appointments.push(payload)
     client.save()
   })  
-  pUserModel.findOne({ _id : req.body.practId}).then((client)=>{
-    client.appointments.push(req.body)
-    client.save()
+
+  pUserModel.findOne({ _id : req.body.practId}).then((practitioner)=>{
+    practitioner.appointments.push(payload)
+    practitioner.save()
   })  
+
+   opentok.createSession((err, session)=>{
+
+   const token = opentok.generateToken(session.sessionId)
+   
+   const Session = new sessionModel ({
+      tokbox_session: session.sessionId,
+      tokbox_token: token,
+      meeting_id: aptId
+    })
+ Session.save()
+
+})
+
+
 
 })
 

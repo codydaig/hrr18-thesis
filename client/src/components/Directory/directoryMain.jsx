@@ -9,9 +9,6 @@ import TimePicker from 'material-ui/TimePicker';
 import Divider from 'material-ui/Divider';
 import {cyan100,grey800} from 'material-ui/styles/colors'
 
-
-
-
 export default class directoryMain extends React.Component {
   constructor (props){
     super(props)
@@ -134,7 +131,6 @@ export default class directoryMain extends React.Component {
           open={this.state.bookOpen}
           onRequestClose={this.handleClose}
         >
-          Open a Date Picker dialog from within a dialog.
           <DatePicker 
             hintText="Date"
             onChange={this.onChangeDate}

@@ -16,5 +16,4 @@ var pUserSchema = new mongoose.Schema({
   appointments: []
 })
 
-
 module.exports = mongoose.model('users_pract', pUserSchema)
