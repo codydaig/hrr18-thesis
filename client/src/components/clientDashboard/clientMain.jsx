@@ -48,14 +48,11 @@ export default class clientMain extends React.Component {
     return (
       <div>
       {this.state.appointments.map((appointment)=> {
-        const name = axios.get(`/getpname/${appointment.practId}`).then((name)=>{
-          console.log(name.data.name)
-        })
-         
+         console.log(appointment)         
         return (
           <Card style={style}>  
             <CardHeader
-              title={appointment.name}
+              title={appointment.practname}
               subtitle={appointment.date} 
              />
              <FlatButton 
