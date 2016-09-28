@@ -80,6 +80,13 @@ app.get('/getall', (req, res) => {
   })
 })
 
+app.get('/gettoken/:id', (req, res) => {
+  console.log(req.params)
+  sessionModel.findOne({meeting_id: req.params.id}).then((session) => {
+    res.send(session)
+  })
+})
+
 app.post('/updateprofile/:_id', (req, res) => {
 
   pUserModel.findOneAndUpdate({'_id':req.params._id}, req.body)
