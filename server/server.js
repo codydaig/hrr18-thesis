@@ -47,12 +47,25 @@ app.get('/verprofile/:_id', (req, res) => {
   })
 })
 
+app.get('/getpractitionername/:_id', (req, res) => {
+   console.log(req.params._id)
+    pUserModel.findOne({'_id': req.params._id}).then((data) => {
+       res.send(data.user_metadata)
+    })
+ })
+
+app.get('/getpractitionerdata/:_id', (req, res) => {
+   console.log(req.params._id)
+    pUserModel.findOne({'_id': req.params._id}).then((data) => {
+       res.send(data)
+    })
+ })
+
+
 
 app.get('/getall', (req, res) => {
-
-  console.log(req.params)
-    pUserModel.find().then((practitioner) => {
-     res.send(practitioner)
+  pUserModel.find().then((practitioner) => {
+    res.send(practitioner)
   })
   .catch((err) => {
     console.log(err)
@@ -61,43 +74,34 @@ app.get('/getall', (req, res) => {
 
 app.post('/updateprofile/:_id', (req, res) => {
 
-
-
   pUserModel.findOneAndUpdate({'_id':req.params._id}, req.body)
      .then(res.sendStatus(200))
    })
 
 // add apointment to both practitioner and client array
  app.post('/book', (req, res) => {
- const aptId = randomstring.generate()
- const payload = extend(req.body, {aptId:aptId})
-  console.log(payload)
+   const aptId = randomstring.generate()
+   const payload = extend(req.body, {aptId:aptId})
 
-  clientUserModel.findOne({ _id : req.body.clientId}).then((client)=>{
+  clientUserModel.findOne({ _id : req.body.clientId}).then((client) => {
     client.appointments.push(payload)
     client.save()
   })  
 
-  pUserModel.findOne({ _id : req.body.practId}).then((practitioner)=>{
+  pUserModel.findOne({ _id : req.body.practId}).then((practitioner) => {
     practitioner.appointments.push(payload)
     practitioner.save()
   })  
 
-   opentok.createSession((err, session)=>{
-
-   const token = opentok.generateToken(session.sessionId)
-   
-   const Session = new sessionModel ({
-      tokbox_session: session.sessionId,
-      tokbox_token: token,
-      meeting_id: aptId
-    })
- Session.save()
-
-})
-
-
-
+   opentok.createSession((err, session) => {
+     const token = opentok.generateToken(session.sessionId)
+     const Session = new sessionModel ({
+       tokbox_session: session.sessionId,
+       tokbox_token: token,
+       meeting_id: aptId
+      })
+     Session.save()
+  })
 })
 
 app.use('/s3', require('react-s3-uploader/s3router')({

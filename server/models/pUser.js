@@ -13,7 +13,8 @@ var pUserSchema = new mongoose.Schema({
   certnumber: String,
   bio: String,
   profilecreated:Boolean,
-  appointments: []
+  appointments: [],
+  user_metadata: {}
 })
 
 module.exports = mongoose.model('users_pract', pUserSchema)

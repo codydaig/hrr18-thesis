@@ -246,8 +246,8 @@ plogin(){
          if(err) {
            console.log(err)
          }
-         console.log('meta', profile.user_metadata.profileCreated)
        localStorage.setItem('user_id', profile.identities[0].user_id)
+       localStorage.setItem('type', 'pracitioner')
        localStorage.setItem('name', profile.user_metadata.firstName + ' '  + profile.user_metadata.lastName)
 
        if(profile.user_metadata.profileCreated === true){
