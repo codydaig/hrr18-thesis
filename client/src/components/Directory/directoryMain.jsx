@@ -6,6 +6,9 @@ import FlatButton from 'material-ui/FlatButton';
 import Dialog from 'material-ui/Dialog';
 import DatePicker from 'material-ui/DatePicker';
 import TimePicker from 'material-ui/TimePicker';
+import Divider from 'material-ui/Divider';
+import {cyan100,grey800} from 'material-ui/styles/colors'
+
 
 
 
@@ -89,19 +92,32 @@ export default class directoryMain extends React.Component {
       />
     ];
 
+    const cardStyle = {
+      width: 600, 
+      margin: 'auto', 
+      top: 20,
+      marginTop:12,
+      color: cyan100
+
+      
+    }
     return (
       <div>
       {this.state.practitioners.map((practitioner)=>{
  
        return (
+           
         <div>
-           <Card>  
+           <Card
+            style={cardStyle}
+           >  
              <CardHeader
               title={practitioner.user_metadata.firstName} 
               subtitle={practitioner.user_metadata.lastName}
               avatar={practitioner.photo}
             />
-           
+               
+
              <FlatButton 
               label="Book An Appointment" 
               primary={true}
@@ -109,6 +125,8 @@ export default class directoryMain extends React.Component {
            />
             </Card>
           
+        <Divider />
+
           <Dialog
           title="Choose a Date and Time for your Appointment" 
           actions={actions}

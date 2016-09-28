@@ -62,15 +62,15 @@ console.log(req.body)
 
 // add apointment to both practitioner and client array
 app.post('/book', (req, res) => {
-  UserModel.findOneAndUpdate({ _id : req.body.practId}).then((practitioner) => {
-    practitioner.appointments.push(req.body)
-    practitioner.save()
-  })  
-
-  clientUserModel.findOneAndUpdate({ _id : req.body.clientId}).then((client) => {
+  clientUserModel.findOne({ _id : req.body.clientId}).then((client)=>{
     client.appointments.push(req.body)
     client.save()
   })  
+  pUserModel.findOne({ _id : req.body.practId}).then((client)=>{
+    client.appointments.push(req.body)
+    client.save()
+  })  
+
 })
 
 app.use('/s3', require('react-s3-uploader/s3router')({
