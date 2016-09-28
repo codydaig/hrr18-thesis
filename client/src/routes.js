@@ -6,6 +6,7 @@ import clientMain from './components/clientDashboard/clientMain'
 import pForm from './components/practitionerDashboard/pForm'
 import pDash from './components/practitionerDashboard/pdashMain'
 import directoryMain from './components/Directory/directoryMain'
+import officeMain from './components/Office/officeMain'
 
 
 export default (
@@ -15,6 +16,7 @@ export default (
 <Route path="/main" component={Main} />
 <Route path='/pdash' component={pDash}/>
 <Route path='/directory' component={directoryMain}/>
+<Route path='/office' component={officeMain}/>
 </Route>
 )
 
