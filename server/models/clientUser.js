@@ -5,7 +5,8 @@ var clientUserSchema = new mongoose.Schema({
   connection: String,
   email: String,
   password: String,
-  request_language: String
+  request_language: String,
+  appointments: []
 })
 
 

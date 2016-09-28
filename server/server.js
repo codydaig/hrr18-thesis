@@ -60,13 +60,18 @@ console.log(req.body)
      .then(res.sendStatus(200))
    })
 
-
+// add apointment to both practitioner and client array
 app.post('/book', (req, res) => {
-     console.log(req.body)
+  UserModel.findOneAndUpdate({ _id : req.body.practId}).then((practitioner) => {
+    practitioner.appointments.push(req.body)
+    practitioner.save()
+  })  
 
-
-
- })
+  clientUserModel.findOneAndUpdate({ _id : req.body.clientId}).then((client) => {
+    client.appointments.push(req.body)
+    client.save()
+  })  
+})
 
 app.use('/s3', require('react-s3-uploader/s3router')({
     bucket: "therappimages",

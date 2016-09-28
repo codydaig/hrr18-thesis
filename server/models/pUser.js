@@ -12,7 +12,8 @@ var pUserSchema = new mongoose.Schema({
   certbody: String,
   certnumber: String,
   bio: String,
-  profilecreated:Boolean
+  profilecreated:Boolean,
+  appointments: []
 })
 
 
