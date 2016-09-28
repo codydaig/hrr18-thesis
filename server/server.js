@@ -12,8 +12,14 @@ const OpenTok = require('opentok')
 const opentok = new OpenTok(cred.tokbox.apikey, cred.tokbox.secret)
 const randomstring = require("randomstring");
 const extend = require('extend')
+const https = require('https')
+const fs = require('fs')
 
-console.log(randomstring.generate())
+
+const cert = fs.readFileSync('../certs/cert.pem').toString()
+const key = fs.readFileSync('../certs/key.pem').toString()
+
+console.log(cert,key)
 
 mongoose.Promise = require('bluebird')
 app.set('port', (process.env.PORT || 8080));
@@ -143,6 +149,8 @@ app.get('/*', (req, res) => {
 
 mongoose.connection.on('connected', () => {
     app.listen( app.get('port'))
+    https.createServer({key:key,cert: cert}, app).listen(5555)
   console.log('Connection to MongoDb established!')
 })  
-     
+
+

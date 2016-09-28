@@ -9,6 +9,7 @@ import axios from 'axios';
 import {cyan100,grey800} from 'material-ui/styles/colors'
 import cred from '../../../../creds'
 
+
 export default class clientMain extends React.Component {
    constructor(props){
      super(props)
@@ -27,9 +28,11 @@ export default class clientMain extends React.Component {
 
 
   componentDidMount () {
+    console.log('testing')
     const that = this
     const url = `/getclientdata/${localStorage.user_id}`
      this.serverRequest = axios.get(url).then((practitioners) => {
+       console.log(practitioners)
         that.setState({
           appointments: practitioners.data.appointments
         })
