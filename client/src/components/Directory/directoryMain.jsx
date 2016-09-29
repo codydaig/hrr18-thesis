@@ -126,10 +126,12 @@ export default class directoryMain extends React.Component {
             <span>
 
             {practitioner.certbody}  #{practitioner.certnumber}
-                        
+                   
             </span>
-            </CardHeader>
-                    
+              </CardHeader>
+                    <CardText>
+                   {practitioner.oneline}
+                   </CardText>     
 
              <FlatButton 
               label="Book An Appointment" 
@@ -137,6 +139,7 @@ export default class directoryMain extends React.Component {
               onTouchTap={this.bookApointment.bind(this, practitioner._id)  }
            />
              <a href={practitioner.website} target='_blank'>Website</a>
+     
             </Card>
          
         <Divider />

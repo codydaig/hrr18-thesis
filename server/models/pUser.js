@@ -6,7 +6,7 @@ var pUserSchema = new mongoose.Schema({
   email: String,
   password: String,
   request_language: String,
-  intro: String,
+  oneline: String,
   website: String,
   certtype: String,
   certbody: String,
