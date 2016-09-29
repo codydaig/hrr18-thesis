@@ -108,12 +108,12 @@ app.post('/updateprofile/:_id', (req, res) => {
 
   pUserModel.findOne({ _id : payload.practId}).then((practitioner) => {
     const name = practitioner.user_metadata.firstName + ' ' + practitioner.user_metadata.lastName
-     payload.photo = practitioner.photo
- 
+    console.log(practitioner.photo)
+    payload.photo = practitioner.photo
      practname = name})
       .then((practitioner ) => {
-
-       console.log(practitioner.photo)
+        console.log(payload)
+          
 
         //add formatted name and date to appointment payload
         payload.practname = practname

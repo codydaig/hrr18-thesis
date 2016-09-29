@@ -123,8 +123,6 @@ endSession () {
 
     }
 
-
-
     return (
       <div>
       {this.state.appointments.map((appointment)=> {
@@ -132,6 +130,7 @@ endSession () {
           <div>
           <Card style={style}>  
             <CardHeader
+              avatar={appointment.photo}
               title={appointment.practname}
               subtitle={appointment.datetime} 
              />

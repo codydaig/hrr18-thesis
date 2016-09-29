@@ -222,9 +222,6 @@ export default class Menu extends React.Component {
        browserHistory.push('/clientmain')
        });
     });
- 
-  
-
  }
 
 plogin(){
@@ -247,6 +244,9 @@ plogin(){
          if(err) {
            console.log(err)
          }
+
+        console.log(profile)
+
        localStorage.setItem('user_id', profile.identities[0].user_id)
        localStorage.setItem('type', 'pracitioner')
        localStorage.setItem('name', profile.user_metadata.firstName + ' '  + profile.user_metadata.lastName)
@@ -279,8 +279,7 @@ plogin(){
   }
   
  pSignup () {
-    console.log(cred)
-  const auth0 = new Auth0({
+   const auth0 = new Auth0({
       domain:      cred.Auth0options.p.domain,
       clientID:     cred.Auth0options.p.clientID,
       callbackURL:  cred.Auth0options.p.callbackURL,

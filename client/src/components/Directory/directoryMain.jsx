@@ -64,6 +64,7 @@ export default class directoryMain extends React.Component {
    }
     axios.post('/book', payload)
     this.handleClose()
+    browserHistory.push('/clientmain')
   } 
 
   bookApointment(currentSelection){
