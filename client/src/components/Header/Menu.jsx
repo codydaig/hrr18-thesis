@@ -61,7 +61,7 @@ export default class Menu extends React.Component {
    this.onPasswordLoginChange = this.onPasswordLoginChange.bind(this)
    this.login = this.login.bind(this)
    this.plogin = this.plogin.bind(this)
-   this.home = this.home.bind(this)
+   this.logout = this.logout.bind(this)
    this.pSignupOpen = this.pSignupOpen.bind(this)
    this.pSignupClose = this.pSignupClose.bind(this)
    this.pSignup = this.pSignup.bind(this)
@@ -217,12 +217,13 @@ export default class Menu extends React.Component {
        localStorage.setItem('user_id', profile.identities[0].user_id)
        localStorage.setItem('type', 'client')
        localStorage.setItem('name', profile.user_metadata.firstName + ' '  + profile.user_metadata.lastName)
-
+       this.forceUpdate()
+       this.userSigninClose()
+       browserHistory.push('/clientmain')
        });
     });
  
-     this.userSigninClose()
-    browserHistory.push('/clientmain')
+  
 
  }
 
@@ -266,9 +267,15 @@ plogin(){
       }
   }
 
-  home(){
+  logout(){
+    localStorage.setItem('user_id', '')
+    localStorage.setItem('type', '')
+    localStorage.setItem('name', '')
+    localStorage.setItem('id_token', '')
+    localStorage.setItem('open_client_id', '')
+    localStorage.setItem('opentok_client_id', '')
     browserHistory.push('/main')
-
+    this.forceUpdate() 
   }
   
  pSignup () {
@@ -631,12 +638,7 @@ setTimeout(()=>{
       anchorOrigin={{horizontal: 'right', vertical: 'top'}}
       targetOrigin={{horizontal: 'right', vertical: 'top'}}
     >
-       
-      <MenuItem primaryText="Home"
-         onTouchTap={this.home}
-         label="Dialog"
-          />
-
+   
       <MenuItem primaryText="Sign Up"
          onTouchTap={this.userHandleOpen}
          label="Dialog"
@@ -658,7 +660,12 @@ setTimeout(()=>{
           />
         ]}
       />
-     
+   
+        <MenuItem primaryText="Logout"
+          onTouchTap={this.logout}
+          label="Dialog"
+          href='/main'
+          />
     </IconMenu>
 
   </div>

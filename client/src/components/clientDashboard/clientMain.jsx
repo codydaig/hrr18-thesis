@@ -40,7 +40,7 @@ export default class clientMain extends React.Component {
   
   }
   componentWillUnmount () {
-    this.serverRequest.abort()
+   // this.serverRequest.abort()
   }
 
   beginSession (id) {

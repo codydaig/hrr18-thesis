@@ -127,10 +127,9 @@ export default class directoryMain extends React.Component {
               primary={true}
               onTouchTap={this.bookApointment.bind(this, practitioner._id)  }
            />
-           <a href={practitioner.website}>Website</a>
-
+             <a href={practitioner.website} target='_blank'>Website</a>
             </Card>
-          
+         
         <Divider />
 
           <Dialog
