@@ -14,6 +14,7 @@ const randomstring = require("randomstring");
 const extend = require('extend')
 const https = require('https')
 const fs = require('fs')
+const moment = require('moment');
 
 
 const cert = fs.readFileSync('./certs/cert.pem').toString()
@@ -109,7 +110,11 @@ app.post('/updateprofile/:_id', (req, res) => {
     const name = practitioner.user_metadata.firstName + ' ' + practitioner.user_metadata.lastName
      practname = name})
       .then(()=>{
+        //add formatted name and date to appointment payload
         payload.practname = practname
+        payload.fmtdate = moment(payload.date).format('dddd, MMMM, DD')
+        payload.fmttime =  moment(payload.time).format('h:mm a')
+        
         clientUserModel.findOne({ _id : req.body.clientId}).then((client) => {
           client.appointments.push(payload)
           client.save()
