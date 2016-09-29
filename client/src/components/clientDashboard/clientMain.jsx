@@ -133,7 +133,7 @@ endSession () {
           <Card style={style}>  
             <CardHeader
               title={appointment.practname}
-              subtitle={appointment.date} 
+              subtitle={appointment.datetime} 
              />
              <FlatButton 
               label="Begin Session" 

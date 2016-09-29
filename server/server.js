@@ -114,7 +114,7 @@ app.post('/updateprofile/:_id', (req, res) => {
         payload.practname = practname
         payload.fmtdate = moment(payload.date).format('dddd, MMMM, DD')
         payload.fmttime =  moment(payload.time).format('h:mm a')
-        
+        payload.datetime = payload.fmtdate + " @ " + payload.fmttime
         clientUserModel.findOne({ _id : req.body.clientId}).then((client) => {
           client.appointments.push(payload)
           client.save()
