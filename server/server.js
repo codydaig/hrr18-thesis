@@ -108,13 +108,19 @@ app.post('/updateprofile/:_id', (req, res) => {
 
   pUserModel.findOne({ _id : payload.practId}).then((practitioner) => {
     const name = practitioner.user_metadata.firstName + ' ' + practitioner.user_metadata.lastName
+     payload.photo = practitioner.photo
+ 
      practname = name})
-      .then(()=>{
+      .then((practitioner ) => {
+
+       console.log(practitioner.photo)
+
         //add formatted name and date to appointment payload
         payload.practname = practname
         payload.fmtdate = moment(payload.date).format('dddd, MMMM, DD')
         payload.fmttime =  moment(payload.time).format('h:mm a')
         payload.datetime = payload.fmtdate + " @ " + payload.fmttime
+   
         clientUserModel.findOne({ _id : req.body.clientId}).then((client) => {
           client.appointments.push(payload)
           client.save()
@@ -154,7 +160,7 @@ app.get('/*', (req, res) => {
 
 mongoose.connection.on('connected', () => {
     app.listen( app.get('port'))
-    https.createServer({key:key,cert: cert}, app).listen(5555)
+    https.createServer({key:key,cert: cert}, app).listen(8443)
   console.log('Connection to MongoDb established!')
 })  
 

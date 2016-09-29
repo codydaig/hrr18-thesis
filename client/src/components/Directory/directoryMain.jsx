@@ -112,14 +112,23 @@ export default class directoryMain extends React.Component {
               title={practitioner.user_metadata.firstName} 
               subtitle={practitioner.user_metadata.lastName}
               avatar={practitioner.photo}
-            />
-               
+            > 
+
+            <span>
+
+            {practitioner.certbody}  #{practitioner.certnumber}
+                        
+            </span>
+            </CardHeader>
+                    
 
              <FlatButton 
               label="Book An Appointment" 
               primary={true}
               onTouchTap={this.bookApointment.bind(this, practitioner._id)  }
            />
+           <a href={practitioner.website}>Website</a>
+
             </Card>
           
         <Divider />
