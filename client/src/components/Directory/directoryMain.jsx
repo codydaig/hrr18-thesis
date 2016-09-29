@@ -17,7 +17,8 @@ export default class directoryMain extends React.Component {
         currentSelection: '',
         bookOpen: false,
         bookTime: '',
-        bookDate: ''
+        bookDate: '',
+        alreadyBooked: []
     }
 
     this.componentDidMount = this.componentDidMount.bind(this)
@@ -68,12 +69,19 @@ export default class directoryMain extends React.Component {
   } 
 
   bookApointment(currentSelection){
+    const that = this
      this.setState({
        currentSelection: currentSelection,
        bookOpen: true
      })    
-   
-  }
+      const url = `/getbookedtime/${currentSelection}`
+      axios.get(url).then((datetime) => {
+          that.setState({
+            alreadyBooked: datetime.data
+          })
+      })
+  console.log(this.state)  
+}
 
    handleClose () {
     this.setState({bookOpen: false});
@@ -149,6 +157,11 @@ export default class directoryMain extends React.Component {
             hintText="Time"
             onChange={this.onChangeTime}
              />
+              <h7> Already Booked </h7>
+               {this.state.alreadyBooked.map((booking)=> {
+              return  <li> {booking} </li>
+              })}
+
 
           </Dialog>
           </div>

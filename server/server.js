@@ -88,7 +88,7 @@ app.get('/getall', (req, res) => {
 })
 
 app.get('/gettoken/:id', (req, res) => {
-  console.log(req.params)
+  console.log('testing', req.params)
   sessionModel.findOne({meeting_id: req.params.id}).then((session) => {
     res.send(session)
   })
@@ -108,11 +108,10 @@ app.post('/updateprofile/:_id', (req, res) => {
 
   pUserModel.findOne({ _id : payload.practId}).then((practitioner) => {
     const name = practitioner.user_metadata.firstName + ' ' + practitioner.user_metadata.lastName
-    console.log(practitioner.photo)
+
     payload.photo = practitioner.photo
      practname = name})
-      .then((practitioner ) => {
-        console.log(payload)
+      .then(() => {
           
 
         //add formatted name and date to appointment payload
@@ -144,6 +143,26 @@ app.post('/updateprofile/:_id', (req, res) => {
   
 
 })
+
+
+//get all current appointment time formatted
+
+app.get('/getbookedtime/:_id', (req, res) => {
+  console.log('testing', req.params)
+  pUserModel.findOne({_id: req.params._id}).then((session) => {
+    var datetime = session.appointments.map((appointment) => {
+        var dt = moment(appointment.date).format('dddd, MMMM, DD')
+        var tm = moment(appointment.time).format('h:mm a')
+        var dt = dt + " @ " + tm
+        
+        return dt
+    })
+       res.send(datetime)
+  })
+})
+
+
+
 
 app.use('/s3', require('react-s3-uploader/s3router')({
     bucket: "therappimages",

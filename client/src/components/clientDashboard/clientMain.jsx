@@ -28,11 +28,9 @@ export default class clientMain extends React.Component {
 
 
   componentDidMount () {
-    console.log('testing')
     const that = this
     const url = `/getclientdata/${localStorage.user_id}`
      this.serverRequest = axios.get(url).then((practitioners) => {
-       console.log(practitioners)
         that.setState({
           appointments: practitioners.data.appointments
         })
@@ -40,7 +38,7 @@ export default class clientMain extends React.Component {
   
   }
   componentWillUnmount () {
-   // this.serverRequest.abort()
+    this.serverRequest.abort()
   }
 
   beginSession (id) {
