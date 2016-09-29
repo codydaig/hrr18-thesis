@@ -16,8 +16,8 @@ const https = require('https')
 const fs = require('fs')
 
 
-const cert = fs.readFileSync('../certs/cert.pem').toString()
-const key = fs.readFileSync('../certs/key.pem').toString()
+const cert = fs.readFileSync('./certs/cert.pem').toString()
+const key = fs.readFileSync('./certs/key.pem').toString()
 
 console.log(cert,key)
 

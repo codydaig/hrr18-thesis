@@ -8,3 +8,4 @@ npm-debug.log
 ## build directory ##
 client/dist/*
 creds.js
+certs
