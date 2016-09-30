@@ -20,15 +20,11 @@ import {browserHistory} from 'react-router'
 import timekit from '../util/timekit'
 //this file needs and entire refactor, will be done when state management with Redux/Apollo is implimented
 
-timekit.configure({
-    app: 'therap01'                      
-    });
 
-
-timekit.getConfig();
-
-
-
+const timekitInstance = axios.create({
+   baseURL: 'https://api.timekit.io/v2',
+   headers: {'Timekit-App': 'therapp'}
+})
 
 export default class Menu extends React.Component {
    constructor(){
@@ -82,20 +78,20 @@ export default class Menu extends React.Component {
    this.onPsPasswordChange = this.onPsPasswordChange.bind(this)
    this.pSigninOpen = this.pSigninOpen.bind(this)
    this.pSigninClose = this.pSigninClose.bind(this)
-
    this.onPsEmailLoginChange = this.onPsEmailLoginChange.bind(this)
    this.onPsPasswordLoginChange = this.onPsPasswordLoginChange.bind(this)  
    this.componentDidMount  = this.componentDidMount.bind(this)
    this.ptimekitRegistration = this.ptimekitRegistration.bind(this)
+   this.loginTimeKit = this.loginTimeKit.bind(this)
  }
 
 
 
   componentDidMount () {
-    timekit.configure({
-    app: 'therap01'                      
-    });
-     console.log(timekit.getConfig())
+   const timekitInstance = axios.create({
+   baseURL: 'https://api.timekit.io/v2',
+   headers: {'Timekit-App': 'therapp'}
+    })
   }
 
 
@@ -117,6 +113,9 @@ const timekitInstance = axios.create({
 })
   timekitInstance.post('/users', payload)
            .then((data)=>{
+
+
+
              console.log(data)
            })
            .catch((error)=>{
@@ -126,6 +125,27 @@ const timekitInstance = axios.create({
 
 }
 
+  loginTimeKit () {
+     timekitInstance.post('/auth',{
+       email: this.state.psLoginEmail,
+       password: this.state.psLoginPassword
+     },{
+      headers: {'Timekit-App': 'therapp'},
+     
+     auth:{ 
+       username: this.state.psLoginEmail,
+       password: this.state.psLoginPassword
+      }
+   }).then((data)=>{
+      console.log(data.data)
+    localStorage.setItem('timekit_id', data.data.data.api_token)
+    localStorage.setItem('timekit_token', data.data.data.api_token)
+
+
+   })
+
+
+  }
 
  // Menubar Actions
 
@@ -282,21 +302,17 @@ plogin(){
 
 
   });
-
+    
     auth0.login({
       connection: 'therappmongopractitioners',
       username:  this.state.psLoginEmail,
       password:   this.state.psLoginPassword
-    }, (err, profile, id_token, access_token)=>{
+    }, (err, profile, id_token, access_token) => {
+
+
       localStorage.setItem('id_token', profile.idToken)
-       auth0.getProfile(profile.idToken, (err, profile) => {
-         if(err) {
-           console.log(err)
-         }
-
-        console.log(profile)
-
-       localStorage.setItem('user_id', profile.identities[0].user_id)
+      auth0.getProfile(profile.idToken, (err, profile) => {
+      localStorage.setItem('user_id', profile.identities[0].user_id)
        localStorage.setItem('type', 'pracitioner')
        localStorage.setItem('name', profile.user_metadata.firstName + ' '  + profile.user_metadata.lastName)
 
@@ -308,8 +324,10 @@ plogin(){
 
        });
     });
-      this.pSigninClose()
      
+     
+     this.loginTimeKit()
+      this.pSigninClose()
       this.setState = {
         psLoginEmail: '',
         psLoginPassword: ''
