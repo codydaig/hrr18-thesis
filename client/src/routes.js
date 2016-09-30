@@ -8,6 +8,9 @@ import pDash from './components/practitionerDashboard/pdashMain'
 import directoryMain from './components/Directory/directoryMain'
 import officeMain from './components/Office/officeMain'
 import GraphiQL from './components/graphql/GraphiQ'
+import FullCalendar from './components/fullCalendar/fullCalendar'
+
+
 
 export default (
  
@@ -18,9 +21,9 @@ export default (
 <Route path="/main" component={Main} />
 <Route path='/pdash' component={pDash}/>
 <Route path='/directory' component={directoryMain}/>
-<Route path='/office' component={officeMain}/>
+<Route path='/office' component={officeMain}/>ßßßß
 <Route path='/graphql' component={GraphiQL}/>
-
+<Route path='/fullcal' component={FullCalendar}/>
 </Route>
 
 )

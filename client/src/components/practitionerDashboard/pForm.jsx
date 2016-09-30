@@ -81,7 +81,11 @@ timekit.setUser(localStorage.email,localStorage.timekit_token)
 timekit.createCalendar({
   "name": localStorage.name + " Calendar",
   "description": "TherApp Calendar"
-}).catch((err) => {
+})
+.then((data)=> {
+  console.log(data)
+})
+.catch((err) => {
   console.log(err)
 })
 
