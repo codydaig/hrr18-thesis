@@ -8,6 +8,8 @@ import DatePicker from 'material-ui/DatePicker';
 import TimePicker from 'material-ui/TimePicker';
 import Divider from 'material-ui/Divider';
 import {cyan100,grey800} from 'material-ui/styles/colors'
+import timekit from '../util/timekit'
+import booking from 'timekit-booking'
 
 export default class directoryMain extends React.Component {
   constructor (props){
@@ -39,6 +41,7 @@ export default class directoryMain extends React.Component {
      })
   }
   componentWillUnmount () {
+
     this.serverRequest.abort()
   }
 
@@ -124,9 +127,8 @@ export default class directoryMain extends React.Component {
             > 
 
             <span>
-
             {practitioner.certbody}  #{practitioner.certnumber}
-                   
+              
             </span>
               </CardHeader>
                     <CardText>

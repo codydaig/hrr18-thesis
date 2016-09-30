@@ -7,9 +7,11 @@ import pForm from './components/practitionerDashboard/pForm'
 import pDash from './components/practitionerDashboard/pdashMain'
 import directoryMain from './components/Directory/directoryMain'
 import officeMain from './components/Office/officeMain'
-
+import GraphiQL from './components/graphql/GraphiQ'
 
 export default (
+ 
+
 <Route path="/" component={App} > 
 <Route path="/clientmain" component={clientMain} />
 <Route path="/pForm" component={pForm} />
@@ -17,6 +19,9 @@ export default (
 <Route path='/pdash' component={pDash}/>
 <Route path='/directory' component={directoryMain}/>
 <Route path='/office' component={officeMain}/>
+<Route path='/graphql' component={GraphiQL}/>
+
 </Route>
+
 )
 

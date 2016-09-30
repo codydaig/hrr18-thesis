@@ -17,8 +17,18 @@ import axios from 'axios'
 import Snackbar from 'material-ui/Snackbar';
 import {blueGrey200} from 'material-ui/styles/colors'
 import {browserHistory} from 'react-router'
-
+import timekit from '../util/timekit'
 //this file needs and entire refactor, will be done when state management with Redux/Apollo is implimented
+
+timekit.configure({
+    app: 'therap01'                      
+    });
+
+
+timekit.getConfig();
+
+
+
 
 export default class Menu extends React.Component {
    constructor(){
@@ -75,7 +85,46 @@ export default class Menu extends React.Component {
 
    this.onPsEmailLoginChange = this.onPsEmailLoginChange.bind(this)
    this.onPsPasswordLoginChange = this.onPsPasswordLoginChange.bind(this)  
+   this.componentDidMount  = this.componentDidMount.bind(this)
+   this.ptimekitRegistration = this.ptimekitRegistration.bind(this)
  }
+
+
+
+  componentDidMount () {
+    timekit.configure({
+    app: 'therap01'                      
+    });
+     console.log(timekit.getConfig())
+  }
+
+
+  ptimekitRegistration () {
+    const payload = {
+    email: this.state.psEmail,
+    first_name: this.state.psfirstName,
+    last_name: this.state.pslastName,
+    password: this.state.psPassword,
+    timezone: "America/Los_Angeles"
+     }
+
+  
+//create timekit user
+  
+const timekitInstance = axios.create({
+   baseURL: 'https://api.timekit.io/v2',
+   headers: {'Timekit-App': 'therapp'}
+})
+  timekitInstance.post('/users', payload)
+           .then((data)=>{
+             console.log(data)
+           })
+           .catch((error)=>{
+           console.log(error)
+           })
+
+
+}
 
 
  // Menubar Actions
@@ -304,17 +353,25 @@ auth0.signup({
 })
 const userurl = `/veruser/${this.state.psEmail}`
 
+
+  this.ptimekitRegistration()
+
 setTimeout(()=>{
   axios.get(userurl)
    .then((status)=>{
       if(status.data.registered){
         this.userSnackbarOpen()
+    
         this.setState({psEmail: '',psPassword:'', psfirstName: '', pslastName: '', psPostal: ''});
         this.pSignupClose()
       }
     })
 },2000)
- } 
+ 
+   
+
+
+} 
 
   userSignup () {
     const auth0 = new Auth0({

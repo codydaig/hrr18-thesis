@@ -15,19 +15,21 @@ const extend = require('extend')
 const https = require('https')
 const fs = require('fs')
 const moment = require('moment');
-
-
 const cert = fs.readFileSync('./certs/cert.pem').toString()
 const key = fs.readFileSync('./certs/key.pem').toString()
+const apollo = require('apollo-server')
+const apolloExpress = apollo.apolloExpress
 
-console.log(cert,key)
+console.log(apolloExpress)
 
 mongoose.Promise = require('bluebird')
 app.set('port', (process.env.PORT || 8080));
 
 app.use(bodyParser.json());
-
 app.use(express.static(path.join(__dirname, '../client')))
+
+
+
 
 mongoose.connect('mongodb://ds035806.mlab.com:35806/therapp', cred.dbOptions)
 
@@ -102,6 +104,9 @@ app.post('/updateprofile/:_id', (req, res) => {
 
 // add apointment to both practitioner and client array
  app.post('/book', (req, res) => {
+
+console.log('i am running the server method!', new Date)
+
   const aptId = randomstring.generate()
   var payload = extend(req.body, {aptId:aptId})
   var practname 
@@ -113,7 +118,6 @@ app.post('/updateprofile/:_id', (req, res) => {
      practname = name})
       .then(() => {
           
-
         //add formatted name and date to appointment payload
         payload.practname = practname
         payload.fmtdate = moment(payload.date).format('dddd, MMMM, DD')
@@ -144,7 +148,6 @@ app.post('/updateprofile/:_id', (req, res) => {
 
 })
 
-
 //get all current appointment time formatted
 
 app.get('/getbookedtime/:_id', (req, res) => {
@@ -160,9 +163,6 @@ app.get('/getbookedtime/:_id', (req, res) => {
        res.send(datetime)
   })
 })
-
-
-
 
 app.use('/s3', require('react-s3-uploader/s3router')({
     bucket: "therappimages",
