@@ -138,9 +138,9 @@ const timekitInstance = axios.create({
       }
    }).then((data)=>{
       console.log(data.data)
-    localStorage.setItem('timekit_id', data.data.data.api_token)
+    localStorage.setItem('timekit_id', data.data.data.id)
     localStorage.setItem('timekit_token', data.data.data.api_token)
-
+    localStorage.setItem('email', data.data.data.email)
 
    })
 
@@ -313,8 +313,8 @@ plogin(){
       localStorage.setItem('id_token', profile.idToken)
       auth0.getProfile(profile.idToken, (err, profile) => {
       localStorage.setItem('user_id', profile.identities[0].user_id)
-       localStorage.setItem('type', 'pracitioner')
-       localStorage.setItem('name', profile.user_metadata.firstName + ' '  + profile.user_metadata.lastName)
+      localStorage.setItem('type', 'pracitioner')
+      localStorage.setItem('name', profile.user_metadata.firstName + ' '  + profile.user_metadata.lastName)
 
        if(profile.user_metadata.profileCreated === true){
             browserHistory.push('/pdash')
@@ -341,6 +341,8 @@ plogin(){
     localStorage.setItem('id_token', '')
     localStorage.setItem('open_client_id', '')
     localStorage.setItem('opentok_client_id', '')
+    localStorage.setItem('timekit_id', '')
+    localStorage.setItem('timekit_token', '')
     browserHistory.push('/main')
     this.forceUpdate() 
   }

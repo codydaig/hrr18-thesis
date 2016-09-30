@@ -1,5 +1,5 @@
 import React from 'react'
-import {Card, CardTitle, CardActions, CardText, Button}  from 'react-mdl'
+import {Card, CardTitle, CardActions, CardText, Button, Textfield}  from 'react-mdl'
 import TextField from 'material-ui/TextField';
 import Paper from 'material-ui/Paper';
 import Divider from 'material-ui/Divider';
@@ -7,6 +7,7 @@ import ReactS3Uploader from 'react-s3-uploader';
 import RaisedButton from 'material-ui/RaisedButton';
 import {browserHistory} from 'react-router';
 import axios from 'axios';
+import timekit from '../util/timekit';
 
 export default class pForm extends React.Component {
    constructor(props){
@@ -71,8 +72,19 @@ onChangeBio (event){
  })
 }
 
-
 submitform () {
+  timekit.configure({
+    app: 'therapp'
+  })
+
+timekit.setUser(localStorage.email,localStorage.timekit_token)
+timekit.createCalendar({
+  "name": localStorage.name + " Calendar",
+  "description": "TherApp Calendar"
+}).catch((err) => {
+  console.log(err)
+})
+
   const url = `/updateprofile/${localStorage.user_id}`
   const payload = {
   oneline: this.state.oneline,
@@ -105,8 +117,9 @@ const style = {
     return (
    <div>
      <Paper style={style} zDepth={2}>
-<br/>
-<ReactS3Uploader
+   <br/>
+
+  <ReactS3Uploader
     signingUrl="/s3/sign"
     accept="image/*"
     uploadRequestHeaders={{ 'x-amz-acl': 'public-read' }}
@@ -165,8 +178,8 @@ const style = {
     <Divider />
     <TextField 
     floatingLabelText="Professional Biography" 
-    multiLine="true"
-    rows="5"
+    multiLine={true}
+    rows={5}
     style={{fontSize:10}}
     underlineShow={true}
     value={this.state.bio}
