@@ -19,12 +19,17 @@ export default class FullCalendar extends React.Component {
    }) 
   }
 
+
+
   render () {
+
+      const style = {
+          maxWidth:'500px',
+          margin:'auto',
+          width: 600
+      }
     return (
-    <div>
-   <h1> Full Calendar </h1>
-   <div id='bookingjs'/>
-   </div>
+   <div style={style} id='bookingjs'/>
    )
   }
 }

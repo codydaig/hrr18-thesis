@@ -28,6 +28,9 @@ mongoose.connect('mongodb://ds035806.mlab.com:35806/therapp', cred.dbOptions)
 
 aws.config.update(cred.aws)
 
+app.use('/graphiql', apollo.graphiqlExpress({
+  endpointURL: '/graphql',
+}));
 // clientUser account verification 
 app.get('/veruser/:email', (req, res) => {
    clientUserModel.find({"email": req.params.email }).then((user) => {
@@ -97,15 +100,12 @@ app.post('/updateprofile/:_id', (req, res) => {
 
 // add apointment to both practitioner and client array
  app.post('/book', (req, res) => {
-
-console.log('i am running the server method!', new Date)
-
-  const aptId = randomstring.generate()
-  var payload = extend(req.body, {aptId:aptId})
-  var practname 
+ const aptId = randomstring.generate()
+ var payload = extend(req.body, {aptId:aptId})
+ var practname 
 
   pUserModel.findOne({ _id : payload.practId}).then((practitioner) => {
-    const name = practitioner.user_metadata.firstName + ' ' + practitioner.user_metadata.lastName
+  const name = practitioner.user_metadata.firstName + ' ' + practitioner.user_metadata.lastName
 
     payload.photo = practitioner.photo
      practname = name})
@@ -163,6 +163,11 @@ app.use('/s3', require('react-s3-uploader/s3router')({
     headers: {'Access-Control-Allow-Origin': '*'}, // optional
     ACL: 'private' // this is default
 }))
+
+
+app.get('/query', (req, res) => {
+    res.sendFile(path.join(__dirname, './query.html'))
+})
 
 app.get('/*', (req, res) => {
     res.sendFile(path.join(__dirname, '../client/index.html'))

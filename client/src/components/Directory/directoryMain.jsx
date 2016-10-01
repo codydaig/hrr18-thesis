@@ -10,6 +10,7 @@ import Divider from 'material-ui/Divider';
 import {cyan100,grey800} from 'material-ui/styles/colors'
 import timekit from '../util/timekit'
 import booking from 'timekit-booking'
+import FullCalendar from '../fullCalendar/fullCalendar'
 
 export default class directoryMain extends React.Component {
   constructor (props){
@@ -39,7 +40,25 @@ export default class directoryMain extends React.Component {
             practitioners: practitioners.data
         })
      })
-  }
+  var widget = new timekit()
+   
+   widget.init({
+       email: localStorage.email,
+       apiToken: localStorage.timekit_token,
+       calendar: '5b550089-ab29-4c58-9683-dee67d556025',
+       name: "testinonetwo",
+
+       timekitConfig: {
+           app:'therapp'
+       }
+     
+   }) 
+
+
+}
+
+
+
   componentWillUnmount () {
 
     this.serverRequest.abort()
@@ -92,6 +111,14 @@ export default class directoryMain extends React.Component {
 
   render () {
 
+   const style = {
+          maxWidth:'500px',
+          margin:'auto',
+          width: 600
+      }
+
+
+
  const actions = [
       <FlatButton
         label="Book"
@@ -143,8 +170,7 @@ export default class directoryMain extends React.Component {
              <a href={practitioner.website} target='_blank'>Website</a>
      
             </Card>
-         
-        <Divider />
+          
 
           <Dialog
           title="Choose a Date and Time for your Appointment" 
@@ -153,19 +179,8 @@ export default class directoryMain extends React.Component {
           open={this.state.bookOpen}
           onRequestClose={this.handleClose}
         >
-          <DatePicker 
-            hintText="Date"
-            onChange={this.onChangeDate}
-             />
-          
-          <TimePicker  
-            hintText="Time"
-            onChange={this.onChangeTime}
-             />
-              <h7> Already Booked </h7>
-               {this.state.alreadyBooked.map((booking)=> {
-              return  <li> {booking} </li>
-              })}
+   <div style={style} id='bookingjs'/>
+        // <FullCalendar />
 
 
           </Dialog>
