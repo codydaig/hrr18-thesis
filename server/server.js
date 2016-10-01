@@ -19,6 +19,19 @@ const cert = fs.readFileSync('./certs/cert.pem').toString()
 const key = fs.readFileSync('./certs/key.pem').toString()
 const apollo = require('apollo-server')
 const apolloExpress = apollo.apolloExpress
+var jwt = require('express-jwt');
+
+var jwtCheckClient = jwt({
+  secret: new Buffer(cred.Auth0options.client.clientSecret, 'base64'),
+  audience: cred.Auth0options.client.clientID
+});
+
+var jwtCheckPract = jwt({
+  secret: new Buffer(cred.Auth0options.p.clientSecret, 'base64'),
+  audience: cred.Auth0options.p.clientID
+});
+
+
 
 mongoose.Promise = require('bluebird')
 app.set('port', (process.env.PORT || 8080));
