@@ -19,8 +19,6 @@ import {blueGrey200} from 'material-ui/styles/colors'
 import {browserHistory} from 'react-router'
 import timekit from 'timekit-sdk'
 //this file needs and entire refactor, will be done when state management with Redux/Apollo is implimented
-
-
 const timekitInstance = axios.create({
    baseURL: 'https://api.timekit.io/v2',
    headers: {'Timekit-App': 'therapp'}
@@ -113,16 +111,11 @@ const timekitInstance = axios.create({
 })
   timekitInstance.post('/users', payload)
            .then((data)=>{
-
-
-
-             console.log(data)
+            console.log(data)
            })
            .catch((error)=>{
            console.log(error)
            })
-
-
 }
 
   loginTimeKit () {
@@ -264,6 +257,9 @@ const timekitInstance = axios.create({
    }
 
   login(){
+  console.log('client login')
+
+
     const auth0 = new Auth0({
     domain:      cred.Auth0options.client.domain,
     clientID:     cred.Auth0options.client.clientID,
@@ -278,11 +274,17 @@ const timekitInstance = axios.create({
       username:  this.state.userEmail,
       password:   this.state.userPassword
     }, (err, profile, id_token, access_token)=>{
+
+  console.log('auth0', err, profile, id_token, access_token)
+
+
       localStorage.setItem('id_token', profile.idToken)
        auth0.getProfile(profile.idToken, (err, profile) => {
          if(err) {
            console.log(err)
          }
+
+
        localStorage.setItem('user_id', profile.identities[0].user_id)
        localStorage.setItem('type', 'client')
        localStorage.setItem('name', profile.user_metadata.firstName + ' '  + profile.user_metadata.lastName)
@@ -294,6 +296,7 @@ const timekitInstance = axios.create({
  }
 
 plogin(){
+  console.log('plogin')
     const auth0 = new Auth0({
     domain:      cred.Auth0options.p.domain,
     clientID:     cred.Auth0options.p.clientID,
@@ -335,14 +338,15 @@ plogin(){
   }
 
   logout(){
-    localStorage.setItem('user_id', '')
-    localStorage.setItem('type', '')
-    localStorage.setItem('name', '')
-    localStorage.setItem('id_token', '')
-    localStorage.setItem('open_client_id', '')
-    localStorage.setItem('opentok_client_id', '')
-    localStorage.setItem('timekit_id', '')
-    localStorage.setItem('timekit_token', '')
+    localStorage.setItem('user_id', null)
+    localStorage.setItem('email', null)
+    localStorage.setItem('type', null)
+    localStorage.setItem('name', null)
+    localStorage.setItem('id_token', null)
+    localStorage.setItem('open_client_id', null)
+    localStorage.setItem('opentok_client_id', null)
+    localStorage.setItem('timekit_id', null)
+    localStorage.setItem('timekit_token', null)
     browserHistory.push('/main')
     this.forceUpdate() 
   }

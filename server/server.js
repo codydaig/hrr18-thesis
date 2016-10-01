@@ -89,6 +89,8 @@ app.get('/getclientdata/:_id', (req, res) => {
     })
  })
 
+ app.use('/getall', jwtCheckClient)
+
 app.get('/getall', (req, res) => {
   pUserModel.find().then((practitioner) => {
     res.send(practitioner)
@@ -97,6 +99,7 @@ app.get('/getall', (req, res) => {
     console.log(err)
   })
 })
+
 
 app.get('/gettoken/:id', (req, res) => {
   console.log('testing', req.params)

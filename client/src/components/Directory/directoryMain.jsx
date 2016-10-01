@@ -34,8 +34,12 @@ export default class directoryMain extends React.Component {
 
   }
   componentDidMount () {
-    const that = this
-     this.serverRequest = axios.get('/getall').then((practitioners) => {
+     const that = this
+     this.serverRequest = axios.get('/getall', {
+        headers : {
+             authorization: 'Bearer ' + localStorage.id_token
+        }
+     }).then((practitioners) => {
         that.setState({
             practitioners: practitioners.data
         })
