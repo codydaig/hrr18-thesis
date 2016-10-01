@@ -9,24 +9,28 @@ import FlatButton from 'material-ui/FlatButton';
 import axios from 'axios';
 
 export default class pDash extends React.Component {
-   constructor(props){
-     super(props)
+  constructor(props){
+    super(props)
 
-     this.state ={
-       appointments: []
-     }
-        this.componentDidMount = this.componentDidMount.bind(this)
-        this.componentWillUnmount = this.componentWillUnmount.bind(this)
-     }
+    this.state ={
+      appointments: []
+    }
+    this.componentDidMount = this.componentDidMount.bind(this)
+    this.componentWillUnmount = this.componentWillUnmount.bind(this)
+  }
 
 
   componentDidMount () {
     const that = this
     const url = `/getpractitionerdata/${localStorage.user_id}`
-     this.serverRequest = axios.get(url).then((practitioners) => {
-        that.setState({
-          appointments: practitioners.data.appointments
-        })
+    this.serverRequest = axios.get(url,{
+      headers : {
+        authorization: 'Bearer ' + localStorage.id_token
+      }
+    }).then((practitioners) => {
+      that.setState({
+        appointments: practitioners.data.appointments
+      })
     })
   
   }
@@ -35,7 +39,7 @@ export default class pDash extends React.Component {
   }
 
   render () {
-      const style = {
+    const style = {
       display:'flex',
       justifyContent: 'center',
       alignItems: 'center',
@@ -47,8 +51,7 @@ export default class pDash extends React.Component {
 
     return (
       <div>
-      {this.state.appointments.map((appointment)=> {
-     
+      {this.state.appointments.map((appointment) => {
         return (
           <Card style={style}>  
             <CardHeader
@@ -58,13 +61,9 @@ export default class pDash extends React.Component {
              <FlatButton 
               label="Begin Session" 
               primary={true}
-              
-           />
+              />
             </Card>
         )
-
-
-     
       })}
       </div>
    )

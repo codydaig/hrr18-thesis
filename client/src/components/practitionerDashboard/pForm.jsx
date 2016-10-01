@@ -9,120 +9,116 @@ import {browserHistory} from 'react-router';
 import axios from 'axios';
 import timekit from 'timekit-sdk'
 export default class pForm extends React.Component {
-   constructor(props){
-     super(props)
+  constructor(props){
+    super(props)
 
-       this.state ={
-         oneline: '',
-         website: '',
-         certtype: '',
-         certbody: '',
-         certnumber: '',
-         calendar: '',
-         bio: ''
-       }
-      this.submitform = this.submitform.bind(this)
-      this.onChangeIntro = this.onChangeIntro.bind(this)
-      this.onChangeWebsite = this.onChangeWebsite.bind(this)
-      this.onChangeCertType = this.onChangeCertType.bind(this)
-      this.onChangeCertBody = this.onChangeCertBody.bind(this)
-      this.onChangeCertNumber = this.onChangeCertNumber.bind(this)
-      this.onChangeBio = this.onChangeBio.bind(this)
-      this.submitform = this.submitform.bind(this)
+    this.state ={
+      oneline: '',
+      website: '',
+      certtype: '',
+      certbody: '',
+      certnumber: '',
+      calendar: '',
+      bio: ''
+    }
+    this.submitform = this.submitform.bind(this)
+    this.onChangeIntro = this.onChangeIntro.bind(this)
+    this.onChangeWebsite = this.onChangeWebsite.bind(this)
+    this.onChangeCertType = this.onChangeCertType.bind(this)
+    this.onChangeCertBody = this.onChangeCertBody.bind(this)
+    this.onChangeCertNumber = this.onChangeCertNumber.bind(this)
+    this.onChangeBio = this.onChangeBio.bind(this)
+    this.submitform = this.submitform.bind(this)
 
-   }
+  }
 
-onChangeIntro(event){
-  this.setState({
-    oneline: event.target.value
-  })
-}
+  onChangeIntro(event){
+    this.setState({
+      oneline: event.target.value
+    })
+  }
 
-onChangeWebsite(event){
-  this.setState({
-    website: event.target.value
-  })
+  onChangeWebsite(event){
+    this.setState({
+      website: event.target.value
+    })
+  }
 
-}
+  onChangeCertType(event){
+    this.setState({
+      certtype: event.target.value
+    })
+  }
 
-onChangeCertType(event){
-  this.setState({
-    certtype: event.target.value
-  })
+  onChangeCertBody(event){
+    this.setState({
+      certbody: event.target.value
+    })
+  }
 
-}
+  onChangeCertNumber(event){
+    this.setState({
+      certnumber: event.target.value
+    })
+  }
 
-onChangeCertBody(event){
-  this.setState({
-    certbody: event.target.value
-  })
-  
+  onChangeBio (event){
+    this.setState({
+      bio: event.target.value
+    })
+  }
 
-}
+  submitform () {
+    const that = this
+    timekit.configure({
+      app: 'therapp'
+    })
 
-onChangeCertNumber(event){
-  this.setState({
-     certnumber: event.target.value
-  })
- }
-
-onChangeBio (event){
- this.setState({
-   bio: event.target.value
- })
-}
-
-submitform () {
-const that = this
-
-
-  timekit.configure({
-    app: 'therapp'
-  })
-
-timekit.setUser(localStorage.email,localStorage.timekit_token)
-timekit.createCalendar({
-  "name": localStorage.name + " Calendar",
-  "description": "TherApp Calendar"
-})
+    timekit.setUser(localStorage.email,localStorage.timekit_token)
+    timekit.createCalendar({
+      "name": localStorage.name + " Calendar",
+      "description": "TherApp Calendar"
+    })
 .then((data)=> {
   console.log('data', data.data.id)
    
-   that.setState({
-     calendar: data.data.id
-   })
+  that.setState({
+    calendar: data.data.id
+  })
   
 }).then( () => {
   const url = `/updateprofile/${localStorage.user_id}`
   const payload = {
-  oneline: this.state.oneline,
-  website: this.state.website,
-  certtype: this.state.certtype,
-  certbody: this.state.certbody,
-  certnumber: this.state.certnumber,
-  bio: this.state.bio,
-  calendar: this.state.calendar,
-  profilecreated: true
-}
-   axios.post(url, payload).then(()=>{
+    oneline: this.state.oneline,
+    website: this.state.website,
+    certtype: this.state.certtype,
+    certbody: this.state.certbody,
+    certnumber: this.state.certnumber,
+    bio: this.state.bio,
+    calendar: this.state.calendar,
+    profilecreated: true
+  }
+  axios.post(url, {
+    headers : {
+      authorization: 'Bearer ' + localStorage.id_token
+    }
+  }, payload).then(()=>{
     browserHistory.push('/pdash')
   })
 
- })
-}
+})
+  }
 
   render () {
-  
-const style = {
-
- display:'flex',
- justifyContent: 'center',
- alignItems: 'center',
- flexDirection: 'column',
- width: 500,
- margin: 'auto',
- marginTop: 15
-};
+    const style = {
+      display:'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      flexDirection: 'column',
+      width: 500,
+      margin: 'auto',
+      marginTop: 15
+    };
     return (
    <div>
      <Paper style={style} zDepth={2}>
@@ -196,10 +192,8 @@ const style = {
      />
      
     <Divider />
-      
       <RaisedButton label="Submit" onTouchTap={this.submitform} primary={true} style={style} />
    </Paper>
-
   </div>
    )
   }

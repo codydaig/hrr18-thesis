@@ -20,14 +20,14 @@ import {browserHistory} from 'react-router'
 import timekit from 'timekit-sdk'
 //this file needs and entire refactor, will be done when state management with Redux/Apollo is implimented
 const timekitInstance = axios.create({
-   baseURL: 'https://api.timekit.io/v2',
-   headers: {'Timekit-App': 'therapp'}
+  baseURL: 'https://api.timekit.io/v2',
+  headers: {'Timekit-App': 'therapp'}
 })
 
 export default class Menu extends React.Component {
-   constructor(){
-     super()
-     this.state = {
+  constructor(){
+    super()
+    this.state = {
       firstName: '',
       lastName: '',
       email: '',
@@ -47,97 +47,91 @@ export default class Menu extends React.Component {
       psPassword: '',
       psLoginEmail:'',
       psLoginPassword:''
-}
+    }
 
-   this.userHandleOpen = this.userHandleOpen.bind(this)
-   this.userHandleClose = this.userHandleClose.bind(this)
-   this.onFirstNameChange = this.onFirstNameChange.bind(this)
-   this.onLastNameChange = this.onLastNameChange.bind(this)
-   this.onEmailChange = this.onEmailChange.bind(this)
-   this.onEmailLoginChange = this.onEmailLoginChange.bind(this)
-   this.onPasswordChange = this.onPasswordChange.bind(this)
-   this.userSignup = this.userSignup.bind(this)
-   this.userSnackbarOpen = this.userSnackbarOpen.bind(this)
-   this.userSnackbarClose = this.userSnackbarClose.bind(this)
-   this.onPostalChange = this.onPostalChange.bind(this)
-   this.userSigninOpen = this.userSigninOpen.bind(this)
-   this.userSigninClose = this.userSigninClose.bind(this)
-   this.onPasswordLoginChange = this.onPasswordLoginChange.bind(this)
-   this.login = this.login.bind(this)
-   this.plogin = this.plogin.bind(this)
-   this.logout = this.logout.bind(this)
-   this.pSignupOpen = this.pSignupOpen.bind(this)
-   this.pSignupClose = this.pSignupClose.bind(this)
-   this.pSignup = this.pSignup.bind(this)
-   this.onPsFirstNameChange = this.onPsFirstNameChange.bind(this)
-   this.onPsLastNameChange = this.onPsLastNameChange.bind(this)
-   this.onPsEmailChange = this.onPsEmailChange.bind(this)
-   this.onPsPostalChange = this.onPsPostalChange.bind(this)
-   this.onPsPasswordChange = this.onPsPasswordChange.bind(this)
-   this.pSigninOpen = this.pSigninOpen.bind(this)
-   this.pSigninClose = this.pSigninClose.bind(this)
-   this.onPsEmailLoginChange = this.onPsEmailLoginChange.bind(this)
-   this.onPsPasswordLoginChange = this.onPsPasswordLoginChange.bind(this)  
-   this.componentDidMount  = this.componentDidMount.bind(this)
-   this.ptimekitRegistration = this.ptimekitRegistration.bind(this)
-   this.loginTimeKit = this.loginTimeKit.bind(this)
- }
+    this.userHandleOpen = this.userHandleOpen.bind(this)
+    this.userHandleClose = this.userHandleClose.bind(this)
+    this.onFirstNameChange = this.onFirstNameChange.bind(this)
+    this.onLastNameChange = this.onLastNameChange.bind(this)
+    this.onEmailChange = this.onEmailChange.bind(this)
+    this.onEmailLoginChange = this.onEmailLoginChange.bind(this)
+    this.onPasswordChange = this.onPasswordChange.bind(this)
+    this.userSignup = this.userSignup.bind(this)
+    this.userSnackbarOpen = this.userSnackbarOpen.bind(this)
+    this.userSnackbarClose = this.userSnackbarClose.bind(this)
+    this.onPostalChange = this.onPostalChange.bind(this)
+    this.userSigninOpen = this.userSigninOpen.bind(this)
+    this.userSigninClose = this.userSigninClose.bind(this)
+    this.onPasswordLoginChange = this.onPasswordLoginChange.bind(this)
+    this.login = this.login.bind(this)
+    this.plogin = this.plogin.bind(this)
+    this.logout = this.logout.bind(this)
+    this.pSignupOpen = this.pSignupOpen.bind(this)
+    this.pSignupClose = this.pSignupClose.bind(this)
+    this.pSignup = this.pSignup.bind(this)
+    this.onPsFirstNameChange = this.onPsFirstNameChange.bind(this)
+    this.onPsLastNameChange = this.onPsLastNameChange.bind(this)
+    this.onPsEmailChange = this.onPsEmailChange.bind(this)
+    this.onPsPostalChange = this.onPsPostalChange.bind(this)
+    this.onPsPasswordChange = this.onPsPasswordChange.bind(this)
+    this.pSigninOpen = this.pSigninOpen.bind(this)
+    this.pSigninClose = this.pSigninClose.bind(this)
+    this.onPsEmailLoginChange = this.onPsEmailLoginChange.bind(this)
+    this.onPsPasswordLoginChange = this.onPsPasswordLoginChange.bind(this)  
+    this.componentDidMount  = this.componentDidMount.bind(this)
+    this.ptimekitRegistration = this.ptimekitRegistration.bind(this)
+    this.loginTimeKit = this.loginTimeKit.bind(this)
+  }
 
 
 
   componentDidMount () {
-   const timekitInstance = axios.create({
-   baseURL: 'https://api.timekit.io/v2',
-   headers: {'Timekit-App': 'therapp'}
+    const timekitInstance = axios.create({
+      baseURL: 'https://api.timekit.io/v2',
+      headers: {'Timekit-App': 'therapp'}
     })
   }
 
 
   ptimekitRegistration () {
     const payload = {
-    email: this.state.psEmail,
-    first_name: this.state.psfirstName,
-    last_name: this.state.pslastName,
-    password: this.state.psPassword,
-    timezone: "America/Los_Angeles"
-     }
+      email: this.state.psEmail,
+      first_name: this.state.psfirstName,
+      last_name: this.state.pslastName,
+      password: this.state.psPassword,
+      timezone: "America/Los_Angeles"
+    }
 
   
 //create timekit user
   
-const timekitInstance = axios.create({
-   baseURL: 'https://api.timekit.io/v2',
-   headers: {'Timekit-App': 'therapp'}
-})
-  timekitInstance.post('/users', payload)
+    const timekitInstance = axios.create({
+      baseURL: 'https://api.timekit.io/v2',
+      headers: {'Timekit-App': 'therapp'}
+    })
+    timekitInstance.post('/users', payload)
            .then((data)=>{
-            console.log(data)
+             console.log(data)
            })
            .catch((error)=>{
-           console.log(error)
+             console.log(error)
            })
-}
+  }
 
   loginTimeKit () {
-     timekitInstance.post('/auth',{
-       email: this.state.psLoginEmail,
-       password: this.state.psLoginPassword
-     },{
-      headers: {'Timekit-App': 'therapp'},
-     
-     auth:{ 
-       username: this.state.psLoginEmail,
-       password: this.state.psLoginPassword
+    timekitInstance.post('/auth',{
+      email: this.state.psLoginEmail,
+      password: this.state.psLoginPassword
+    }, {headers: {'Timekit-App': 'therapp'},
+      auth:{ 
+        username: this.state.psLoginEmail,
+        password: this.state.psLoginPassword
       }
-   }).then((data)=>{
-      console.log(data.data)
-    localStorage.setItem('timekit_id', data.data.data.id)
-    localStorage.setItem('timekit_token', data.data.data.api_token)
-    localStorage.setItem('email', data.data.data.email)
-
-   })
-
-
+    }).then((data)=>{
+      localStorage.setItem('timekit_id', data.data.data.id)
+      localStorage.setItem('timekit_token', data.data.data.api_token)
+      localStorage.setItem('email', data.data.data.email)
+    })
   }
 
  // Menubar Actions
@@ -161,7 +155,7 @@ const timekitInstance = axios.create({
     this.setState({pSignupOpen: false})
   }
 
- pSigninOpen (){
+  pSigninOpen (){
     this.setState({pSigninOpen: true})
   }
   pSigninClose (){
@@ -250,24 +244,19 @@ const timekitInstance = axios.create({
     });
   }
 
-   onPsPasswordLoginChange(event){
-      this.setState({
-        psLoginPassword:event.target.value 
-      })
-   }
+  onPsPasswordLoginChange(event){
+    this.setState({
+      psLoginPassword:event.target.value 
+    })
+  }
 
   login(){
-  console.log('client login')
-
-
     const auth0 = new Auth0({
-    domain:      cred.Auth0options.client.domain,
-    clientID:     cred.Auth0options.client.clientID,
-    callbackURL:  cred.Auth0options.client.callbackURL,
-    responseType: 'token',
-
-
-  });
+      domain:      cred.Auth0options.client.domain,
+      clientID:     cred.Auth0options.client.clientID,
+      callbackURL:  cred.Auth0options.client.callbackURL,
+      responseType: 'token',
+    });
 
     auth0.login({
       connection: 'therappmongo',
@@ -275,36 +264,28 @@ const timekitInstance = axios.create({
       password:   this.state.userPassword
     }, (err, profile, id_token, access_token)=>{
 
-  console.log('auth0', err, profile, id_token, access_token)
-
-
       localStorage.setItem('id_token', profile.idToken)
-       auth0.getProfile(profile.idToken, (err, profile) => {
-         if(err) {
-           console.log(err)
-         }
-
-
-       localStorage.setItem('user_id', profile.identities[0].user_id)
-       localStorage.setItem('type', 'client')
-       localStorage.setItem('name', profile.user_metadata.firstName + ' '  + profile.user_metadata.lastName)
-       this.forceUpdate()
-       this.userSigninClose()
-       browserHistory.push('/clientmain')
-       });
+      auth0.getProfile(profile.idToken, (err, profile) => {
+        if(err) {
+          console.log(err)
+        }
+        localStorage.setItem('user_id', profile.identities[0].user_id)
+        localStorage.setItem('type', 'client')
+        localStorage.setItem('name', profile.user_metadata.firstName + ' '  + profile.user_metadata.lastName)
+        this.forceUpdate()
+        this.userSigninClose()
+        browserHistory.push('/clientmain')
+      });
     });
- }
+  }
 
-plogin(){
-  console.log('plogin')
+  plogin(){
     const auth0 = new Auth0({
-    domain:      cred.Auth0options.p.domain,
-    clientID:     cred.Auth0options.p.clientID,
-    callbackURL:  cred.Auth0options.p.callbackURL,
-    responseType: 'token',
-
-
-  });
+      domain:      cred.Auth0options.p.domain,
+      clientID:     cred.Auth0options.p.clientID,
+      callbackURL:  cred.Auth0options.p.callbackURL,
+      responseType: 'token',
+    });
     
     auth0.login({
       connection: 'therappmongopractitioners',
@@ -312,29 +293,26 @@ plogin(){
       password:   this.state.psLoginPassword
     }, (err, profile, id_token, access_token) => {
 
-
       localStorage.setItem('id_token', profile.idToken)
       auth0.getProfile(profile.idToken, (err, profile) => {
-      localStorage.setItem('user_id', profile.identities[0].user_id)
-      localStorage.setItem('type', 'pracitioner')
-      localStorage.setItem('name', profile.user_metadata.firstName + ' '  + profile.user_metadata.lastName)
+        localStorage.setItem('user_id', profile.identities[0].user_id)
+        localStorage.setItem('type', 'pracitioner')
+        localStorage.setItem('name', profile.user_metadata.firstName + ' '  + profile.user_metadata.lastName)
 
-       if(profile.user_metadata.profileCreated === true){
-            browserHistory.push('/pdash')
-       } else{
-         browserHistory.push('/pform')
-       }
-
-       });
+        if(profile.user_metadata.profileCreated === true){
+          browserHistory.push('/pdash')
+        } else{
+          browserHistory.push('/pform')
+        }
+      });
     });
-     
-     
-     this.loginTimeKit()
-      this.pSigninClose()
-      this.setState = {
-        psLoginEmail: '',
-        psLoginPassword: ''
-      }
+          
+    this.loginTimeKit()
+    this.pSigninClose()
+    this.setState = {
+      psLoginEmail: '',
+      psLoginPassword: ''
+    }
   }
 
   logout(){
@@ -351,51 +329,43 @@ plogin(){
     this.forceUpdate() 
   }
   
- pSignup () {
-   const auth0 = new Auth0({
+  pSignup () {
+    const auth0 = new Auth0({
       domain:      cred.Auth0options.p.domain,
       clientID:     cred.Auth0options.p.clientID,
       callbackURL:  cred.Auth0options.p.callbackURL,
       responseType: 'token',
       forceJSONP:   false
-  });
+    });
 
-auth0.signup({
-  auto_login: false,
-  connection:'therappmongopractitioners',
-  email: this.state.psEmail,
-  password: this.state.psPassword,
-  user_metadata: {
-     firstName: this.state.psfirstName,
-     lastName: this.state.pslastName,
-     postalcode: this.state.psPostal,
-     profileCreated: false
-  }
- 
-}, function(err){
-  //console.log(err.message)
-})
-const userurl = `/veruser/${this.state.psEmail}`
-
-
-  this.ptimekitRegistration()
-
-setTimeout(()=>{
-  axios.get(userurl)
-   .then((status)=>{
-      if(status.data.registered){
-        this.userSnackbarOpen()
-    
-        this.setState({psEmail: '',psPassword:'', psfirstName: '', pslastName: '', psPostal: ''});
-        this.pSignupClose()
+    auth0.signup({
+      auto_login: false,
+      connection:'therappmongopractitioners',
+      email: this.state.psEmail,
+      password: this.state.psPassword,
+      user_metadata: {
+        firstName: this.state.psfirstName,
+        lastName: this.state.pslastName,
+        postalcode: this.state.psPostal,
+        profileCreated: false
       }
-    })
-},2000)
  
-   
-
-
-} 
+    }, function(err){
+      console.log(err)
+    })
+    const userurl = `/veruser/${this.state.psEmail}`
+    this.ptimekitRegistration()
+    setTimeout(()=>{
+      axios.get(userurl)
+   .then((status)=>{
+     if(status.data.registered){
+       this.userSnackbarOpen()
+           this.setState({psEmail: '',psPassword:'', psfirstName: '', pslastName: '', psPostal: ''});
+       this.pSignupClose()
+     }
+   })
+    },2000)
+  } 
 
   userSignup () {
     const auth0 = new Auth0({
@@ -404,35 +374,35 @@ setTimeout(()=>{
       callbackURL:  cred.Auth0options.client.callbackURL,
       responseType: 'token',
       forceJSONP:   false
-  });
+    });
 
-auth0.signup({
-   connection:'therappmongo',
-  email: this.state.email,
-  password: this.state.password,
-  user_metadata: {
-     firstName: this.state.firstName,
-     lastName: this.state.lastName,
-     postalcode: this.state.postalcode
-  }
- 
-}, function(err){
-  //console.log(err.message)
-})
-const userurl = `/veruser/${this.state.email}`
-
-setTimeout(()=>{
-  axios.get(userurl)
-   .then((status)=>{
-      if(status.data.registered){
-        this.userSnackbarOpen()
-        this.setState({email: '',password:'', firstName: '', lastName: '', postalcode: ''});
-        this.userHandleClose()
+    auth0.signup({
+      connection:'therappmongo',
+      email: this.state.email,
+      password: this.state.password,
+      user_metadata: {
+        firstName: this.state.firstName,
+        lastName: this.state.lastName,
+        postalcode: this.state.postalcode
       }
+ 
+    }, function(err){
+  //console.log(err.message)
     })
-},2000)
+    const userurl = `/veruser/${this.state.email}`
 
-}
+    setTimeout(()=>{
+      axios.get(userurl)
+   .then((status)=>{
+     if(status.data.registered){
+       this.userSnackbarOpen()
+       this.setState({email: '',password:'', firstName: '', lastName: '', postalcode: ''});
+       this.userHandleClose()
+     }
+   })
+    },2000)
+
+  }
  
   render () {
 
@@ -467,7 +437,7 @@ setTimeout(()=>{
 
 // pracitioner sign up and login
 
-   const pSignUpActions = [
+    const pSignUpActions = [
       <FlatButton
         label="Cancel"
         primary={true}
@@ -684,10 +654,8 @@ setTimeout(()=>{
           modal={false}
           open={this.state.pSigninOpen}
           onRequestClose={this.pSigninClose}
-          style={{backgroundColor:blueGrey200}}
-
-        >
-          <span>
+          style={{backgroundColor:blueGrey200}}>
+        <span>
 
         <TextField
           id="text-field-controlled"
@@ -731,14 +699,14 @@ setTimeout(()=>{
            <MenuItem primaryText="Practitioners"
       
          menuItems={[
-          <MenuItem primaryText="Sign Up"
+           <MenuItem primaryText="Sign Up"
              onTouchTap={this.pSignupOpen}
           
            />,
-          <MenuItem primaryText="Sign In" 
+           <MenuItem primaryText="Sign In" 
             onTouchTap={this.pSigninOpen}
           />
-        ]}
+         ]}
       />
    
         <MenuItem primaryText="Logout"
