@@ -18,7 +18,6 @@ export default class clientMain extends React.Component {
       sessionOpen: false
     }
     this.componentDidMount = this.componentDidMount.bind(this)
-    this.componentWillUnmount = this.componentWillUnmount.bind(this)
     this.beginSession = this.beginSession.bind(this)
     this.endSession = this.endSession.bind(this)
     this.openTokInit = this.openTokInit.bind(this)

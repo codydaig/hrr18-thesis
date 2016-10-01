@@ -10,6 +10,7 @@ import {cyan100,grey800} from 'material-ui/styles/colors'
 import timekit from 'timekit-sdk'
 import booking from 'timekit-booking'
 import FullCalendar from '../fullCalendar/fullCalendar'
+import {browserHistory} from 'react-router';
 
 export default class directoryMain extends React.Component {
   constructor (props){
@@ -34,7 +35,7 @@ export default class directoryMain extends React.Component {
   }
   componentDidMount () {
     const that = this
-    this.serverRequest = axios.get('/getall', {
+    axios.get('/getall', {
       headers : {
         authorization: 'Bearer ' + localStorage.id_token
       }
@@ -43,24 +44,8 @@ export default class directoryMain extends React.Component {
         practitioners: practitioners.data
       })
     })
-    var widget = new timekit()
-   
-    widget.init({
-      email: localStorage.email,
-      apiToken: localStorage.timekit_token,
-      calendar: '5b550089-ab29-4c58-9683-dee67d556025',
-      name: "testinonetwo",
-
-      timekitConfig: {
-        app:'therapp'
-      }
-    }) 
   }
-
-  componentWillUnmount () {
-    this.serverRequest.abort()
-  }
-
+ 
   onChangeDate (event, date) { 
     this.setState({
       bookDate: date

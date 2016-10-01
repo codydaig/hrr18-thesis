@@ -51,6 +51,7 @@ app.use('/graphiql', apollo.graphiqlExpress({
 
 // Check via email adress if user account exist, no JWT check required
 app.get('/veruser/:email', (req, res) => {
+  console.log(req)
   clientUserModel.find({ "email": req.params.email }).then((user) => {
     res.send({ registered: true })
   })
@@ -120,7 +121,6 @@ app.post('/book', (req, res) => {
 
 
 //Pracitioner methods
-
 app.use('/verprofile/:_id', jwtCheckPract)
 app.get('/verprofile/:_id', (req, res) => {
   pUserModel.find({ '_id': req.params._id }).then((user) => {
@@ -161,6 +161,20 @@ app.post('/updateprofile/:_id', (req, res) => {
     .then(res.sendStatus(200))
 })
 
+app.use('/getbookedtime:/id', jwtCheckClient)
+app.get('/getbookedtime/:_id', (req, res) => {
+  pUserModel.findOne({ _id: req.params._id }).then((session) => {
+    var datetime = session.appointments.map((appointment) => {
+      var dt = moment(appointment.date).format('dddd, MMMM, DD')
+      var tm = moment(appointment.time).format('h:mm a')
+      var dt = dt + " @ " + tm
+      return dt
+    })
+    res.send(datetime)
+  })
+})
+
+
 app.use('/s3', jwtCheckPract)
 app.use('/s3', require('react-s3-uploader/s3router')({
   bucket: "therappimages",
@@ -170,21 +184,6 @@ app.use('/s3', require('react-s3-uploader/s3router')({
 }))
 
 
-//Sesion Methods
-
-app.get('/getbookedtime/:_id', (req, res) => {
-  console.log('testing', req.params)
-  pUserModel.findOne({ _id: req.params._id }).then((session) => {
-    var datetime = session.appointments.map((appointment) => {
-      var dt = moment(appointment.date).format('dddd, MMMM, DD')
-      var tm = moment(appointment.time).format('h:mm a')
-      var dt = dt + " @ " + tm
-
-      return dt
-    })
-    res.send(datetime)
-  })
-})
 
 app.get('/*', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/index.html'))
