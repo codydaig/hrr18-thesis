@@ -25,7 +25,6 @@ export default class directoryMain extends React.Component {
     }
 
     this.componentDidMount = this.componentDidMount.bind(this)
-    this.componentWillUnmount = this.componentWillUnmount.bind(this)
     this.bookApointment = this.bookApointment.bind(this)
     this.handleClose = this.handleClose.bind(this)
     this.onChangeDate = this.onChangeDate.bind(this)
