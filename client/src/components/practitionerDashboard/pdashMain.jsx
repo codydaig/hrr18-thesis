@@ -31,7 +31,7 @@ export default class pDash extends React.Component {
   
   }
   componentWillUnmount () {
-    this.serverRequest.abort()
+   // this.serverRequest.abort()
   }
 
   render () {

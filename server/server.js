@@ -20,17 +20,10 @@ const key = fs.readFileSync('./certs/key.pem').toString()
 const apollo = require('apollo-server')
 const apolloExpress = apollo.apolloExpress
 
-console.log(apolloExpress)
-
 mongoose.Promise = require('bluebird')
 app.set('port', (process.env.PORT || 8080));
-
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, '../client')))
-
-
-
-
 mongoose.connect('mongodb://ds035806.mlab.com:35806/therapp', cred.dbOptions)
 
 aws.config.update(cred.aws)

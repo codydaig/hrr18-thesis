@@ -19,6 +19,7 @@ export default class pForm extends React.Component {
          certtype: '',
          certbody: '',
          certnumber: '',
+         calendar: '',
          bio: ''
        }
       this.submitform = this.submitform.bind(this)
@@ -73,6 +74,9 @@ onChangeBio (event){
 }
 
 submitform () {
+const that = this
+
+
   timekit.configure({
     app: 'therapp'
   })
@@ -83,12 +87,13 @@ timekit.createCalendar({
   "description": "TherApp Calendar"
 })
 .then((data)=> {
-  console.log(data)
-})
-.catch((err) => {
-  console.log(err)
-})
-
+  console.log('data', data.data.id)
+   
+   that.setState({
+     calendar: data.data.id
+   })
+  
+}).then( () => {
   const url = `/updateprofile/${localStorage.user_id}`
   const payload = {
   oneline: this.state.oneline,
@@ -97,13 +102,14 @@ timekit.createCalendar({
   certbody: this.state.certbody,
   certnumber: this.state.certnumber,
   bio: this.state.bio,
+  calendar: this.state.calendar,
   profilecreated: true
 }
-
-  axios.post(url, payload).then(()=>{
+   axios.post(url, payload).then(()=>{
     browserHistory.push('/pdash')
   })
 
+ })
 }
 
   render () {

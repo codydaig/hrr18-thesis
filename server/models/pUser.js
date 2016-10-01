@@ -15,7 +15,9 @@ var pUserSchema = new mongoose.Schema({
   bio: String,
   profilecreated:Boolean,
   appointments: [],
-  user_metadata: {}
+  user_metadata: {},
+  calendar: String
+
 })
 
 module.exports = mongoose.model('users_pract', pUserSchema)
