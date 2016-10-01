@@ -21,13 +21,11 @@ const apollo = require('apollo-server')
 const apolloExpress = apollo.apolloExpress
 const jwt = require('express-jwt');
 
-//Init
+
 app.set('port', (process.env.PORT || 8080));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, '../client')))
 
-
-//Auth
 var jwtCheckClient = jwt({
   secret: new Buffer(cred.Auth0options.client.clientSecret, 'base64'),
   audience: cred.Auth0options.client.clientID
@@ -38,18 +36,14 @@ var jwtCheckPract = jwt({
   audience: cred.Auth0options.p.clientID
 });
 
-//Mongo/Mongoose
+
 mongoose.Promise = require('bluebird')
 
-//GraphQL
+
 app.use('/graphiql', apollo.graphiqlExpress({
   endpointURL: '/graphql',
 }));
 
-
-// Client Methods
-
-// Check via email adress if user account exist, no JWT check required
 app.get('/veruser/:email', (req, res) => {
   console.log(req)
   clientUserModel.find({ "email": req.params.email }).then((user) => {
@@ -77,8 +71,6 @@ app.get('/getall', (req, res) => {
     })
 })
 
-
-// add apointment to both practitioner and client array
 app.use('/book', jwtCheckClient)
 app.post('/book', (req, res) => {
   const aptId = randomstring.generate()
@@ -91,7 +83,6 @@ app.post('/book', (req, res) => {
     practname = name
   })
     .then(() => {
-      //add formatted name and date to appointment payload
       payload.practname = practname
       payload.fmtdate = moment(payload.date).format('dddd, MMMM, DD')
       payload.fmttime = moment(payload.time).format('h:mm a')
@@ -119,8 +110,6 @@ app.post('/book', (req, res) => {
   })
 })
 
-
-//Pracitioner methods
 app.use('/verprofile/:_id', jwtCheckPract)
 app.get('/verprofile/:_id', (req, res) => {
   pUserModel.find({ '_id': req.params._id }).then((user) => {
@@ -130,7 +119,6 @@ app.get('/verprofile/:_id', (req, res) => {
       console.log(err)
     })
 })
-
 
 app.use('/verprofile/:_id', jwtCheckClient)
 app.get('/getpname/:_id', (req, res) => {
@@ -174,7 +162,6 @@ app.get('/getbookedtime/:_id', (req, res) => {
   })
 })
 
-
 app.use('/s3', jwtCheckPract)
 app.use('/s3', require('react-s3-uploader/s3router')({
   bucket: "therappimages",
@@ -182,8 +169,6 @@ app.use('/s3', require('react-s3-uploader/s3router')({
   headers: { 'Access-Control-Allow-Origin': '*' }, // optional
   ACL: 'private' // this is default
 }))
-
-
 
 app.get('/*', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/index.html'))

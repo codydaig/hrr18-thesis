@@ -116,7 +116,7 @@ export default class clientMain extends React.Component {
 
     return (
       <div>
-      {this.state.appointments.map((appointment)=> {
+      {this.state.appointments.map((appointment) => {
         return (
           <div>
           <Card style={style}>  
