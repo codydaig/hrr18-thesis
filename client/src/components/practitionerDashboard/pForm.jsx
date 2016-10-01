@@ -7,8 +7,7 @@ import ReactS3Uploader from 'react-s3-uploader';
 import RaisedButton from 'material-ui/RaisedButton';
 import {browserHistory} from 'react-router';
 import axios from 'axios';
-import timekit from '../util/timekit';
-
+import timekit from 'timekit-sdk'
 export default class pForm extends React.Component {
    constructor(props){
      super(props)

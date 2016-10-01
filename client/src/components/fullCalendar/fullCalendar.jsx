@@ -1,5 +1,5 @@
 import React from 'react'
-import timekit from '../util/booking';
+import timekit from 'timekit-booking';
 
 export default class FullCalendar extends React.Component {
 

@@ -8,7 +8,7 @@ import DatePicker from 'material-ui/DatePicker';
 import TimePicker from 'material-ui/TimePicker';
 import Divider from 'material-ui/Divider';
 import {cyan100,grey800} from 'material-ui/styles/colors'
-import timekit from '../util/timekit'
+import timekit from 'timekit-sdk'
 import booking from 'timekit-booking'
 import FullCalendar from '../fullCalendar/fullCalendar'
 

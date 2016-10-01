@@ -17,7 +17,7 @@ import axios from 'axios'
 import Snackbar from 'material-ui/Snackbar';
 import {blueGrey200} from 'material-ui/styles/colors'
 import {browserHistory} from 'react-router'
-import timekit from '../util/timekit'
+import timekit from 'timekit-sdk'
 //this file needs and entire refactor, will be done when state management with Redux/Apollo is implimented
 
 
