@@ -19,8 +19,10 @@ export default class pForm extends React.Component {
       certbody: '',
       certnumber: '',
       calendar: '',
+      timekey: '',
       bio: ''
     }
+
     this.submitform = this.submitform.bind(this)
     this.onChangeIntro = this.onChangeIntro.bind(this)
     this.onChangeWebsite = this.onChangeWebsite.bind(this)
@@ -29,7 +31,6 @@ export default class pForm extends React.Component {
     this.onChangeCertNumber = this.onChangeCertNumber.bind(this)
     this.onChangeBio = this.onChangeBio.bind(this)
     this.submitform = this.submitform.bind(this)
-
   }
 
   onChangeIntro(event){
@@ -79,34 +80,32 @@ export default class pForm extends React.Component {
       "name": localStorage.name + " Calendar",
       "description": "TherApp Calendar"
     })
-.then((data)=> {
-  console.log('data', data.data.id)
-   
-  that.setState({
-    calendar: data.data.id
-  })
-  
-}).then( () => {
-  const url = `/updateprofile/${localStorage.user_id}`
-  const payload = {
-    oneline: this.state.oneline,
-    website: this.state.website,
-    certtype: this.state.certtype,
-    certbody: this.state.certbody,
-    certnumber: this.state.certnumber,
-    bio: this.state.bio,
-    calendar: this.state.calendar,
-    profilecreated: true
-  }
-  axios.post(url, {
-    headers : {
-      authorization: 'Bearer ' + localStorage.id_token
-    }
-  }, payload).then(()=>{
-    browserHistory.push('/pdash')
-  })
-
-})
+     .then((data)=> {
+       console.log('data', data.data.id)
+       that.setState({
+         calendar: data.data.id,
+         timekey: data.data.api_token
+       })
+     }).then( () => {
+       const url = `/updateprofile/${localStorage.user_id}`
+       const payload = {
+         oneline: this.state.oneline,
+         website: this.state.website,
+         certtype: this.state.certtype,
+         certbody: this.state.certbody,
+         certnumber: this.state.certnumber,
+         bio: this.state.bio,
+         calendar: this.state.calendar,
+         profilecreated: true
+       }
+       axios.post(url, {
+         headers : {
+           authorization: 'Bearer ' + localStorage.id_token
+         }
+       }, payload).then(()=>{
+         browserHistory.push('/pdash')
+       })
+     })
   }
 
   render () {
@@ -118,7 +117,8 @@ export default class pForm extends React.Component {
       width: 500,
       margin: 'auto',
       marginTop: 15
-    };
+    }
+
     return (
    <div>
      <Paper style={style} zDepth={2}>

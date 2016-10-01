@@ -360,7 +360,7 @@ export default class Menu extends React.Component {
    .then((status)=>{
      if(status.data.registered){
        this.userSnackbarOpen()
-           this.setState({psEmail: '',psPassword:'', psfirstName: '', pslastName: '', psPostal: ''});
+       this.setState({psEmail: '',psPassword:'', psfirstName: '', pslastName: '', psPostal: ''});
        this.pSignupClose()
      }
    })
