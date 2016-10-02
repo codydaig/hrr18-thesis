@@ -7,7 +7,6 @@ import pForm from './components/practitionerDashboard/pForm'
 import pDash from './components/practitionerDashboard/pdashMain'
 import directoryMain from './components/Directory/directoryMain'
 import officeMain from './components/Office/officeMain'
-import GraphiQL from './components/graphql/GraphiQ'
 import FullCalendar from './components/fullCalendar/fullCalendar'
 
 export default (

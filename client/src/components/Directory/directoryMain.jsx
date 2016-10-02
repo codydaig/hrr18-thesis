@@ -11,6 +11,8 @@ import timekit from 'timekit-sdk'
 import booking from 'timekit-booking'
 import FullCalendar from '../fullCalendar/fullCalendar'
 import {browserHistory} from 'react-router';
+import Drawer from 'material-ui/Drawer';
+import Paper from 'material-ui/Paper';
 
 export default class directoryMain extends React.Component {
   constructor (props){
@@ -90,7 +92,19 @@ export default class directoryMain extends React.Component {
         alreadyBooked: datetime.data
       })
     })
-    console.log(this.state)  
+
+    var widget = new booking()
+    widget.init({
+      email: localStorage.email,
+      apiToken: 'y2BucXiB4BHRZY3DVWdWWvrmSZsEzS6g',
+      calendar: '5b550089-ab29-4c58-9683-dee67d556025',
+      name: "testinonetwo",
+      timekitConfig: {
+        app:'therapp'
+      }
+    })
+ 
+
   }
 
   handleClose () {
@@ -98,12 +112,12 @@ export default class directoryMain extends React.Component {
   };
 
   render () {
-
     const style = {
       maxWidth:'500px',
       margin:'auto',
       width: 600
     }
+
 
     const actions = [
       <FlatButton
@@ -121,6 +135,12 @@ export default class directoryMain extends React.Component {
       marginTop:12,
       color: cyan100
       
+    }
+
+       const pstyle = {
+      maxWidth:'900px',
+      margin:'auto',
+      width: 900
     }
     return (
       <div>
@@ -154,20 +174,45 @@ export default class directoryMain extends React.Component {
              <a href={practitioner.website} target='_blank'>Website</a>
             </Card>
        
-          <Dialog
+
+       <Dialog
           title="Choose a Date and Time for your Appointment" 
           actions={actions}
-          modal={false}
+          modal={true}
           open={this.state.bookOpen}
           onRequestClose={this.handleClose}
-        >
-         TimeKit Calendar Goes Here
+          id='bookingjs'
+         >
+
+
+     <Paper style={pstyle} zDepth={5} >
+      <div style={style} id='bookingjs'/>
+     </Paper>
+
           </Dialog>
+          
+          
           </div>
           )  
       })}
+      
     </div>
          
    )
   }
 }
+
+
+/*
+
+
+   
+          
+
+
+
+
+
+
+
+*/

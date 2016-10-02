@@ -1,20 +1,19 @@
-import React from 'react';
-import IconMenu from 'material-ui/IconMenu';
-import MenuItem from 'material-ui/MenuItem';
-import IconButton from 'material-ui/IconButton';
-import Divider from 'material-ui/Divider';
-import Download from 'material-ui/svg-icons/file/file-download';
-import ArrowDropRight from 'material-ui/svg-icons/navigation-arrow-drop-right';
-import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
-import Dialog from 'material-ui/Dialog';
-import FlatButton from 'material-ui/FlatButton';
-import RaisedButton from 'material-ui/RaisedButton';
-import TextField from 'material-ui/TextField';
-import SignupForm from '../Forms/SignupForm'
+import React from 'react'
+import IconMenu from 'material-ui/IconMenu'
+import MenuItem from 'material-ui/MenuItem'
+import IconButton from 'material-ui/IconButton'
+import Divider from 'material-ui/Divider'
+import Download from 'material-ui/svg-icons/file/file-download'
+import ArrowDropRight from 'material-ui/svg-icons/navigation-arrow-drop-right'
+import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert'
+import Dialog from 'material-ui/Dialog'
+import FlatButton from 'material-ui/FlatButton'
+import RaisedButton from 'material-ui/RaisedButton'
+import TextField from 'material-ui/TextField'
 import Auth0 from 'auth0-js'
 import cred from '../../../../creds'
 import axios from 'axios'
-import Snackbar from 'material-ui/Snackbar';
+import Snackbar from 'material-ui/Snackbar'
 import {blueGrey200} from 'material-ui/styles/colors'
 import {browserHistory} from 'react-router'
 import timekit from 'timekit-sdk'
@@ -264,6 +263,8 @@ export default class Menu extends React.Component {
       password:   this.state.userPassword
     }, (err, profile, id_token, access_token)=>{
 
+     // console.log(err, profile, id_token, access_token)     
+             
       localStorage.setItem('id_token', profile.idToken)
       auth0.getProfile(profile.idToken, (err, profile) => {
         if(err) {
