@@ -23,11 +23,9 @@ const jwt = require('express-jwt');
 const graffiti = require('@risingstack/graffiti-mongoose')
 const graphql  = require('graphql')
 const getSchema = graffiti.getSchema
-
 app.set('port', (process.env.PORT || 8080));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, '../client')))
-
 
 
 const options = {
@@ -35,8 +33,10 @@ const options = {
   allowMongoIDMutation: false // mutation of mongo _id can be enabled
 };
 
-const schema = getSchema([pUserModel, clientUserModel], options);
-app.use('/graphql', bodyParser.json(), apolloExpress({ schema: schema }));
+const GraphQLschema = getSchema([pUserModel, clientUserModel], options)
+console.log(GraphQLschema)
+
+app.use('/graphql', bodyParser.json(), apolloExpress({ schema: GraphQLschema }))
 
 var jwtCheckClient = jwt({
   secret: new Buffer(cred.Auth0options.client.clientSecret, 'base64'),

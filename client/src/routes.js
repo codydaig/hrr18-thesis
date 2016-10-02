@@ -8,6 +8,7 @@ import pDash from './components/practitionerDashboard/pdashMain'
 import directoryMain from './components/Directory/directoryMain'
 import officeMain from './components/Office/officeMain'
 import FullCalendar from './components/fullCalendar/fullCalendar'
+import Apollo from './components/apollotesting/apollotest'
 
 export default (
   <Route path="/" component={App} > 
@@ -16,7 +17,8 @@ export default (
   <Route path="/main" component={Main} />
   <Route path='/pdash' component={pDash}/>
   <Route path='/directory' component={directoryMain}/>
-  <Route path='/office' component={officeMain}/>ßßßß
+  <Route path='/office' component={officeMain}/>
   <Route path='/fullcal' component={FullCalendar}/>
+  <Route path='/apollo' component={Apollo}/>
   </Route>
 )
