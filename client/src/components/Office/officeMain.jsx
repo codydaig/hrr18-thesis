@@ -1,39 +1,50 @@
 import React from 'react'
-import {Card, CardTitle, CardActions, Button, Icon} from 'react-mdl'
+import {Card, CardTitle, CardActions, CardText, Button, Icon} from 'react-mdl'
 import Flexbox from 'flexbox-react';
+import {cyan100,grey800,lightBlue50} from 'material-ui/styles/colors'
+import RaisedButton from 'material-ui/RaisedButton'
+
+
 export default class officeMain extends React.Component {
   render () {
 
-    const style = {
+    const right= {
       height:500,
       width:500,
       margin: 20,
-      padding: 20
-
+      border: 100,
+      left: 1000,
+      position: 'relative',
+      backgroundColor: lightBlue50
     }
 
+    const left = {
+      height:500,
+      width:500,
+      margin: 20,
+      border: 100,
+      position: 'relative',
+      bottom: 520,
+      left: 140,
+      backgroundColor: lightBlue50
+    }
+
+    const button = {
+      top: 430,
+      position: 'relative'
+
+    }
     return (
       <div>
-
-
-<Flexbox flexDirection='row' style={style}>
-       <Card shadow={0} >
-     <CardTitle>
-      </CardTitle>
-    </Card>
- 
-<br/>
-
-
- <Card shadow={0} >
-     <CardTitle>
-      </CardTitle>
-    </Card>
- </Flexbox>
-
-
-   
-</div>
+       <Card shadow={2} style={right} >
+          <div id='publisher'/>
+       </Card>
+       <Card shadow={2} style={left} >
+          <div id='subscriber'/>
+         <RaisedButton label="Begin" primary={true} style={button} />
+         <RaisedButton label="End" secondary={true} style={button} />
+       </Card>
+       </div>
    )
   }
 }

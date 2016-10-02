@@ -7,7 +7,7 @@ import lightBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
 import Paper from 'material-ui/Paper';
 
   
-export default class FullCalendar extends React.Component {
+export default class Profile extends React.Component {
 
   componentDidMount () {
     var widget = new timekit()

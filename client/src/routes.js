@@ -7,7 +7,7 @@ import pForm from './components/practitionerDashboard/pForm'
 import pDash from './components/practitionerDashboard/pdashMain'
 import directoryMain from './components/Directory/directoryMain'
 import officeMain from './components/Office/officeMain'
-import FullCalendar from './components/fullCalendar/fullCalendar'
+import Profile from './components/Profile/Profile'
 import Apollo from './components/apollotesting/apollotest'
 
 export default (
@@ -18,7 +18,7 @@ export default (
   <Route path='/pdash' component={pDash}/>
   <Route path='/directory' component={directoryMain}/>
   <Route path='/office' component={officeMain}/>
-  <Route path='/fullcal' component={FullCalendar}/>
+  <Route path='/profile' component={Profile}/>
   <Route path='/apollo' component={Apollo}/>
   </Route>
 )
