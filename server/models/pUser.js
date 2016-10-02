@@ -15,7 +15,12 @@ var pUserSchema = new mongoose.Schema({
   bio: String,
   profilecreated:Boolean,
   appointments: [],
-  user_metadata: {},
+  user_metadata: {
+    firstName : String,
+    lastName: String,
+    postalcode: String
+  },
+  
   calendar: String
 
 })
