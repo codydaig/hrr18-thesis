@@ -35,6 +35,7 @@ const options = {
 
 const GraphQLschema = getSchema([pUserModel, clientUserModel], options)
 app.use('/graphql', bodyParser.json(), apolloExpress({ schema: GraphQLschema }))
+
 var jwtCheckClient = jwt({
   secret: new Buffer(cred.Auth0options.client.clientSecret, 'base64'),
   audience: cred.Auth0options.client.clientID
