@@ -23,21 +23,18 @@ const jwt = require('express-jwt');
 const graffiti = require('@risingstack/graffiti-mongoose')
 const graphql  = require('graphql')
 const getSchema = graffiti.getSchema
+
+mongoose.Promise = require('bluebird')
 app.set('port', (process.env.PORT || 8080));
 app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, '../client')))
-
-
 const options = {
   mutation: false, // mutation fields can be disabled
   allowMongoIDMutation: false // mutation of mongo _id can be enabled
 };
 
 const GraphQLschema = getSchema([pUserModel, clientUserModel], options)
-console.log(GraphQLschema)
-
 app.use('/graphql', bodyParser.json(), apolloExpress({ schema: GraphQLschema }))
-
 var jwtCheckClient = jwt({
   secret: new Buffer(cred.Auth0options.client.clientSecret, 'base64'),
   audience: cred.Auth0options.client.clientID
@@ -49,7 +46,6 @@ var jwtCheckPract = jwt({
 });
 
 
-mongoose.Promise = require('bluebird')
 
 app.use('/graphiql', apollo.graphiqlExpress({
   endpointURL: '/graphql',

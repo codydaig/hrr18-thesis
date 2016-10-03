@@ -56,8 +56,14 @@ export default class clientMain extends React.Component {
   }
 
   openTokInit (){
-    const session = OT.initSession(cred.tokbox.apikey, this.state.session.tokbox_session)
-    session.connect(this.state.session.tokbox_token, (error) => {
+    const SessionID = '2_MX40NTY5MzYzMn5-MTQ3NTQ2MDUxODU1OX5RaG9iejA1R2ZKWmVNUEc5dUNFbGdWcFV-UH4'
+    const Token = 'T1==cGFydG5lcl9pZD00NTY5MzYzMiZzaWc9ZDM3MDM3MmZkZGNhYjViZWJhMjg0MTg3ODAyMmZhYTE1Yjc1MTVhZTpzZXNzaW9uX2lkPTJfTVg0ME5UWTVNell6TW41LU1UUTNOVFEyTURVeE9EVTFPWDVSYUc5aWVqQTFSMlpLV21WTlVFYzVkVU5GYkdkV2NGVi1VSDQmY3JlYXRlX3RpbWU9MTQ3NTQ2MDUyOCZub25jZT0wLjg3MTk0MTc2NzQwMDEzMDYmcm9sZT1wdWJsaXNoZXImZXhwaXJlX3RpbWU9MTQ3NTQ2NDEyOA=='
+
+
+
+
+    const session = OT.initSession('45693632', SessionID)
+    session.connect(Token, (error) => {
       if(!error){
         var publisher = OT.initPublisher('publisher', {
           insertMode: 'append',
