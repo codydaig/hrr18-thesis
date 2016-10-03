@@ -17,8 +17,8 @@ export default (
   <Route path="/main" component={Main} />
   <Route path='/pdash' component={pDash}/>
   <Route path='/directory' component={directoryMain}/>
-  <Route path='/office' component={officeMain}/>
-  <Route path='/profile' component={Profile}/>
+  <Route path={'/office/:appointment'} component={officeMain}/>
+  <Route path={'/profile/:practitioner'} component={Profile}/>
   <Route path='/apollo' component={Apollo}/>
   </Route>
 )

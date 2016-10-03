@@ -37,6 +37,7 @@ export default class officeMain extends React.Component {
  
  
   render () {
+    console.log(this.props)
     const right= {
       height:500,
       width:500,
