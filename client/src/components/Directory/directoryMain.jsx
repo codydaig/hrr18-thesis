@@ -9,7 +9,6 @@ import Divider from 'material-ui/Divider';
 import {cyan100,grey800} from 'material-ui/styles/colors'
 import timekit from 'timekit-sdk'
 import booking from 'timekit-booking'
-import FullCalendar from '../fullCalendar/fullCalendar'
 import {browserHistory} from 'react-router';
 import Drawer from 'material-ui/Drawer';
 import Paper from 'material-ui/Paper';
