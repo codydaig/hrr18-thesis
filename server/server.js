@@ -54,7 +54,9 @@ app.use('/graphiql', apollo.graphiqlExpress({
 app.get('/veruser/:email', (req, res) => {
   console.log(req)
   clientUserModel.find({ "email": req.params.email }).then((user) => {
-    res.send({ registered: true })
+
+    res.status(200).send({ registered: true })
+  
   })
     .catch((err) => {
       res.send({ registered: false })
