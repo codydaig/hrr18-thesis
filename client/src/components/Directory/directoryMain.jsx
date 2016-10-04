@@ -26,7 +26,7 @@ export default class directoryMain extends React.Component {
     }
 
     this.componentDidMount = this.componentDidMount.bind(this)
-    this.bookApointment = this.bookApointment.bind(this)
+    this.checkAvailibility = this.checkAvailibility.bind(this)
     this.handleClose = this.handleClose.bind(this)
     this.onChangeDate = this.onChangeDate.bind(this)
     this.onChangeTime = this.onChangeTime.bind(this)
@@ -75,35 +75,8 @@ export default class directoryMain extends React.Component {
     browserHistory.push('/clientmain')
   } 
 
-  bookApointment(currentSelection){
-    const that = this
-    this.setState({
-      currentSelection: currentSelection,
-      bookOpen: true
-    })    
-    const url = `/getbookedtime/${currentSelection}`
-    axios.get(url,{
-      headers : {
-        authorization: 'Bearer ' + localStorage.id_token
-      }
-    }).then((datetime) => {
-      that.setState({
-        alreadyBooked: datetime.data
-      })
-    })
-
-    var widget = new booking()
-    widget.init({
-      email: localStorage.email,
-      apiToken: 'y2BucXiB4BHRZY3DVWdWWvrmSZsEzS6g',
-      calendar: '5b550089-ab29-4c58-9683-dee67d556025',
-      name: "testinonetwo",
-      timekitConfig: {
-        app:'therapp'
-      }
-    })
- 
-
+  checkAvailibility(currentSelection){
+    browserHistory.push(`/profile/${currentSelection}`)
   }
 
   handleClose () {
@@ -136,7 +109,7 @@ export default class directoryMain extends React.Component {
       
     }
 
-       const pstyle = {
+    const pstyle = {
       maxWidth:'900px',
       margin:'auto',
       width: 900
@@ -144,9 +117,7 @@ export default class directoryMain extends React.Component {
     return (
       <div>
       {this.state.practitioners.map((practitioner)=>{
- 
         return (
-           
         <div>
            <Card
             style={cardStyle}
@@ -166,11 +137,10 @@ export default class directoryMain extends React.Component {
             </CardText>     
 
              <FlatButton 
-              label="Book An Appointment" 
+              label="Check Avalability" 
               primary={true}
-              onTouchTap={this.bookApointment.bind(this, practitioner._id)  }
+              onTouchTap={this.checkAvailibility.bind(this, practitioner._id)  }
            />
-             <a href={practitioner.website} target='_blank'>Website</a>
             </Card>
        
 
@@ -180,12 +150,10 @@ export default class directoryMain extends React.Component {
           modal={true}
           open={this.state.bookOpen}
           onRequestClose={this.handleClose}
-          id='bookingjs'
          >
 
 
      <Paper style={pstyle} zDepth={5} >
-      <div style={style} id='bookingjs'/>
      </Paper>
 
           </Dialog>

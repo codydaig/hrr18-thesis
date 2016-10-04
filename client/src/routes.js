@@ -8,7 +8,7 @@ import pDash from './components/practitionerDashboard/pdashMain'
 import directoryMain from './components/Directory/directoryMain'
 import officeMain from './components/Office/officeMain'
 import Profile from './components/Profile/Profile'
-import Apollo from './components/apollotesting/apollotest'
+import newApollo from './components/apollotesting/apollotest'
 
 export default (
   <Route path="/" component={App} > 
@@ -19,6 +19,6 @@ export default (
   <Route path='/directory' component={directoryMain}/>
   <Route path={'/office/:appointment'} component={officeMain}/>
   <Route path={'/profile/:practitioner'} component={Profile}/>
-  <Route path='/apollo' component={Apollo}/>
+  <Route path='/apollo' component={newApollo}/>
   </Route>
 )

@@ -5,6 +5,12 @@ import getMuiTheme from 'material-ui/styles/getMuiTheme'
 import Header from '../Header/Header'
 import Foot from '../Footer/Footer'
 import Main from '../Main/Main'
+import ApolloClient from 'apollo-client';
+import { ApolloProvider } from 'react-apollo';
+import { graphql } from 'react-apollo';
+import gql from 'graphql-tag';
+
+
 
 export default class App extends React.Component {
   render () {
@@ -13,6 +19,8 @@ export default class App extends React.Component {
         <div>
           <Header />
           {this.props.children}
+
+          {console.log(this)}
            <Foot />
         </div>
       </MuiThemeProvider>
@@ -20,3 +28,12 @@ export default class App extends React.Component {
      )
   }
 }
+
+graphql(gql`
+ query getAll {
+    users_practs {
+      user_metadata {firstName lastName }
+    }
+  }
+`)(App)
+
