@@ -70,6 +70,7 @@ export default class pForm extends React.Component {
   }
 
   submitform () {
+    console.log('form')
     const that = this
     timekit.configure({
       app: 'therapp'
@@ -99,11 +100,8 @@ export default class pForm extends React.Component {
          timekey: this.state.timekey,
          profilecreated: true
        }
-       axios.post(url, {
-         headers : {
-           authorization: 'Bearer ' + localStorage.id_token
-         }
-       }, payload).then(()=>{
+       console.log(payload)
+       axios.post(url, payload).then(()=>{
          browserHistory.push('/pdash')
        })
      })

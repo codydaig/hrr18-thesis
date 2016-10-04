@@ -93,6 +93,18 @@ export default class Menu extends React.Component {
 
 
   ptimekitRegistration () {
+    const that = this
+    const firstName = this.state.psfirstName
+    const lastName = this.state.pslastName
+    const email = this.state.psEmail
+    const password = this.state.psPassword
+    var TimekitToken 
+    var TimeKitCalendar
+
+    timekit.configure({
+      app: 'therapp'
+    })
+  
     const payload = {
       email: this.state.psEmail,
       first_name: this.state.psfirstName,
@@ -100,21 +112,35 @@ export default class Menu extends React.Component {
       password: this.state.psPassword,
       timezone: "America/Los_Angeles"
     }
+    timekit.createUser(payload)
+       .then((data) => {
+         timekit.auth({
+           email:email,
+           password: password
+         })
+         .then((data) => {
+           console.log('logedintotimekit', data.data.api_token)
+           TimekitToken = data.data.api_token
+         })
+    
+         timekit.setUser(email, data.data.api_token)
 
-  
-//create timekit user
-  
-    const timekitInstance = axios.create({
-      baseURL: 'https://api.timekit.io/v2',
-      headers: {'Timekit-App': 'therapp'}
-    })
-    timekitInstance.post('/users', payload)
-           .then((data)=>{
-             console.log(data)
-           })
-           .catch((error)=>{
-             console.log(error)
-           })
+         console.log('data1234', data.data.api_token)
+         timekit.createCalendar({
+           "name": "Test Calendar001",
+           "description": "TherApp Calendar"
+         })
+         .then((calendar)=>{
+           TimeKitCalendar = calendar.data.id
+           console.log('Calendar Created!', calendar)
+           console.log(TimeKitCalendar, TimekitToken)
+
+         })
+         .catch((error)=>{
+           console.log(error)
+         })
+       })
+
   }
 
   loginTimeKit () {
@@ -352,10 +378,16 @@ export default class Menu extends React.Component {
       }
  
     }, function(err){
-      console.log(err)
+     // console.log(err)
     })
     const userurl = `/veruser/${this.state.psEmail}`
+    
+    
+    
     this.ptimekitRegistration()
+    
+    
+    
     setTimeout(()=>{
       axios.get(userurl)
    .then((status)=>{

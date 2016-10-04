@@ -154,12 +154,13 @@ app.get('/gettoken/:id', (req, res) => {
   })
 })
 
-app.use('/updateprofile/:_id', jwtCheckPract)
+//app.use('/updateprofile/:_id', jwtCheckPract)
 app.post('/updateprofile/:_id', (req, res) => {
+  console.log(req.body)
+
   pUserModel.findOneAndUpdate({ '_id': req.params._id }, req.body)
     .then(res.sendStatus(200))
 })
-
 app.use('/getbookedtime:/id', jwtCheckClient)
 app.get('/getbookedtime/:_id', (req, res) => {
   pUserModel.findOne({ _id: req.params._id }).then((session) => {
