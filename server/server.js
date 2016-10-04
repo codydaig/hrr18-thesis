@@ -47,14 +47,12 @@ var jwtCheckPract = jwt({
   audience: cred.Auth0options.p.clientID
 });
 
-
-
 app.use('/graphiql', apollo.graphiqlExpress({
   endpointURL: '/graphql',
 }));
 
 app.get('/veruser/:email', (req, res) => {
-  console.log(req)
+  //console.log(req)
   clientUserModel.find({ "email": req.params.email }).then((user) => {
 
     res.status(200).send({ registered: true })
@@ -127,7 +125,7 @@ app.get('/verprofile/:_id', (req, res) => {
     res.send({ user: user[0] })
   })
     .catch((err) => {
-      console.log(err)
+   //   console.log(err)
     })
 })
 
@@ -156,7 +154,7 @@ app.get('/gettoken/:id', (req, res) => {
 
 //app.use('/updateprofile/:_id', jwtCheckPract)
 app.post('/updateprofile/:_id', (req, res) => {
-  console.log(req.body)
+//  console.log(req.body)
 
   pUserModel.findOneAndUpdate({ '_id': req.params._id }, req.body)
     .then(res.sendStatus(200))
@@ -171,6 +169,18 @@ app.get('/getbookedtime/:_id', (req, res) => {
       return dt
     })
     res.send(datetime)
+  })
+})
+
+
+app.post('/storecalendar', (req, res) => {
+  const email = req.body.email
+  const payload = {
+    calendar: req.body.calendar,
+    caltoken: req.body.token
+  }
+  pUserModel.findOneAndUpdate({'email': email }, payload).then(() => {
+    console.log('calendar stored')
   })
 })
 

@@ -21,7 +21,8 @@ var pUserSchema = new mongoose.Schema({
     postalcode: String
   },
   
-  calendar: String
+  calendar: String,
+  caltoken: String
 
 })
 

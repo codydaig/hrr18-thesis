@@ -85,10 +85,7 @@ export default class Menu extends React.Component {
 
 
   componentDidMount () {
-    const timekitInstance = axios.create({
-      baseURL: 'https://api.timekit.io/v2',
-      headers: {'Timekit-App': 'therapp'}
-    })
+
   }
 
 
@@ -120,6 +117,7 @@ export default class Menu extends React.Component {
          })
          .then((data) => {
            console.log('logedintotimekit', data.data.api_token)
+           console.log('TOKEN!!!', data.data.api_token)
            TimekitToken = data.data.api_token
          })
     
@@ -130,33 +128,23 @@ export default class Menu extends React.Component {
            "name": "Test Calendar001",
            "description": "TherApp Calendar"
          })
-         .then((calendar)=>{
-           TimeKitCalendar = calendar.data.id
-           console.log('Calendar Created!', calendar)
-           console.log(TimeKitCalendar, TimekitToken)
-
+         .then((calendar) => {
+           const payload = {
+             email: email,
+             token: TimekitToken,
+             calendar: calendar.data.id
+           }
+           axios.post('/storecalendar', payload).catch((error) => {
+             console.log(error)
+           })
          })
          .catch((error)=>{
            console.log(error)
          })
        })
-
   }
 
   loginTimeKit () {
-    timekitInstance.post('/auth',{
-      email: this.state.psLoginEmail,
-      password: this.state.psLoginPassword
-    }, {headers: {'Timekit-App': 'therapp'},
-      auth:{ 
-        username: this.state.psLoginEmail,
-        password: this.state.psLoginPassword
-      }
-    }).then((data)=>{
-      localStorage.setItem('timekit_id', data.data.data.id)
-      localStorage.setItem('timekit_token', data.data.data.api_token)
-      localStorage.setItem('email', data.data.data.email)
-    })
   }
 
  // Menubar Actions
@@ -334,7 +322,6 @@ export default class Menu extends React.Component {
       });
     });
           
-    this.loginTimeKit()
     this.pSigninClose()
     this.setState = {
       psLoginEmail: '',
@@ -381,22 +368,16 @@ export default class Menu extends React.Component {
      // console.log(err)
     })
     const userurl = `/veruser/${this.state.psEmail}`
-    
-    
-    
-    this.ptimekitRegistration()
-    
-    
-    
     setTimeout(()=>{
       axios.get(userurl)
-   .then((status)=>{
-     if(status.data.registered){
-       this.userSnackbarOpen()
-       this.setState({psEmail: '',psPassword:'', psfirstName: '', pslastName: '', psPostal: ''});
-       this.pSignupClose()
-     }
-   })
+       .then((status)=>{
+         if(status.data.registered){
+           this.ptimekitRegistration()
+           this.userSnackbarOpen()
+           this.setState({psEmail: '',psPassword:'', psfirstName: '', pslastName: '', psPostal: ''});
+           this.pSignupClose()
+         }
+       })
     },2000)
   } 
 
