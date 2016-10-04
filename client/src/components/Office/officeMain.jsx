@@ -66,6 +66,7 @@ export default class officeMain extends React.Component {
     }
     return (
       <div>
+      <h1> Office </h1>
        <Card shadow={2} style={right} >
           <div id='subscriber'/>
        </Card>

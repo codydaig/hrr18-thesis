@@ -186,9 +186,16 @@ app.get('/*', (req, res) => {
 })
 
 // MongoDb
-mongoose.connect('mongodb://ds035806.mlab.com:35806/therapp', cred.dbOptions)
-mongoose.connection.on('connected', () => {
-  app.listen(app.get('port'))
-  https.createServer({ key: key, cert: cert }, app).listen(8443)
-  console.log('Connection to MongoDb established!')
-})
+
+const server = () => {
+  mongoose.connect('mongodb://ds035806.mlab.com:35806/therapp', cred.dbOptions)
+  mongoose.connection.on('connected', () => {
+    app.listen(app.get('port'))
+    https.createServer({ key: key, cert: cert }, app).listen(8443)
+    console.log('Connection to MongoDb established!')
+  })
+}
+ 
+server()
+
+module.exports = server;

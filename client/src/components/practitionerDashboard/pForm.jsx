@@ -96,6 +96,7 @@ export default class pForm extends React.Component {
          certnumber: this.state.certnumber,
          bio: this.state.bio,
          calendar: this.state.calendar,
+         timekey: this.state.timekey,
          profilecreated: true
        }
        axios.post(url, {
