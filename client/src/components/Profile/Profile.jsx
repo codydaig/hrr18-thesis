@@ -28,7 +28,11 @@ export default class Profile extends React.Component {
             },
             callbacks: {
               createBookingSuccessful: (res) => {
-                axios.post('/scheduleroom', { start: res.data.event.start})
+                axios.post('/scheduleroom', { 
+                  start: res.data.event.start,
+                  client: localStorage.getItem('user_id'),
+                  practitioner: this.props.params.practitioner
+                })
               }
             }
           }) 
@@ -39,15 +43,15 @@ export default class Profile extends React.Component {
     const style = {
       maxWidth:'500px',
       margin:'auto',
-      width: 600,
+      width: 500,
       marginRight: 200
     }
     const pstyle = {
       maxWidth:'900px',
       margin:'auto',
-      width: 600,
-      marginTop:20,
-      right: 20
+      width: 500,
+      marginTop:20
+      //right: 20
       //left: 200
     }
 

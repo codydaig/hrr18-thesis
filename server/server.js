@@ -173,6 +173,26 @@ app.get('/getcalendar/:id',(req, res) => {
 
 app.post('/scheduleroom', (req, res) => {
   const meetingID = randomstring.generate()
+  const payload = {
+    meeting_id: meetingID,
+    client_id: req.body.client,
+    pract_id: req.body.practitioner
+  }
+
+
+  clientUserModel.findOne({ _id: req.body.client}).then((client) => {
+    client.appointments.push(payload)
+    client.save()
+  })
+    
+  pUserModel.findOne({ _id: req.body.practitioner}).then((practitioner) => {
+    practitioner.appointments.push(payload)
+    practitioner.save()
+  })
+    
+  const newAppointment = new sessionModel(payload)
+  newAppointment.save()
+
 
   const date = req.body.start
   let time = date.split('(')[0].split('')
@@ -190,18 +210,20 @@ app.post('/scheduleroom', (req, res) => {
   const j = schedule.scheduleJob(newDate, () => {
     opentok.createSession((err, session) => {
       const token = opentok.generateToken(session.sessionId)
-      const Session = new sessionModel({
-        tokbox_session: session.sessionId,
-        tokbox_token: token,
-        meeting_id: meetingID
-      })
-      Session.save()
-    })
-    
-    console.log('create OpenTok Token');
- 
-  })
+      console.log(meetingID,session.sessionId,token)
 
+      sessionModel.findOneAndUpdate({meeting_id:meetingID}, {
+        tokbox_session: session.sessionId,
+        tokbox_token: token
+      }).then((data)=> {
+        console.log(data)
+      }).catch((error)=>{
+        console.log(error)
+      })
+    })
+    console.log('create OpenTok Token');
+  })
+  res.sendStatus(200)
 })
 
 //app.use('/updateprofile/:_id', jwtCheckPract)
