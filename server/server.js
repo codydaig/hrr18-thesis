@@ -153,8 +153,10 @@ app.get('/gettoken/:id', (req, res) => {
 })
 
 app.get('/getcalendar/:id',(req, res) => {
+  
   pUserModel.findOne({'_id': req.params.id}).then((data) => {
     res.send({
+      email: data.email,
       calendar: data.calendar,
       caltoken: data.caltoken
     })
@@ -163,7 +165,6 @@ app.get('/getcalendar/:id',(req, res) => {
 
 //app.use('/updateprofile/:_id', jwtCheckPract)
 app.post('/updateprofile/:_id', (req, res) => {
-  console.log(req.body)
   pUserModel.findOneAndUpdate({'_id': req.params._id},{
     'user_metadata.profileCreated'  :true,
     oneline: req.body.oneline,
@@ -172,17 +173,8 @@ app.post('/updateprofile/:_id', (req, res) => {
     certbody: req.body.certbody,
     certnumber: req.body.certnumber,
     bio: req.body.bio 
-
-  }).then((profile)=>{
-
   })
-
-/*  pUserModel.findOneAndUpdate({ '_id': req.params._id }, req.body)
-    .then(res.sendStatus(200))
-*/
-
 })
-
 
 app.use('/getbookedtime:/id', jwtCheckClient)
 app.get('/getbookedtime/:_id', (req, res) => {

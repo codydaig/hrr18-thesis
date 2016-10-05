@@ -5,22 +5,28 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import {green100, green500, green700} from 'material-ui/styles/colors';
 import lightBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
 import Paper from 'material-ui/Paper';
+import axios from 'axios'
 
   
 export default class Profile extends React.Component {
 
   componentDidMount () {
-    var widget = new timekit()
-   
-    widget.init({
-      email: localStorage.email,
-      apiToken: 'y2BucXiB4BHRZY3DVWdWWvrmSZsEzS6g',
-      calendar: '5b550089-ab29-4c58-9683-dee67d556025',
-      name: "testinonetwo",
-      timekitConfig: {
-        app:'therapp'
-      }
-    }) 
+    axios.get(`/getcalendar/${this.props.params.practitioner}`)
+        .then((data)=> { 
+          const widget = new timekit()
+          widget.init({
+            email: data.data.email,
+            apiToken: data.data.caltoken,
+            calendar: data.data.calendar,
+            name: "testinonetwo",
+            timekitConfig: {
+              app:'therapp'
+            }
+          }) 
+          console.log(widget)
+                    
+          console.log('data!', data.data.calendar)})
+     
   }
 
   render () {
