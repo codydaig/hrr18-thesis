@@ -156,11 +156,17 @@ app.get('/getcalendar/:id',(req, res) => {
   
   pUserModel.findOne({'_id': req.params.id}).then((data) => {
     res.send({
-      email: data.email,
+      user_metadata: data.user_metadata,
+      email:data.email,
       calendar: data.calendar,
       caltoken: data.caltoken
     })
   })
+})
+
+
+app.post('/scheduleroom', (req, res) => {
+  console.log(req.body)
 })
 
 //app.use('/updateprofile/:_id', jwtCheckPract)

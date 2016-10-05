@@ -13,20 +13,25 @@ export default class Profile extends React.Component {
   componentDidMount () {
     axios.get(`/getcalendar/${this.props.params.practitioner}`)
         .then((data)=> { 
+          const name = data.data.user_metadata.firstName + " " + data.data.user_metadata.lastName
+          console.log(data)
           const widget = new timekit()
           widget.init({
             email: data.data.email,
             apiToken: data.data.caltoken,
             calendar: data.data.calendar,
-            name: "testinonetwo",
+            name: name,
             timekitConfig: {
-              app:'therapp'
+              app:'therapp',
+              showCredits: false
+            },
+            callbacks: {
+              createBookingSuccessful: (res) => {
+                axios.post('/scheduleroom', { start: res.data.event.start})
+              }
             }
           }) 
-          console.log(widget)
-                    
-          console.log('data!', data.data.calendar)})
-     
+        })
   }
 
   render () {
