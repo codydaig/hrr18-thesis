@@ -23,6 +23,7 @@ const jwt = require('express-jwt');
 const graffiti = require('@risingstack/graffiti-mongoose')
 const graphql  = require('graphql')
 const getSchema = graffiti.getSchema
+const schedule = require('node-schedule');
 
 mongoose.Promise = require('bluebird')
 app.set('port', (process.env.PORT || 8080));
@@ -145,6 +146,11 @@ app.get('/getpractitionerdata/:_id', (req, res) => {
   })
 })
 
+
+app.get('/test',() => {
+  console.log('testting!!!')
+})
+
 app.use('/gettoken/:id', jwtCheckClient)
 app.get('/gettoken/:id', (req, res) => {
   sessionModel.findOne({ meeting_id: req.params.id }).then((session) => {
@@ -166,7 +172,36 @@ app.get('/getcalendar/:id',(req, res) => {
 
 
 app.post('/scheduleroom', (req, res) => {
-  console.log(req.body)
+  const meetingID = randomstring.generate()
+
+  const date = req.body.start
+  let time = date.split('(')[0].split('')
+  const ampm = time[time.length -3]
+  time = time.slice(0, time.length -3 )
+  if (ampm == 'a'){
+    time.push(' AM')
+  } else if(ampm == 'p'){
+    time.push(' PM')
+  }
+
+  time = time.join('')
+  let newdate = moment(time,'YYYY-MM-DD hh:mm a' )
+  const newDate = new Date(newdate)
+  const j = schedule.scheduleJob(newDate, () => {
+    opentok.createSession((err, session) => {
+      const token = opentok.generateToken(session.sessionId)
+      const Session = new sessionModel({
+        tokbox_session: session.sessionId,
+        tokbox_token: token,
+        meeting_id: meetingID
+      })
+      Session.save()
+    })
+    
+    console.log('create OpenTok Token');
+ 
+  })
+
 })
 
 //app.use('/updateprofile/:_id', jwtCheckPract)

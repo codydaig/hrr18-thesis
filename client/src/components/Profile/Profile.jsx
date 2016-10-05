@@ -7,6 +7,7 @@ import lightBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
 import Paper from 'material-ui/Paper';
 import axios from 'axios'
 
+
   
 export default class Profile extends React.Component {
 
@@ -38,20 +39,32 @@ export default class Profile extends React.Component {
     const style = {
       maxWidth:'500px',
       margin:'auto',
-      width: 600
+      width: 600,
+      marginRight: 200
     }
     const pstyle = {
       maxWidth:'900px',
       margin:'auto',
       width: 600,
-      marginTop:20
+      marginTop:20,
+      right: 20
+      //left: 200
     }
 
+    const bio = {}
+
     return (
+     <div>
+     <Paper zDepth={5} >
+
+     testing
+     </Paper>
+
      <Paper style={style} zDepth={5} >
       <div style={pstyle} id='bookingjs'/>
-      {console.log(this)}
      </Paper>
+     
+     </div>
 
    )
   }
