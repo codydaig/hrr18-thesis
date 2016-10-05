@@ -152,13 +152,38 @@ app.get('/gettoken/:id', (req, res) => {
   })
 })
 
+app.get('/getcalendar/:id',(req, res) => {
+  pUserModel.findOne({'_id': req.params.id}).then((data) => {
+    res.send({
+      calendar: data.calendar,
+      caltoken: data.caltoken
+    })
+  })
+})
+
 //app.use('/updateprofile/:_id', jwtCheckPract)
 app.post('/updateprofile/:_id', (req, res) => {
-//  console.log(req.body)
+  console.log(req.body)
+  pUserModel.findOneAndUpdate({'_id': req.params._id},{
+    'user_metadata.profileCreated'  :true,
+    oneline: req.body.oneline,
+    website: req.body.website,
+    certtype: req.body.certtype,
+    certbody: req.body.certbody,
+    certnumber: req.body.certnumber,
+    bio: req.body.bio 
 
-  pUserModel.findOneAndUpdate({ '_id': req.params._id }, req.body)
+  }).then((profile)=>{
+
+  })
+
+/*  pUserModel.findOneAndUpdate({ '_id': req.params._id }, req.body)
     .then(res.sendStatus(200))
+*/
+
 })
+
+
 app.use('/getbookedtime:/id', jwtCheckClient)
 app.get('/getbookedtime/:_id', (req, res) => {
   pUserModel.findOne({ _id: req.params._id }).then((session) => {

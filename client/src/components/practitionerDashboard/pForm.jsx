@@ -8,6 +8,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import {browserHistory} from 'react-router';
 import axios from 'axios';
 import timekit from 'timekit-sdk'
+
 export default class pForm extends React.Component {
   constructor(props){
     super(props)
@@ -71,40 +72,32 @@ export default class pForm extends React.Component {
 
   submitform () {
     console.log('form')
-    const that = this
-    timekit.configure({
-      app: 'therapp'
+    const url = `/updateprofile/${localStorage.user_id}`
+    const payload = {
+      oneline: this.state.oneline,
+      website: this.state.website,
+      certtype: this.state.certtype,
+      certbody: this.state.certbody,
+      certnumber: this.state.certnumber,
+      bio: this.state.bio,
+    }
+    console.log(payload)
+    axios.post(url, payload).then(()=>{
+    })
+     
+    this.setState({
+      oneline: '',
+      website: '',
+      certtype: '',
+      certbody: '',
+      certnumber: '',
+      calendar: '',
+      timekey: '',
+      bio: ''
     })
 
-    timekit.setUser(localStorage.email,localStorage.timekit_token)
-    timekit.createCalendar({
-      "name": localStorage.name + " Calendar",
-      "description": "TherApp Calendar"
-    })
-     .then((data)=> {
-       console.log('data', data.data.id)
-       that.setState({
-         calendar: data.data.id,
-         timekey: data.data.api_token
-       })
-     }).then( () => {
-       const url = `/updateprofile/${localStorage.user_id}`
-       const payload = {
-         oneline: this.state.oneline,
-         website: this.state.website,
-         certtype: this.state.certtype,
-         certbody: this.state.certbody,
-         certnumber: this.state.certnumber,
-         bio: this.state.bio,
-         calendar: this.state.calendar,
-         timekey: this.state.timekey,
-         profilecreated: true
-       }
-       console.log(payload)
-       axios.post(url, payload).then(()=>{
-         browserHistory.push('/pdash')
-       })
-     })
+    browserHistory.push('/pdash')
+
   }
 
   render () {

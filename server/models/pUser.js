@@ -18,7 +18,8 @@ var pUserSchema = new mongoose.Schema({
   user_metadata: {
     firstName : String,
     lastName: String,
-    postalcode: String
+    postalcode: String,
+    profileCreated: String
   },
   
   calendar: String,

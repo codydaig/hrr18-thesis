@@ -3,12 +3,6 @@ const express = require('express')
 //const server = require('../server/server.js')
 const request = require('supertest');
 
-
-
-
-
-
-
 /*
 
 describe('GET /veruser/:email', function() {

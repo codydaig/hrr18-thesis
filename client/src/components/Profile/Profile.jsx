@@ -39,6 +39,7 @@ export default class Profile extends React.Component {
     return (
      <Paper style={style} zDepth={5} >
       <div style={pstyle} id='bookingjs'/>
+      {console.log(this)}
      </Paper>
 
    )
