@@ -3,14 +3,39 @@ import {Card, CardTitle, CardActions, CardText, Button, Icon} from 'react-mdl'
 import Flexbox from 'flexbox-react';
 import {cyan100,grey800,lightBlue50} from 'material-ui/styles/colors'
 import RaisedButton from 'material-ui/RaisedButton'
+import axios from 'axios'
+
 export default class officeMain extends React.Component {
+  constructor(props){
+    super(props)
+    this.state = {
+      session: {}
+    }
   
-  beginSession(){
-    const SessionID = '2_MX40NTY5MzYzMn5-MTQ3NTQ2MDUxODU1OX5RaG9iejA1R2ZKWmVNUEc5dUNFbGdWcFV-UH4'
-    const Token = 'T1==cGFydG5lcl9pZD00NTY5MzYzMiZzaWc9ZDM3MDM3MmZkZGNhYjViZWJhMjg0MTg3ODAyMmZhYTE1Yjc1MTVhZTpzZXNzaW9uX2lkPTJfTVg0ME5UWTVNell6TW41LU1UUTNOVFEyTURVeE9EVTFPWDVSYUc5aWVqQTFSMlpLV21WTlVFYzVkVU5GYkdkV2NGVi1VSDQmY3JlYXRlX3RpbWU9MTQ3NTQ2MDUyOCZub25jZT0wLjg3MTk0MTc2NzQwMDEzMDYmcm9sZT1wdWJsaXNoZXImZXhwaXJlX3RpbWU9MTQ3NTQ2NDEyOA=='
-  
+    this.beginSession = this.beginSession.bind(this)
+    this.componentDidMount = this.componentDidMount.bind(this)
 
+  }
 
+  componentDidMount () {
+    const that = this
+    const url = `/gettoken/${this.props.params.appointment}`
+    console.log(url)
+    this.serverRequest = axios.get(url,{
+      headers : {
+        authorization: 'Bearer ' + localStorage.id_token
+      }
+    }).then((data) => {
+      console.log('data', data)
+      that.setState({
+        session : data.data
+      })
+    }).then(()=>{
+    })
+  }
+  beginSession () {
+    const SessionID = this.state.session.tokbox_session
+    const Token = this.state.session.tokbox_token
     const session = OT.initSession('45693632', SessionID)
     session.connect(Token)
     const publisher = OT.initPublisher('publisher', {
@@ -19,9 +44,7 @@ export default class officeMain extends React.Component {
       height: '100%'
     })
 
-    console.log(session)
     session.publish(publisher);
-
     session.on('streamCreated', function(event) {
       session.subscribe(event.stream, 'subscriber', {
         insertMode: 'append',
@@ -30,14 +53,9 @@ export default class officeMain extends React.Component {
       });
     })
 
-
-
   }
- 
- 
- 
+
   render () {
-    console.log(this.props)
     const right= {
       height:500,
       width:500,

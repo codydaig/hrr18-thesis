@@ -151,8 +151,9 @@ app.get('/test',() => {
   console.log('testting!!!')
 })
 
-app.use('/gettoken/:id', jwtCheckClient)
+//app.use('/gettoken/:id', jwtCheckClient)
 app.get('/gettoken/:id', (req, res) => {
+  console.log(req.params)
   sessionModel.findOne({ meeting_id: req.params.id }).then((session) => {
     res.send(session)
   })
@@ -210,8 +211,6 @@ app.post('/scheduleroom', (req, res) => {
   const j = schedule.scheduleJob(newDate, () => {
     opentok.createSession((err, session) => {
       const token = opentok.generateToken(session.sessionId)
-      console.log(meetingID,session.sessionId,token)
-
       sessionModel.findOneAndUpdate({meeting_id:meetingID}, {
         tokbox_session: session.sessionId,
         tokbox_token: token

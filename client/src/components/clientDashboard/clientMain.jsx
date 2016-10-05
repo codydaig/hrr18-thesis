@@ -8,6 +8,7 @@ import Divider from 'material-ui/Divider'
 import Dialog from 'material-ui/Dialog'
 import FlatButton from 'material-ui/FlatButton'
 import {cyan100,grey800} from 'material-ui/styles/colors'
+import {browserHistory} from 'react-router'
 
 export default class clientMain extends React.Component {
   constructor(props){
@@ -38,52 +39,18 @@ export default class clientMain extends React.Component {
   }
 
   beginSession (id) {
-    const that = this
-    const url = `/gettoken/${id}`
-    axios.get(url,{
-      headers : {
-        authorization: 'Bearer ' + localStorage.id_token
-      }
-    }).then((session) => {
-      that.setState({
-        session: session.data
-      })
-    }).then( () => {
-      this.setState({
-        sessionOpen : true
-      })
-    })
+    browserHistory.push(`/office/${id}`)
   }
 
   openTokInit (){
-    const SessionID = '2_MX40NTY5MzYzMn5-MTQ3NTQ2MDUxODU1OX5RaG9iejA1R2ZKWmVNUEc5dUNFbGdWcFV-UH4'
-    const Token = 'T1==cGFydG5lcl9pZD00NTY5MzYzMiZzaWc9ZDM3MDM3MmZkZGNhYjViZWJhMjg0MTg3ODAyMmZhYTE1Yjc1MTVhZTpzZXNzaW9uX2lkPTJfTVg0ME5UWTVNell6TW41LU1UUTNOVFEyTURVeE9EVTFPWDVSYUc5aWVqQTFSMlpLV21WTlVFYzVkVU5GYkdkV2NGVi1VSDQmY3JlYXRlX3RpbWU9MTQ3NTQ2MDUyOCZub25jZT0wLjg3MTk0MTc2NzQwMDEzMDYmcm9sZT1wdWJsaXNoZXImZXhwaXJlX3RpbWU9MTQ3NTQ2NDEyOA=='
 
-
-
-
-    const session = OT.initSession('45693632', SessionID)
-    session.connect(Token, (error) => {
-      if(!error){
-        var publisher = OT.initPublisher('publisher', {
-          insertMode: 'append',
-          width: '100%',
-          height: '100%'
-        });
-        session.publish(publisher, (err, success) => {
-          console.log(err, success)
-        })
-
-      } else {
-        console.log('There was an error connecting to the session:', error.code, error.message);
-      }
-    })
   }
   endSession () {
     this.setState({
       sessionOpen : false
     })
   }
+
   render () {
     const actions = [
       <FlatButton
@@ -119,7 +86,6 @@ export default class clientMain extends React.Component {
       backgroundColor: cyan100
 
     }
-
     return (
       <div>
       {this.state.appointments.map((appointment) => {
@@ -129,12 +95,12 @@ export default class clientMain extends React.Component {
             <CardHeader
               avatar={appointment.photo}
               title={appointment.practname}
-              subtitle={appointment.datetime} 
+              subtitle={appointment.meeting_id} 
              />
              <FlatButton 
-              label="Begin Session" 
+              label="Enter Waiting Room" 
               primary={true}
-              onTouchTap={this.beginSession.bind(this, appointment.aptId )  }
+              onTouchTap={this.beginSession.bind(this, appointment.meeting_id )  }
              />
             </Card>
           <Dialog

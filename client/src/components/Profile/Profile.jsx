@@ -1,11 +1,12 @@
 import React from 'react'
-import timekit from 'timekit-booking';
-import getMuiTheme from 'material-ui/styles/getMuiTheme';
-import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import {green100, green500, green700} from 'material-ui/styles/colors';
-import lightBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme';
-import Paper from 'material-ui/Paper';
+import timekit from 'timekit-booking'
+import getMuiTheme from 'material-ui/styles/getMuiTheme'
+import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider'
+import {green100, green500, green700} from 'material-ui/styles/colors'
+import lightBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme'
+import Paper from 'material-ui/Paper'
 import axios from 'axios'
+import {browserHistory} from 'react-router'
 
 
   
@@ -32,6 +33,10 @@ export default class Profile extends React.Component {
                   start: res.data.event.start,
                   client: localStorage.getItem('user_id'),
                   practitioner: this.props.params.practitioner
+                }).then(() => {
+                  setTimeout(() => {
+                    browserHistory.push('/clientmain')
+                  }, 2000)
                 })
               }
             }
