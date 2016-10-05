@@ -11,20 +11,16 @@ import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 
 
-
 export default class App extends React.Component {
   render () {
     return (
       <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
         <div>
-          <Header />
-          {this.props.children}
-
-          {console.log(this)}
+          <Header/>
+           {this.props.children}
            <Foot />
         </div>
       </MuiThemeProvider>
-
      )
   }
 }

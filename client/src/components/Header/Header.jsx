@@ -7,6 +7,7 @@ import MenuItem from 'material-ui/MenuItem';
 import MoreVertIcon from 'material-ui/svg-icons/navigation/more-vert';
 import NavigationClose from 'material-ui/svg-icons/navigation/close';
 import injectTapEventPlugin from 'react-tap-event-plugin';
+import {browserHistory} from 'react-router'
 
 import Menu from './Menu'
 injectTapEventPlugin()
@@ -15,10 +16,20 @@ const headerStyle = {
 }
 
 export default class Header extends React.Component {
+  test(){
+    if(localStorage.type == 'client'){
+      browserHistory.push('/clientmain')
+    } else if (localStorage.type === 'practitioner'){
+      browserHistory.push('/pDash')
+    }
+  }
+
   render () {
     return (
       <AppBar title='TherApp'
         style={headerStyle}
+         onTouchTap={this.test}
+
         iconElementLeft={
           <Menu />
         }
