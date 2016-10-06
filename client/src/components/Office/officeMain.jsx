@@ -84,7 +84,7 @@ export default class officeMain extends React.Component {
     }
     return (
       <div>
-      <h1> Office </h1>
+      <h6> Please wait for the other party to join </h6>
        <Card shadow={2} style={right} >
           <div id='subscriber'/>
        </Card>

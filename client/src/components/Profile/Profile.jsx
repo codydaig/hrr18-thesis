@@ -32,7 +32,7 @@ export default class Profile extends React.Component {
             email: data.data.email,
             apiToken: data.data.caltoken,
             calendar: data.data.calendar,
-            name: name,
+            name: 'Book with ' + name,
             timekitConfig: {
               app:'therapp',
               showCredits: false
@@ -70,27 +70,32 @@ export default class Profile extends React.Component {
   render () {
     const style = {
       maxWidth:'500px',
-      margin:'auto',
+ //     margin:'auto',
       width: 500,
-      marginRight: 200,
-      marginBottom: 100,
-      bottom: 50
-      
+    //  marginRight: 600,
+  //    marginBottom: 100,
+      right:80,
+      paddingLeft: 100,
+      position: 'fixed'
+
     }
+
     const pstyle = {
-      maxWidth:'900px',
+   //   maxWidth:'900px',
       margin:'auto',
       width: 500,
-      marginBottom: 100,
-      botom: 50
-    //  marginTop:20
-      //right: 20
-      //left: 200
+    //  marginBottom: 200,
+    //  botom: 200,
+      marginTop:200,
+     // marginRight: 100
+      left: 1000,
+      position: 'fixed',
+      top: 2
     }
 
     const bio = {
       width: 700,
-      bottom: 100
+      marginTop: 20
     }
 
     return (
@@ -104,16 +109,14 @@ export default class Profile extends React.Component {
               avatar={this.state.profile.photo}
               > 
               <a href={this.state.profile.website}>Website</a>
+              <h4>{this.state.profile.certbody}  : {this.state.profile.certnumber} : {this.state.profile.certtype}</h4>
                </CardHeader>
              <CardText>
-              <div> {this.state.profile.bio} </div>
+             {this.state.profile.bio} 
              
             </CardText>     
             </Card>
-
-     <Paper style={style} zDepth={5} >
-      <div style={pstyle} id='bookingjs'/>
-     </Paper>
+        <div style={pstyle} id='bookingjs'/>
      
      </div>
 

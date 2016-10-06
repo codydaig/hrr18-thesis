@@ -12,9 +12,7 @@ import {browserHistory} from 'react-router'
 import {GridList, GridTile} from 'material-ui/GridList'
 import {List, ListItem} from 'material-ui/List'
 import {Tabs, Tab} from 'material-ui/Tabs'
-
-       
-
+import RaisedButton from 'material-ui/RaisedButton';
 
 export default class clientMain extends React.Component {
   constructor(props){
@@ -26,7 +24,7 @@ export default class clientMain extends React.Component {
       value: 'a'
     }
     this.componentDidMount = this.componentDidMount.bind(this)
-    this.beginSession = this.beginSession.bind(this)
+    this.enterWaitngRoom = this.enterWaitngRoom.bind(this)
     this.endSession = this.endSession.bind(this)
     this.handleChange = this.handleChange.bind(this)
   }
@@ -54,7 +52,7 @@ export default class clientMain extends React.Component {
     })
   }
 
-  beginSession (id) {
+  enterWaitngRoom (id) {
     browserHistory.push(`/office/${id}`)
   }
 
@@ -82,6 +80,13 @@ export default class clientMain extends React.Component {
       backgroundColor: cyan100
 
     }
+
+    const cardStyle = {
+      width: 700, 
+      top: 20,
+      marginTop:12,
+      color: cyan100
+    }
     return (
       <Tabs
         value={this.state.value}
@@ -96,14 +101,23 @@ export default class clientMain extends React.Component {
              return ( 
                       <div>
                        <Card
+                       style={cardStyle}
                        >  
                        <CardHeader
-                        title={'test'}
+                        title={appointment.practname}
+                        subtitle={appointment.date_time}
                        > 
                       </CardHeader>
                       <CardText>
-                         text 
-                      </CardText>     
+                            <RaisedButton 
+                              label="Enter Waiting Room" 
+                              primary={true} 
+                              style={{margin: 10}} 
+                              onTouchTap={this.enterWaitngRoom.bind(this, appointment.meeting_id)  }
+
+                              />
+                              
+                       </CardText>     
                       </Card>
                       </div>
                   )                
