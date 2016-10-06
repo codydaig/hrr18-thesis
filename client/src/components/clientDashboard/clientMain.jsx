@@ -69,6 +69,7 @@ export default class clientMain extends React.Component {
         paddingTop: 16,
         marginBottom: 12,
         fontWeight: 400,
+        margin: 20
       },
     }
 
@@ -77,15 +78,16 @@ export default class clientMain extends React.Component {
       maxWidth: 'none',
       maxHeight: 'none',
       height: '80%',
-      backgroundColor: cyan100
-
+      backgroundColor: cyan100,
+      margin:20
     }
 
     const cardStyle = {
       width: 700, 
       top: 20,
       marginTop:12,
-      color: cyan100
+      color: cyan100,
+      margin: 20
     }
     return (
       <Tabs
@@ -93,7 +95,7 @@ export default class clientMain extends React.Component {
         onChange={this.handleChange}
       >
         <Tab label="Upcoming Appointments" value="a" >
-          <h2 style={styles.headline}> Hello {localStorage.name} you have {this.state.appointments.length} appointments </h2>
+          <h2 style={styles.headline}> Hello {localStorage.name} you have {this.state.appointments.length} appointment(s) </h2>
           <div>
                                 
            {this.state.appointments.map((appointment) => { 
