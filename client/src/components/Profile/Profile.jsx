@@ -7,12 +7,22 @@ import lightBaseTheme from 'material-ui/styles/baseThemes/darkBaseTheme'
 import Paper from 'material-ui/Paper'
 import axios from 'axios'
 import {browserHistory} from 'react-router'
+import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card'
 
 
   
 export default class Profile extends React.Component {
+  constructor(){
+    super()
+    this.state = {
+      profile: {},
+      user_metadata: {}
+    }
+    this.componentDidMount = this.componentDidMount.bind(this)
+  }
 
   componentDidMount () {
+    const that = this
     axios.get(`/getcalendar/${this.props.params.practitioner}`)
         .then((data)=> { 
           const name = data.data.user_metadata.firstName + " " + data.data.user_metadata.lastName
@@ -42,6 +52,19 @@ export default class Profile extends React.Component {
             }
           }) 
         })
+  
+    axios.get(`/getpractitionerdata/${this.props.params.practitioner}`)
+      .then((data)=>{ 
+        console.log('data', data.data)
+        that.setState({
+          profile: data.data,
+          user_metadata: data.data.user_metadata
+        })
+      }).then(()=>{
+        console.log('state', this.state)
+      })
+    
+
   }
 
   render () {
@@ -49,25 +72,44 @@ export default class Profile extends React.Component {
       maxWidth:'500px',
       margin:'auto',
       width: 500,
-      marginRight: 200
+      marginRight: 200,
+      marginBottom: 100,
+      bottom: 50
+      
     }
     const pstyle = {
       maxWidth:'900px',
       margin:'auto',
       width: 500,
-      marginTop:20
+      marginBottom: 100,
+      botom: 50
+    //  marginTop:20
       //right: 20
       //left: 200
     }
 
-    const bio = {}
+    const bio = {
+      width: 700,
+      bottom: 100
+    }
 
     return (
      <div>
-     <Paper zDepth={5} >
-
-     testing
-     </Paper>
+      <Card
+      style={bio}
+           >  
+             <CardHeader
+              title={this.state.user_metadata.firstName}
+              subtitle={this.state.user_metadata.lastName}
+              avatar={this.state.profile.photo}
+              > 
+              <a href={this.state.profile.website}>Website</a>
+               </CardHeader>
+             <CardText>
+              <div> {this.state.profile.bio} </div>
+             
+            </CardText>     
+            </Card>
 
      <Paper style={style} zDepth={5} >
       <div style={pstyle} id='bookingjs'/>

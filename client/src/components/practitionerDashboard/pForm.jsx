@@ -79,11 +79,12 @@ export default class pForm extends React.Component {
       certtype: this.state.certtype,
       certbody: this.state.certbody,
       certnumber: this.state.certnumber,
-      bio: this.state.bio,
+      bio: this.state.bio
     }
-    console.log(payload)
+    console.log(payload, url)
     axios.post(url, payload).then(()=>{
-    })
+      console.log('success')
+    }).catch((err)=>{console.log(err)})
      
     this.setState({
       oneline: '',

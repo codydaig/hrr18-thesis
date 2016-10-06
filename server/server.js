@@ -64,7 +64,7 @@ app.get('/veruser/:email', (req, res) => {
     })
 })
 
-app.use('/getclientdata/:_id',jwtCheckClient)
+//app.use('/getclientdata/:_id',jwtCheckClient)
 app.get('/getclientdata/:_id', (req, res) => {
   clientUserModel.findOne({ '_id': req.params._id }).then((data) => {
     res.send(data)
@@ -139,7 +139,7 @@ app.get('/getpname/:_id', (req, res) => {
   })
 })
 
-app.use('/getpractitionerdata/:_id', jwtCheckClient)
+//app.use('/getpractitionerdata/:_id', jwtCheckClient)
 app.get('/getpractitionerdata/:_id', (req, res) => {
   pUserModel.findOne({ '_id': req.params._id }).then((data) => {
     res.send(data)
@@ -169,12 +169,38 @@ app.get('/getcalendar/:id',(req, res) => {
 
 
 app.post('/scheduleroom', (req, res) => {
+  const date = req.body.start
+  let time = date.split('(')[0].split('')
+  const ampm = time[time.length -3]
+  time = time.slice(0, time.length -3 )
+  if (ampm == 'a'){
+    time.push(' AM')
+  } else if(ampm == 'p'){
+    time.push(' PM')
+  }
+  time = time.join('')
+  let newdate = moment(time,'YYYY-MM-DD hh:mm a' )
+  const newDate = new Date(newdate)
+
+
+
   const meetingID = randomstring.generate()
   const payload = {
     meeting_id: meetingID,
     client_id: req.body.client,
-    pract_id: req.body.practitioner
+    pract_id: req.body.practitioner,
+    date_time: moment(newDate).format('dddd, MMMM, DD h:mm a')
   }
+
+  pUserModel.findOne({ _id: req.body.practitioner}).then((practitioner) => {
+    const practname =  practitioner.user_metadata.firstName + ' ' + practitioner.user_metadata.lastName
+    payload.practname = practname
+  })
+    
+  clientUserModel.findOne({ _id: req.body.client}).then((client) => {
+    const clientname = client.user_metadata.firstName + ' ' + client.user_metadata.lastName
+    payload.clientname = clientname
+  })  
 
 
   clientUserModel.findOne({ _id: req.body.client}).then((client) => {
@@ -191,19 +217,6 @@ app.post('/scheduleroom', (req, res) => {
   newAppointment.save()
 
 
-  const date = req.body.start
-  let time = date.split('(')[0].split('')
-  const ampm = time[time.length -3]
-  time = time.slice(0, time.length -3 )
-  if (ampm == 'a'){
-    time.push(' AM')
-  } else if(ampm == 'p'){
-    time.push(' PM')
-  }
-
-  time = time.join('')
-  let newdate = moment(time,'YYYY-MM-DD hh:mm a' )
-  const newDate = new Date(newdate)
   const j = schedule.scheduleJob(newDate, () => {
     opentok.createSession((err, session) => {
       const token = opentok.generateToken(session.sessionId)
@@ -223,6 +236,7 @@ app.post('/scheduleroom', (req, res) => {
 
 //app.use('/updateprofile/:_id', jwtCheckPract)
 app.post('/updateprofile/:_id', (req, res) => {
+  console.log(req.body)
   pUserModel.findOneAndUpdate({'_id': req.params._id},{
     'user_metadata.profileCreated'  :true,
     oneline: req.body.oneline,
@@ -231,6 +245,9 @@ app.post('/updateprofile/:_id', (req, res) => {
     certbody: req.body.certbody,
     certnumber: req.body.certnumber,
     bio: req.body.bio 
+  }).then((data)=>{ console.log(data) 
+      
+
   })
 })
 

@@ -9,9 +9,9 @@ import Dialog from 'material-ui/Dialog'
 import FlatButton from 'material-ui/FlatButton'
 import {cyan100,grey800} from 'material-ui/styles/colors'
 import {browserHistory} from 'react-router'
-import {GridList, GridTile} from 'material-ui/GridList';
-import {List, ListItem} from 'material-ui/List';
-import {Tabs, Tab} from 'material-ui/Tabs';
+import {GridList, GridTile} from 'material-ui/GridList'
+import {List, ListItem} from 'material-ui/List'
+import {Tabs, Tab} from 'material-ui/Tabs'
 
        
 
@@ -47,6 +47,7 @@ export default class clientMain extends React.Component {
         authorization: 'Bearer ' + localStorage.id_token
       }
     }).then((practitioners) => {
+      console.log(practitioners)
       that.setState({
         appointments: practitioners.data.appointments
       })
@@ -87,12 +88,28 @@ export default class clientMain extends React.Component {
         onChange={this.handleChange}
       >
         <Tab label="Upcoming Appointments" value="a" >
+          <h2 style={styles.headline}> Hello {localStorage.name} you have {this.state.appointments.length} appointments </h2>
           <div>
-            <h2 style={styles.headline}> Hello {localStorage.name}  </h2>
-            <p>
-              Upcoming Appoinments Go Here
-            </p>
-          </div>
+                                
+           {this.state.appointments.map((appointment) => { 
+             console.log('con', appointment)
+             return ( 
+                      <div>
+                       <Card
+                       >  
+                       <CardHeader
+                        title={'test'}
+                       > 
+                      </CardHeader>
+                      <CardText>
+                         text 
+                      </CardText>     
+                      </Card>
+                      </div>
+                  )                
+           })}
+                
+         </div>
         </Tab>
         <Tab label="Past Appointments" value="b">
           <div>
