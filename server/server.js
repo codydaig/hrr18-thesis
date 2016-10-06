@@ -139,6 +139,23 @@ app.get('/getpname/:_id', (req, res) => {
   })
 })
 
+
+app.post('/endappointment', (req, res) => {
+  console.log(req.body)
+  
+  pUserModel.findOne({'_id': req.body.pract_id})
+          .then((data) => {
+           // console.log(data)
+            data.appointments.forEach((appointment)=>{
+              console.log(appointment)
+            })
+        
+      
+          })
+  res.sendStatus(200)
+
+})
+
 //app.use('/getpractitionerdata/:_id', jwtCheckClient)
 app.get('/getpractitionerdata/:_id', (req, res) => {
   pUserModel.findOne({ '_id': req.params._id }).then((data) => {

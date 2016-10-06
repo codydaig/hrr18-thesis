@@ -21,10 +21,16 @@ export default class pDash extends React.Component {
     this.componentDidMount = this.componentDidMount.bind(this)
     this.componentWillUnmount = this.componentWillUnmount.bind(this)
     this.enterWaitngRoom = this.enterWaitngRoom.bind(this)
+    this.endAppointment = this.endAppointment.bind(this)
   }
 
   enterWaitngRoom (id) {
     browserHistory.push(`/office/${id}`)
+  }
+
+  endAppointment(id){ 
+    console.log(id)
+
   }
 
   componentDidMount () {
@@ -63,14 +69,16 @@ export default class pDash extends React.Component {
         paddingTop: 16,
         marginBottom: 12,
         fontWeight: 400,
+        margin: 10
       },
     }
   
     const cardStyle = {
-      width: 700, 
+      width: 620, 
       top: 20,
       marginTop:12,
-      color: cyan100
+      color: cyan100,
+      margin:10
     }
 
     return (
@@ -99,8 +107,14 @@ export default class pDash extends React.Component {
                               primary={true} 
                               style={{margin: 10}} 
                               onTouchTap={this.enterWaitngRoom.bind(this, appointment.meeting_id)  }
-
                               />
+
+                              <RaisedButton 
+                              label="Finish Appointment" 
+                              secondary={true} 
+                              style={{margin: 10}}
+                              onTouchTap={this.endAppointment.bind(this, appointment.meeting_id)  }
+                             /> 
                               
                        </CardText>     
                       </Card>
