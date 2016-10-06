@@ -9,6 +9,12 @@ import Dialog from 'material-ui/Dialog'
 import FlatButton from 'material-ui/FlatButton'
 import {cyan100,grey800} from 'material-ui/styles/colors'
 import {browserHistory} from 'react-router'
+import {GridList, GridTile} from 'material-ui/GridList';
+import {List, ListItem} from 'material-ui/List';
+import {Tabs, Tab} from 'material-ui/Tabs';
+
+       
+
 
 export default class clientMain extends React.Component {
   constructor(props){
@@ -16,13 +22,22 @@ export default class clientMain extends React.Component {
     this.state = {
       appointments: [],
       session: {},
-      sessionOpen: false
+      sessionOpen: false,
+      value: 'a'
     }
     this.componentDidMount = this.componentDidMount.bind(this)
     this.beginSession = this.beginSession.bind(this)
     this.endSession = this.endSession.bind(this)
-    this.openTokInit = this.openTokInit.bind(this)
+    this.handleChange = this.handleChange.bind(this)
   }
+
+
+  handleChange (value){ 
+    this.setState({
+      value: value,
+    })
+  }
+
 
   componentDidMount () {
     const that = this
@@ -42,9 +57,6 @@ export default class clientMain extends React.Component {
     browserHistory.push(`/office/${id}`)
   }
 
-  openTokInit (){
-
-  }
   endSession () {
     this.setState({
       sessionOpen : false
@@ -52,30 +64,13 @@ export default class clientMain extends React.Component {
   }
 
   render () {
-    const actions = [
-      <FlatButton
-        label="Enter Session"
-        primary={true}
-        keyboardFocused={true}
-        onTouchTap={this.openTokInit}
-      />,
-
-      <FlatButton
-        label="Leave Session"
-        secondary={true}
-        keyboardFocused={true}
-        onTouchTap={this.endSession}
-      />
-    ];
-
-    const style = {
-      display:'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      flexDirection: 'column',
-      width: 500,
-      margin: 'auto',
-      marginTop: 30
+    const styles = {
+      headline: {
+        fontSize: 24,
+        paddingTop: 16,
+        marginBottom: 12,
+        fontWeight: 400,
+      },
     }
 
     const dialogStyle = {
@@ -87,37 +82,26 @@ export default class clientMain extends React.Component {
 
     }
     return (
-      <div>
-      {this.state.appointments.map((appointment) => {
-        return (
+      <Tabs
+        value={this.state.value}
+        onChange={this.handleChange}
+      >
+        <Tab label="Upcoming Appointments" value="a" >
           <div>
-          <Card style={style}>  
-            <CardHeader
-              avatar={appointment.photo}
-              title={appointment.practname}
-              subtitle={appointment.meeting_id} 
-             />
-             <FlatButton 
-              label="Enter Waiting Room" 
-              primary={true}
-              onTouchTap={this.beginSession.bind(this, appointment.meeting_id )  }
-             />
-            </Card>
-          <Dialog
-          title='Please wait for the other party to arrive' 
-          style={{backgroundColor: cyan100}}
-          contentStyle={dialogStyle}
-          modal={false}
-          open={this.state.sessionOpen}
-          actions={actions}
-          >
-            <div id='publisher'/> 
-            <div id ="subscriber"></div>
-          </Dialog>
-         </div>
-       )
-      })}
-      </div>
-   )
+            <h2 style={styles.headline}> Hello {localStorage.name}  </h2>
+            <p>
+              Upcoming Appoinments Go Here
+            </p>
+          </div>
+        </Tab>
+        <Tab label="Past Appointments" value="b">
+          <div>
+          <h2 style={styles.headline}> Hello {localStorage.name}  </h2> <p>
+             Past Appoinments go here
+            </p>
+          </div>
+        </Tab>
+      </Tabs>
+    )
   }
 }

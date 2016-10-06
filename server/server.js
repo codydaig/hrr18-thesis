@@ -147,10 +147,6 @@ app.get('/getpractitionerdata/:_id', (req, res) => {
 })
 
 
-app.get('/test',() => {
-  console.log('testting!!!')
-})
-
 //app.use('/gettoken/:id', jwtCheckClient)
 app.get('/gettoken/:id', (req, res) => {
   console.log(req.params)

@@ -89,7 +89,6 @@ export default class officeMain extends React.Component {
           <div id='subscriber'/>
        </Card>
        <Card shadow={2} style={left} >
-   
           <div id='publisher'/>
          <RaisedButton label="Begin" 
             onTouchTap={this.beginSession}

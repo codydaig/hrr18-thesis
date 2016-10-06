@@ -716,19 +716,25 @@ export default class Menu extends React.Component {
            <MenuItem primaryText="Sign Up"
              onTouchTap={this.pSignupOpen}
           
-           />,
+           />, 
+
            <MenuItem primaryText="Sign In" 
             onTouchTap={this.pSigninOpen}
           />
          ]}
       />
-   
+      <MenuItem primaryText="Directory"
+          label="Dialog"
+          href='/directory'
+          />
+
+
         <MenuItem primaryText="Logout"
           onTouchTap={this.logout}
           label="Dialog"
           href='/main'
           />
-    </IconMenu>
+     </IconMenu>
 
   </div>
     )
