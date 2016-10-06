@@ -313,12 +313,15 @@ export default class Menu extends React.Component {
         localStorage.setItem('user_id', profile.identities[0].user_id)
         localStorage.setItem('type', 'pracitioner')
         localStorage.setItem('name', profile.user_metadata.firstName + ' '  + profile.user_metadata.lastName)
-
-        if(profile.user_metadata.profileCreated === true){
-          browserHistory.push('/pdash')
-        } else{
-          browserHistory.push('/pform')
-        }
+                
+        axios.get(`/checkpractprofile/${localStorage.user_id}`).then((data)=>{
+          console.log(data.data.profileCreated)
+          if(data.data.profileCreated){
+            browserHistory.push('/pdash')
+          } else{
+            browserHistory.push('/pform')
+          }
+        })
       });
     });
           

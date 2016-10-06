@@ -1,12 +1,15 @@
 import React from 'react';
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card';
+import {cyan100,grey800} from 'material-ui/styles/colors';
 import TextField from 'material-ui/TextField';
 import Paper from 'material-ui/Paper';
 import Divider from 'material-ui/Divider';
 import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
-
 import axios from 'axios';
+import {Tabs, Tab} from 'material-ui/Tabs'
+import RaisedButton from 'material-ui/RaisedButton';
+import {browserHistory} from 'react-router'
 
 export default class pDash extends React.Component {
   constructor(props){
@@ -17,8 +20,12 @@ export default class pDash extends React.Component {
     }
     this.componentDidMount = this.componentDidMount.bind(this)
     this.componentWillUnmount = this.componentWillUnmount.bind(this)
+    this.enterWaitngRoom = this.enterWaitngRoom.bind(this)
   }
 
+  enterWaitngRoom (id) {
+    browserHistory.push(`/office/${id}`)
+  }
 
   componentDidMount () {
     const that = this
@@ -28,6 +35,7 @@ export default class pDash extends React.Component {
         authorization: 'Bearer ' + localStorage.id_token
       }
     }).then((practitioners) => {
+      console.log('prac', practitioners)
       that.setState({
         appointments: practitioners.data.appointments
       })
@@ -49,23 +57,66 @@ export default class pDash extends React.Component {
       marginTop: 30
     }
 
+    const styles = {
+      headline: {
+        fontSize: 24,
+        paddingTop: 16,
+        marginBottom: 12,
+        fontWeight: 400,
+      },
+    }
+  
+    const cardStyle = {
+      width: 700, 
+      top: 20,
+      marginTop:12,
+      color: cyan100
+    }
+
     return (
-      <div>
-      {this.state.appointments.map((appointment) => {
-        return (
-          <Card style={style}>  
-            <CardHeader
-              title={appointment.name}
-              subtitle={appointment.date} 
-             />
-             <FlatButton 
-              label="Begin Session" 
-              primary={true}
-              />
-            </Card>
-        )
-      })}
-      </div>
+         <Tabs
+        value={this.state.value}
+        onChange={this.handleChange}
+      >
+        <Tab label="Upcoming Appointments" value="a" >
+          <h2 style={styles.headline}> Hello {localStorage.name} you have {this.state.appointments.length} appointment(s) </h2>
+          <div>
+            {this.state.appointments.map((appointment) => { 
+              console.log('con', appointment)
+              return ( 
+                      <div>
+                       <Card
+                       style={cardStyle}
+                       >  
+                       <CardHeader
+                        title={appointment.clientname}
+                        subtitle={appointment.date_time}
+                       > 
+                      </CardHeader>
+                      <CardText>
+                            <RaisedButton 
+                              label="Enter Waiting Room" 
+                              primary={true} 
+                              style={{margin: 10}} 
+                              onTouchTap={this.enterWaitngRoom.bind(this, appointment.meeting_id)  }
+
+                              />
+                              
+                       </CardText>     
+                      </Card>
+                      </div>
+                  )                
+            })}      
+         </div>
+        </Tab>
+        <Tab label="Past Appointments" value="b">
+          <div>
+          <h2 style={styles.headline}> Hello {localStorage.name}  </h2> <p>
+             Past Appoinments go here
+            </p>
+          </div>
+        </Tab>
+      </Tabs>
    )
   }
 }

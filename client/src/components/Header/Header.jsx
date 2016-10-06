@@ -19,7 +19,7 @@ export default class Header extends React.Component {
   test(){
     if(localStorage.type == 'client'){
       browserHistory.push('/clientmain')
-    } else if (localStorage.type === 'practitioner'){
+    } else if (localStorage.type == 'practitioner'){
       browserHistory.push('/pDash')
     }
   }

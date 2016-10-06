@@ -146,6 +146,13 @@ app.get('/getpractitionerdata/:_id', (req, res) => {
   })
 })
 
+app.get('/checkpractprofile/:_id', (req, res) => {
+  pUserModel.findOne({ '_id': req.params._id }).then((data) => {
+    console.log(data.user_metadata)
+    res.send({profileCreated: data.user_metadata.profileCreated})
+  })
+})
+
 
 //app.use('/gettoken/:id', jwtCheckClient)
 app.get('/gettoken/:id', (req, res) => {
