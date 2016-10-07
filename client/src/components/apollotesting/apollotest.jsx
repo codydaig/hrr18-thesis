@@ -1,12 +1,13 @@
 import React from 'react'
 import ApolloClient, {createNetworkInterface} from 'apollo-client';
-import { ApolloProvider, withApollo } from 'react-apollo';
+import reactApollo from 'react-apollo';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
  
 
 class Apollo extends React.Component {
   render () {
+    console.log(this)
     return (
       <div>
       <h1> Apollo </h1>
@@ -15,15 +16,13 @@ class Apollo extends React.Component {
   }
 }
 
-const newApollo = graphql(gql`
- query getAll {
-    users_practs {
-      user_metadata {firstName lastName }
-    }
+const myQuery = gql`query MyQuery {
+  users_practs{
+    email
+    website
   }
-`)(Apollo)
+}`
 
+const newApollo = graphql(myQuery)(Apollo)
 
-export{newApollo}
-
-
+export default newApollo

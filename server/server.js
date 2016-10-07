@@ -141,16 +141,17 @@ app.get('/getpname/:_id', (req, res) => {
 
 
 app.post('/endappointment', (req, res) => {
-  console.log(req.body)
-  
+    
   pUserModel.findOne({'_id': req.body.pract_id})
           .then((data) => {
-           // console.log(data)
-            data.appointments.forEach((appointment)=>{
-              console.log(appointment)
+          
+            data =  data.appointments.map((appointment)=>{
+           
+              if(appointment.meeting_id === req.body.meeting_id){
+              
+              }
+          
             })
-        
-      
           })
   res.sendStatus(200)
 
@@ -205,8 +206,6 @@ app.post('/scheduleroom', (req, res) => {
   time = time.join('')
   let newdate = moment(time,'YYYY-MM-DD hh:mm a' )
   const newDate = new Date(newdate)
-
-
 
   const meetingID = randomstring.generate()
   const payload = {

@@ -97,9 +97,7 @@ export default class clientMain extends React.Component {
         <Tab label="Upcoming Appointments" value="a" >
           <h2 style={styles.headline}> Hello {localStorage.name} you have {this.state.appointments.length} appointment(s) </h2>
           <div>
-                                
            {this.state.appointments.map((appointment) => { 
-             console.log('con', appointment)
              return ( 
                       <div>
                        <Card
@@ -116,10 +114,8 @@ export default class clientMain extends React.Component {
                               primary={true} 
                               style={{margin: 10}} 
                               onTouchTap={this.enterWaitngRoom.bind(this, appointment.meeting_id)  }
-
                               />
-                              
-                       </CardText>     
+                      </CardText>     
                       </Card>
                       </div>
                   )                

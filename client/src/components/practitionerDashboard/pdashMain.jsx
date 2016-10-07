@@ -90,7 +90,6 @@ export default class pDash extends React.Component {
           <h2 style={styles.headline}> Hello {localStorage.name} you have {this.state.appointments.length} appointment(s) </h2>
           <div>
             {this.state.appointments.map((appointment) => { 
-              console.log('con', appointment)
               return ( 
                       <div>
                        <Card
