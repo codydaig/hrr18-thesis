@@ -12,76 +12,19 @@ import booking from 'timekit-booking'
 import {browserHistory} from 'react-router';
 import Drawer from 'material-ui/Drawer';
 import Paper from 'material-ui/Paper';
+import reactApollo from 'react-apollo';
+import { graphql } from 'react-apollo';
+import gql from 'graphql-tag';
 
-export default class directoryMain extends React.Component {
+class directoryMainComp extends React.Component {
   constructor (props){
     super(props)
-    this.state = {
-      practitioners: [],
-      currentSelection: '',
-      bookOpen: false,
-      bookTime: '',
-      bookDate: '',
-      alreadyBooked: []
-    }
-
-    this.componentDidMount = this.componentDidMount.bind(this)
     this.checkAvailibility = this.checkAvailibility.bind(this)
-    this.handleClose = this.handleClose.bind(this)
-    this.onChangeDate = this.onChangeDate.bind(this)
-    this.onChangeTime = this.onChangeTime.bind(this)
-    this.submitAppointment = this.submitAppointment.bind(this)
-
-  }
-  componentDidMount () {
-    const that = this
-    axios.get('/getall', {
-      headers : {
-        authorization: 'Bearer ' + localStorage.id_token
-      }
-    }).then((practitioners) => {
-      that.setState({
-        practitioners: practitioners.data
-      })
-    })
-  }
- 
-  onChangeDate (event, date) { 
-    this.setState({
-      bookDate: date
-    })
-  }
-
-  onChangeTime (event, time) {
-    this.setState({
-      bookTime: time
-    })
   }
    
-  submitAppointment () {
-    const payload = {
-      practId: this.state.currentSelection,
-      clientId: localStorage.user_id,
-      name: localStorage.name,
-      date: this.state.bookDate,
-      time: this.state.bookTime
-    }
-    axios.post('/book', {
-      headers : {
-        authorization: 'Bearer ' + localStorage.id_token
-      }
-    } ,payload)
-    this.handleClose()
-    browserHistory.push('/clientmain')
-  } 
-
   checkAvailibility(currentSelection){
     browserHistory.push(`/profile/${currentSelection}`)
   }
-
-  handleClose () {
-    this.setState({bookOpen: false});
-  };
 
   render () {
     const style = {
@@ -89,7 +32,6 @@ export default class directoryMain extends React.Component {
       margin:'auto',
       width: 600
     }
-
 
     const actions = [
       <FlatButton
@@ -114,9 +56,13 @@ export default class directoryMain extends React.Component {
       margin:'auto',
       width: 900
     }
-    return (
+
+    if(this.props.data.loading){
+      return <div>Loading</div>
+    } else {
+      return (
       <div>
-      {this.state.practitioners.map((practitioner)=>{
+      {this.props.data.users_practs.map((practitioner)=>{
         return (
         <div>
            <Card
@@ -129,11 +75,10 @@ export default class directoryMain extends React.Component {
             > 
             <span>
             {practitioner.certbody}  #{practitioner.certnumber}
-              
             </span>
               </CardHeader>
              <CardText>
-                {practitioner.oneline}
+             {practitioner.oneline}
             </CardText>     
 
              <FlatButton 
@@ -142,44 +87,36 @@ export default class directoryMain extends React.Component {
               onTouchTap={this.checkAvailibility.bind(this, practitioner._id)  }
            />
             </Card>
-       
-
-       <Dialog
-          title="Choose a Date and Time for your Appointment" 
-          actions={actions}
-          modal={true}
-          open={this.state.bookOpen}
-          onRequestClose={this.handleClose}
-         >
-
-
-     <Paper style={pstyle} zDepth={5} >
-     </Paper>
-
-          </Dialog>
-          
-          
-          </div>
+           </div>
           )  
       })}
       
     </div>
          
-   )
+       )
+    }
   }
 }
 
+const getAll = gql`query MyQuery {
+  users_practs{
+    email
+    website
+    certtype
+    certbody
+    certnumber
+    calendar
+    caltoken
+    photo
+    bio
+    oneline
+    user_metadata {
+      firstName
+      lastName
+      postalcode
+    }
+  }
+}`
 
-/*
-
-
-   
-          
-
-
-
-
-
-
-
-*/
+const directoryMain = graphql(getAll)(directoryMainComp)
+export default directoryMain
