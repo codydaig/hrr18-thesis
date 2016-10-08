@@ -8,8 +8,6 @@ import Paper from 'material-ui/Paper'
 import axios from 'axios'
 import {browserHistory} from 'react-router'
 import {Card, CardActions, CardHeader, CardMedia, CardTitle, CardText} from 'material-ui/Card'
-
-
   
 export default class Profile extends React.Component {
   constructor(){

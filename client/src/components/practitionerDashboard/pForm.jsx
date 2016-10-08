@@ -1,5 +1,5 @@
-import React from 'react'
-import {Card, CardTitle, CardActions, CardText, Button, Textfield}  from 'react-mdl'
+import React from 'react';
+import {Card, CardTitle, CardActions, CardText, Button, Textfield}  from 'react-mdl';
 import TextField from 'material-ui/TextField';
 import Paper from 'material-ui/Paper';
 import Divider from 'material-ui/Divider';
@@ -7,7 +7,11 @@ import ReactS3Uploader from 'react-s3-uploader';
 import RaisedButton from 'material-ui/RaisedButton';
 import {browserHistory} from 'react-router';
 import axios from 'axios';
-import timekit from 'timekit-sdk'
+import timekit from 'timekit-sdk';
+import SelectField from 'material-ui/SelectField';
+import MenuItem from 'material-ui/MenuItem';
+import AutoComplete from 'material-ui/AutoComplete';
+import ProvinceState from '../../statesprovince/stateprovince';
 
 export default class pForm extends React.Component {
   constructor(props){
@@ -21,7 +25,9 @@ export default class pForm extends React.Component {
       certnumber: '',
       calendar: '',
       timekey: '',
-      bio: ''
+      bio: '',
+      value : 1,
+      provincestate: ProvinceState.us
     }
 
     this.submitform = this.submitform.bind(this)
@@ -31,8 +37,24 @@ export default class pForm extends React.Component {
     this.onChangeCertBody = this.onChangeCertBody.bind(this)
     this.onChangeCertNumber = this.onChangeCertNumber.bind(this)
     this.onChangeBio = this.onChangeBio.bind(this)
+    this.countryChange = this.countryChange.bind(this)
     this.submitform = this.submitform.bind(this)
+  
   }
+
+  countryChange (event, index, value) {
+    this.setState({value})
+    setTimeout(()=>{
+      if(this.state.value === 1){
+        this.setState({provincestate : ProvinceState.us })
+      }
+      else {
+        this.setState({provincestate: ProvinceState.canada })
+      }
+      console.log(this.state)
+    }, 100)
+  } 
+
 
   onChangeIntro(event){
     this.setState({
@@ -102,6 +124,7 @@ export default class pForm extends React.Component {
   }
 
   render () {
+    
     const style = {
       display:'flex',
       justifyContent: 'center',
@@ -124,6 +147,16 @@ export default class pForm extends React.Component {
     contentDisposition="auto"
     server="http://192.168.1.134:8080" 
     />
+
+    <SelectField value={this.state.value} onChange={this.countryChange}>
+      <MenuItem value={1} primaryText="United States" label="United States"/>
+      <MenuItem value={2} primaryText="Canada" label="Canada" />
+    </SelectField>
+     
+      <AutoComplete
+          hintText="Province or State"
+          dataSource={this.state.provincestate}
+      />
 
     <TextField 
       hintText="One line introduction"

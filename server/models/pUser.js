@@ -14,7 +14,16 @@ var pUserSchema = new mongoose.Schema({
   photo: String,
   bio: String,
   profilecreated:Boolean,
-  appointments: [],
+  appointments: [
+    {
+      clientname: String,
+      practname: String,
+      meeting_id: String,
+      client_id: String,
+      pract_id: String,
+      date_time: String
+    }
+  ],
   user_metadata: {
     firstName : String,
     lastName: String,

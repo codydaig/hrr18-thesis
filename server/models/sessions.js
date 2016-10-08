@@ -7,6 +7,7 @@ const sessionsSchema = new mongoose.Schema({
   pract_id: String,
   date_time: String,
   practname: String,
-  clientname: String
+  clientname: String,
+  complete: Boolean
 })
 module.exports = mongoose.model('sessions', sessionsSchema)

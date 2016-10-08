@@ -35,7 +35,7 @@ const options = {
   allowMongoIDMutation: false // mutation of mongo _id can be enabled
 };
 
-const GraphQLschema = getSchema([pUserModel, clientUserModel], options)
+const GraphQLschema = getSchema([pUserModel, clientUserModel, sessionModel], options)
 app.use('/graphql', bodyParser.json(), apolloExpress({ schema: GraphQLschema }))
 
 var jwtCheckClient = jwt({
@@ -137,24 +137,6 @@ app.get('/getpname/:_id', (req, res) => {
     const payload = { name: name }
     res.send(payload)
   })
-})
-
-
-app.post('/endappointment', (req, res) => {
-    
-  pUserModel.findOne({'_id': req.body.pract_id})
-          .then((data) => {
-          
-            data =  data.appointments.map((appointment)=>{
-           
-              if(appointment.meeting_id === req.body.meeting_id){
-              
-              }
-          
-            })
-          })
-  res.sendStatus(200)
-
 })
 
 //app.use('/getpractitionerdata/:_id', jwtCheckClient)

@@ -43,7 +43,6 @@ class clientMainComp extends React.Component {
   }
 
   render () {
-    console.log(this.props)
     const styles = {
       headline: {
         fontSize: 24,
@@ -105,8 +104,7 @@ class clientMainComp extends React.Component {
                          </Card>
                          </div>
                         )                
-               })}
-                
+               })}                 
          </div>
         </Tab>
         <Tab label="Past Appointments" value="b">
@@ -143,5 +141,7 @@ const getAll = gql`query getApointments {
    }
 }`
 
-const clientMain = graphql(getAll)(clientMainComp)
+const clientMain = graphql(getAll,{
+  options:{pollInterval:200}
+})(clientMainComp)
 export default clientMain
