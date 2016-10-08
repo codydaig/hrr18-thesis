@@ -72,7 +72,7 @@ export default class Profile extends React.Component {
       width: 500,
       position: 'fixed',
       left: 1000,
-      bottom: 200
+      bottom: 130
    
     }
 

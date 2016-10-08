@@ -123,9 +123,8 @@ class clientMainComp extends React.Component {
   }
 }
 
-
 const getAll = gql`query getApointments {
-  users_client(id:"57edaf3f67bae50100d5dadb") {
+  users_client(id:"${localStorage.user_id}") {
     appointments {
       clientname
       practname

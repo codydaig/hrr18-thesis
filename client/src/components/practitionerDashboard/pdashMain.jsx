@@ -107,15 +107,13 @@ export default class pDash extends React.Component {
                               style={{margin: 10}} 
                               onTouchTap={this.enterWaitngRoom.bind(this, appointment.meeting_id)  }
                               />
-
                               <RaisedButton 
                               label="Finish Appointment" 
                               secondary={true} 
                               style={{margin: 10}}
                               onTouchTap={this.endAppointment.bind(this, appointment.meeting_id)  }
                              /> 
-                              
-                       </CardText>     
+                      </CardText>     
                       </Card>
                       </div>
                   )                

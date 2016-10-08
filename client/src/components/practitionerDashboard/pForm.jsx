@@ -153,20 +153,19 @@ export default class pForm extends React.Component {
     accept="image/*"
     uploadRequestHeaders={{ 'x-amz-acl': 'public-read' }}
     contentDisposition="auto"
-    server="http://192.168.1.134:8080" 
     />
 
-    <SelectField value={this.state.value} onChange={this.countryChange}>
+    <SelectField value={this.state.value} onChange={this.countryChange} style={{fontSize:12}}>
       <MenuItem value={1} primaryText="United States" label="United States"/>
       <MenuItem value={2} primaryText="Canada" label="Canada" />
     </SelectField>
      
-      <AutoComplete
-          hintText="Province or State"
-          dataSource={this.state.provincestate}
-           onNewRequest={this.onChangeProvinceState}
-         
-      />
+    <AutoComplete
+      style={{fontSize:12}}
+      hintText="Province or State"
+      dataSource={this.state.provincestate}
+      onNewRequest={this.onChangeProvinceState}
+    />
 
     <TextField 
       hintText="One line introduction"

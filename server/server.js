@@ -53,9 +53,7 @@ app.use('/graphiql', apollo.graphiqlExpress({
 }));
 
 app.get('/veruser/:email', (req, res) => {
-  //console.log(req)
   clientUserModel.find({ "email": req.params.email }).then((user) => {
-
     res.status(200).send({ registered: true })
   
   })
@@ -281,11 +279,13 @@ app.post('/storecalendar', (req, res) => {
   })
 })
 
-app.use('/s3', jwtCheckPract)
+aws.config.update({
+  accessKeyId: cred.aws.accessKeyId,
+  secretAccessKey: cred.aws.secretAccessKey
+});
+//app.use('/s3', jwtCheckPract)
 app.use('/s3', require('react-s3-uploader/s3router')({
   bucket: "therappimages",
-  region: 'us-west-2', //optional
-  headers: { 'Access-Control-Allow-Origin': '*' }, // optional
   ACL: 'private' // this is default
 }))
 
@@ -295,15 +295,15 @@ app.get('/*', (req, res) => {
 
 // MongoDb
 
-const server = () => {
-  mongoose.connect('mongodb://ds035806.mlab.com:35806/therapp', cred.dbOptions)
-  mongoose.connection.on('connected', () => {
-    app.listen(app.get('port'))
-    https.createServer({ key: key, cert: cert }, app).listen(8443)
-    console.log('Connection to MongoDb established!')
-  })
-}
- 
-server()
 
-module.exports = server;
+mongoose.connect('mongodb://ds035806.mlab.com:35806/therapp', cred.dbOptions)
+mongoose.connection.on('connected', () => {
+  app.listen(app.get('port'))
+  https.createServer({ key: key, cert: cert }, app).listen(8443)
+  console.log('Connection to MongoDb established!')
+})
+
+
+console.log(aws.config)
+
+module.exports = app;
