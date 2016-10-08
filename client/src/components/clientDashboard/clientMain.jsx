@@ -12,9 +12,13 @@ import {browserHistory} from 'react-router'
 import {GridList, GridTile} from 'material-ui/GridList'
 import {List, ListItem} from 'material-ui/List'
 import {Tabs, Tab} from 'material-ui/Tabs'
-import RaisedButton from 'material-ui/RaisedButton';
+import RaisedButton from 'material-ui/RaisedButton'
+import reactApollo from 'react-apollo'
+import { graphql } from 'react-apollo'
+import gql from 'graphql-tag'
 
-export default class clientMain extends React.Component {
+
+class clientMainComp extends React.Component {
   constructor(props){
     super(props)
     this.state = {
@@ -23,9 +27,7 @@ export default class clientMain extends React.Component {
       sessionOpen: false,
       value: 'a'
     }
-    this.componentDidMount = this.componentDidMount.bind(this)
     this.enterWaitngRoom = this.enterWaitngRoom.bind(this)
-    this.endSession = this.endSession.bind(this)
     this.handleChange = this.handleChange.bind(this)
   }
 
@@ -36,33 +38,12 @@ export default class clientMain extends React.Component {
     })
   }
 
-
-  componentDidMount () {
-    const that = this
-    const url = `/getclientdata/${localStorage.user_id}`
-    this.serverRequest = axios.get(url,{
-      headers : {
-        authorization: 'Bearer ' + localStorage.id_token
-      }
-    }).then((practitioners) => {
-      console.log(practitioners)
-      that.setState({
-        appointments: practitioners.data.appointments
-      })
-    })
-  }
-
   enterWaitngRoom (id) {
     browserHistory.push(`/office/${id}`)
   }
 
-  endSession () {
-    this.setState({
-      sessionOpen : false
-    })
-  }
-
   render () {
+    console.log(this.props)
     const styles = {
       headline: {
         fontSize: 24,
@@ -89,37 +70,42 @@ export default class clientMain extends React.Component {
       color: cyan100,
       margin: 20
     }
-    return (
-      <Tabs
-        value={this.state.value}
-        onChange={this.handleChange}
-      >
-        <Tab label="Upcoming Appointments" value="a" >
-          <h2 style={styles.headline}> Hello {localStorage.name} you have {this.state.appointments.length} appointment(s) </h2>
-          <div>
-           {this.state.appointments.map((appointment) => { 
-             return ( 
-                      <div>
-                       <Card
-                       style={cardStyle}
-                       >  
-                       <CardHeader
-                        title={appointment.practname}
-                        subtitle={appointment.date_time}
-                       > 
-                      </CardHeader>
-                      <CardText>
-                            <RaisedButton 
-                              label="Enter Waiting Room" 
-                              primary={true} 
-                              style={{margin: 10}} 
-                              onTouchTap={this.enterWaitngRoom.bind(this, appointment.meeting_id)  }
-                              />
-                      </CardText>     
-                      </Card>
-                      </div>
-                  )                
-           })}
+   
+    if(this.props.data.loading){
+      return <div>Loading</div>
+    } else {
+      console.log(this.props.data)
+      return (
+              <Tabs
+                value={this.state.value}
+                onChange={this.handleChange}
+               >
+               <Tab label="Upcoming Appointments" value="a" >
+               <h2 style={styles.headline}> Hello {localStorage.name} you have {this.props.data.users_client.appointments.length} appointment(s) </h2>
+               <div>
+               {this.props.data.users_client.appointments.map((appointment) => { 
+                 return ( 
+                         <div>
+                         <Card
+                           style={cardStyle}
+                         >  
+                         <CardHeader
+                          title={appointment.practname}
+                          subtitle={appointment.date_time}
+                         > 
+                         </CardHeader>
+                         <CardText>
+                         <RaisedButton 
+                           label="Enter Waiting Room" 
+                           primary={true} 
+                           style={{margin: 10}} 
+                           onTouchTap={this.enterWaitngRoom.bind(this, appointment.meeting_id)  }
+                          />
+                         </CardText>     
+                         </Card>
+                         </div>
+                        )                
+               })}
                 
          </div>
         </Tab>
@@ -132,5 +118,30 @@ export default class clientMain extends React.Component {
         </Tab>
       </Tabs>
     )
+
+    }
+
+   
   }
 }
+
+
+const getAll = gql`query getApointments {
+  users_client(id:"57edaf3f67bae50100d5dadb") {
+    appointments {
+      clientname
+      practname
+      meeting_id
+      client_id
+      pract_id
+      date_time
+   }
+    user_metadata{
+      firstName
+      lastName
+    }
+   }
+}`
+
+const clientMain = graphql(getAll)(clientMainComp)
+export default clientMain

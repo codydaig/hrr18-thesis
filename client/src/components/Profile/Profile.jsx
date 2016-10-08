@@ -68,37 +68,26 @@ export default class Profile extends React.Component {
   }
 
   render () {
-    const style = {
-      maxWidth:'500px',
- //     margin:'auto',
-      width: 500,
-    //  marginRight: 600,
-  //    marginBottom: 100,
-      right:80,
-      paddingLeft: 100,
-      position: 'fixed'
-
-    }
 
     const pstyle = {
-   //   maxWidth:'900px',
       margin:'auto',
       width: 500,
-    //  marginBottom: 200,
-    //  botom: 200,
-      marginTop:200,
-     // marginRight: 100
-      left: 1000,
       position: 'fixed',
-      top: 2
+      left: 1000,
+      bottom: 200
+   
     }
 
     const bio = {
       width: 700,
-      marginTop: 20
-    }
+      marginTop: 20,
+      margin: 50
 
-    return (
+    }
+    if(!this.state.user_metadata){
+      return <div>Loading</div>
+    } else{
+      return (
      <div>
       <Card
       style={bio}
@@ -108,22 +97,18 @@ export default class Profile extends React.Component {
               subtitle={this.state.user_metadata.lastName}
               avatar={this.state.profile.photo}
               > 
-              <a href={this.state.profile.website}>Website</a>
-              <h4>{this.state.profile.certbody}  : {this.state.profile.certnumber} : {this.state.profile.certtype}</h4>
-               </CardHeader>
+             <a href={this.state.profile.website}>Website</a>
+             <h4>{this.state.profile.certbody}  : {this.state.profile.certnumber} : {this.state.profile.certtype}</h4>
+             </CardHeader>
              <CardText>
              {this.state.profile.bio} 
-             
-            </CardText>     
+             </CardText>     
             </Card>
+          <Paper style={pstyle}  zDepth={10} >  
         <div style={pstyle} id='bookingjs'/>
-     
+        </Paper>
      </div>
-
-   )
+        )
+    }
   }
-}
-
-
-
-                    
+}                    

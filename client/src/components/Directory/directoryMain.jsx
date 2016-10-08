@@ -27,6 +27,7 @@ class directoryMainComp extends React.Component {
   }
 
   render () {
+    console.log(this.props)
     const style = {
       maxWidth:'500px',
       margin:'auto',
@@ -98,8 +99,9 @@ class directoryMainComp extends React.Component {
   }
 }
 
-const getAll = gql`query MyQuery {
+const getAll = gql`query getAll {
   users_practs{
+    _id
     email
     website
     certtype

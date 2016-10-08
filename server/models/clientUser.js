@@ -6,7 +6,16 @@ var clientUserSchema = new mongoose.Schema({
   email: String,
   password: String,
   request_language: String,
-  appointments: [],
+  appointments: [
+    {
+      clientname: String,
+      practname: String,
+      meeting_id: String,
+      client_id: String,
+      pract_id: String,
+      date_time: String
+    }
+  ],
   user_metadata: {
     firstName : String,
     lastName: String,
