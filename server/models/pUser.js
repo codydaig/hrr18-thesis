@@ -32,7 +32,8 @@ var pUserSchema = new mongoose.Schema({
   },
   
   calendar: String,
-  caltoken: String
+  caltoken: String,
+  stateprovince: String
 
 })
 
