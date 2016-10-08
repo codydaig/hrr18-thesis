@@ -248,6 +248,7 @@ app.post('/updateprofile/:_id', (req, res) => {
     certbody: req.body.certbody,
     certnumber: req.body.certnumber,
     bio: req.body.bio,
+    photo: req.body.photo,
     stateprovince : req.body.stateprovince 
   }).then(()=>{ 
     res.sendStatus(200) 
@@ -286,7 +287,7 @@ aws.config.update({
 //app.use('/s3', jwtCheckPract)
 app.use('/s3', require('react-s3-uploader/s3router')({
   bucket: "therappimages",
-  ACL: 'private' // this is default
+  ACL: 'public-read' // this is default
 }))
 
 app.get('/*', (req, res) => {

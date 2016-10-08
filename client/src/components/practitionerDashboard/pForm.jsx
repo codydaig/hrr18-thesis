@@ -20,6 +20,7 @@ export default class pForm extends React.Component {
     this.state ={
       oneline: '',
       website: '',
+      photo: '',
       certtype: '',
       certbody: '',
       certnumber: '',
@@ -41,7 +42,15 @@ export default class pForm extends React.Component {
     this.countryChange = this.countryChange.bind(this)
     this.submitform = this.submitform.bind(this)
     this.onChangeProvinceState = this.onChangeProvinceState.bind(this)
+    this.uploadComplete = this.uploadComplete.bind(this)
   
+  }
+
+  uploadComplete(url){
+    const imgURL = 'https://s3-us-west-2.amazonaws.com/therappimages/' + url.filename
+    this.setState({
+      photo: imgURL
+    })
   }
 
   countryChange (event, index, value) {
@@ -109,7 +118,8 @@ export default class pForm extends React.Component {
       certbody: this.state.certbody,
       certnumber: this.state.certnumber,
       bio: this.state.bio,
-      stateprovince : this.state.provinceStateSelection
+      stateprovince : this.state.provinceStateSelection,
+      photo: this.state.photo
     }
     console.log(payload, url)
     axios.post(url, payload).then(()=>{
@@ -124,11 +134,12 @@ export default class pForm extends React.Component {
       certnumber: '',
       calendar: '',
       timekey: '',
+      photo: '',
+      stateprovince: '',
       bio: ''
     })
 
     browserHistory.push('/pdash')
-
   }
 
   render () {
@@ -153,6 +164,7 @@ export default class pForm extends React.Component {
     accept="image/*"
     uploadRequestHeaders={{ 'x-amz-acl': 'public-read' }}
     contentDisposition="auto"
+    onFinish={this.uploadComplete}
     />
 
     <SelectField value={this.state.value} onChange={this.countryChange} style={{fontSize:12}}>
