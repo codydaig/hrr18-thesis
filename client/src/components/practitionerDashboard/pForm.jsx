@@ -27,7 +27,8 @@ export default class pForm extends React.Component {
       timekey: '',
       bio: '',
       value : 1,
-      provincestate: ProvinceState.us
+      provincestate: ProvinceState.us,
+      provinceStateSelection: ''
     }
 
     this.submitform = this.submitform.bind(this)
@@ -39,6 +40,7 @@ export default class pForm extends React.Component {
     this.onChangeBio = this.onChangeBio.bind(this)
     this.countryChange = this.countryChange.bind(this)
     this.submitform = this.submitform.bind(this)
+    this.onChangeProvinceState = this.onChangeProvinceState.bind(this)
   
   }
 
@@ -55,6 +57,11 @@ export default class pForm extends React.Component {
     }, 100)
   } 
 
+  onChangeProvinceState(value){
+    this.setState({
+      provinceStateSelection : value
+    })
+  }
 
   onChangeIntro(event){
     this.setState({
@@ -101,7 +108,8 @@ export default class pForm extends React.Component {
       certtype: this.state.certtype,
       certbody: this.state.certbody,
       certnumber: this.state.certnumber,
-      bio: this.state.bio
+      bio: this.state.bio,
+      stateprovince : this.state.provinceStateSelection
     }
     console.log(payload, url)
     axios.post(url, payload).then(()=>{
@@ -156,6 +164,8 @@ export default class pForm extends React.Component {
       <AutoComplete
           hintText="Province or State"
           dataSource={this.state.provincestate}
+           onNewRequest={this.onChangeProvinceState}
+         
       />
 
     <TextField 

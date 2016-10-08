@@ -249,10 +249,10 @@ app.post('/updateprofile/:_id', (req, res) => {
     certtype: req.body.certtype,
     certbody: req.body.certbody,
     certnumber: req.body.certnumber,
-    bio: req.body.bio 
-  }).then((data)=>{ console.log(data) 
-      
-
+    bio: req.body.bio,
+    stateprovince : req.body.stateprovince 
+  }).then(()=>{ 
+    res.sendStatus(200) 
   })
 })
 
