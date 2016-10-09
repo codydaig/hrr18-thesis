@@ -15,6 +15,8 @@ import Paper from 'material-ui/Paper';
 import reactApollo from 'react-apollo';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
+import Infinite from 'react-infinite'
+
 
 class directoryMainComp extends React.Component {
   constructor (props){
@@ -62,6 +64,7 @@ class directoryMainComp extends React.Component {
       return <div>Loading</div>
     } else {
       return (
+        <Infinite containerHeight={680} elementHeight={680}>
       <div>
       {this.props.data.users_practs.map((practitioner)=>{
         return (
@@ -93,7 +96,7 @@ class directoryMainComp extends React.Component {
       })}
       
     </div>
-         
+     </Infinite>    
        )
     }
   }

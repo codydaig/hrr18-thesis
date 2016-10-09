@@ -2,7 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import ApolloClient, {createNetworkInterface} from 'apollo-client';
 import { ApolloProvider } from 'react-apollo';
-import {Router,browserHistory} from 'react-router'
+import {Router,browserHistory,applyRouterMiddleware} from 'react-router'
+import { useScroll } from 'react-router-scroll';
 import routes from './routes'
 import App from './components/App/App'
 import { graphql } from 'react-apollo';
@@ -22,10 +23,12 @@ const client = new ApolloClient({
   )
 })
 
-
 ReactDOM.render(
   <ApolloProvider client={client}>
-  <Router history={browserHistory} routes={routes}/>
-  </ApolloProvider>
-  ,document.getElementById('app'))
+  <Router history={browserHistory} 
+           routes={routes}
+           render={applyRouterMiddleware(useScroll())}
+           />
+           </ApolloProvider>
+           ,document.getElementById('app'))
 

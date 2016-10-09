@@ -12,7 +12,7 @@ export default class Foot extends React.Component {
   render () {
     return (
       <Footer style={footerStyle} size='mini'>
-        <FooterSection type='middle'>
+        <FooterSection type='bottom'>
           <FooterLinkList>
           Copyright 2016 Aletheia Technolgies
           </FooterLinkList>

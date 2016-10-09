@@ -9,7 +9,7 @@ import ApolloClient from 'apollo-client';
 import { ApolloProvider } from 'react-apollo';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
-
+import Infinite from 'react-infinite'
 
 export default class App extends React.Component {
   render () {
@@ -17,7 +17,10 @@ export default class App extends React.Component {
       <MuiThemeProvider muiTheme={getMuiTheme(darkBaseTheme)}>
         <div>
           <Header/>
+           
+         
            {this.props.children}
+                   
            <Foot />
         </div>
       </MuiThemeProvider>
@@ -25,11 +28,4 @@ export default class App extends React.Component {
   }
 }
 
-graphql(gql`
- query getAll {
-    users_practs {
-      user_metadata {firstName lastName }
-    }
-  }
-`)(App)
 

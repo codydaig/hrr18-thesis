@@ -10,6 +10,7 @@ import axios from 'axios';
 import {Tabs, Tab} from 'material-ui/Tabs'
 import RaisedButton from 'material-ui/RaisedButton';
 import {browserHistory} from 'react-router'
+import Infinite from 'react-infinite'
 
 export default class pDash extends React.Component {
   constructor(props){
@@ -33,6 +34,7 @@ export default class pDash extends React.Component {
 
   }
 
+
   componentDidMount () {
     const that = this
     const url = `/getpractitionerdata/${localStorage.user_id}`
@@ -53,6 +55,7 @@ export default class pDash extends React.Component {
   }
 
   render () {
+    console.log('main', this.props)
     const style = {
       display:'flex',
       justifyContent: 'center',
@@ -88,8 +91,11 @@ export default class pDash extends React.Component {
       >
         <Tab label="Upcoming Appointments" value="a" >
           <h2 style={styles.headline}> Hello {localStorage.name} you have {this.state.appointments.length} appointment(s) </h2>
+          <Infinite containerHeight={500} elementHeight={500}>
+                
           <div>
             {this.state.appointments.map((appointment) => { 
+        
               return ( 
                       <div>
                        <Card
@@ -119,6 +125,7 @@ export default class pDash extends React.Component {
                   )                
             })}      
          </div>
+         </Infinite>
         </Tab>
         <Tab label="Past Appointments" value="b">
           <div>
