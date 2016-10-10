@@ -51,7 +51,7 @@ class directoryMainComp extends React.Component {
       top: 20,
       marginTop:12,
       color: cyan100
-      
+   
     }
 
     const pstyle = {
