@@ -18,6 +18,7 @@ import {Step,Stepper,StepButton,StepLabel} from 'material-ui/Stepper';
 import {cyan800,grey800} from 'material-ui/styles/colors'
 import FlatButton from 'material-ui/FlatButton';
 import ExpandTransition from 'material-ui/internal/ExpandTransition';
+import Infinite from 'react-infinite'
 
 
 
@@ -109,11 +110,16 @@ export default class pForm extends React.Component {
       marginTop:10
     }
 
+
+    const textStyle ={
+      width: '80%'
+    }
+
     switch (stepIndex) {
     case 0:
       return (
        <div>
-     <Paper style={style} zDepth={2}>
+     <Paper style={style} zDepth={4}>
    <br/>
   
   <Avatar
@@ -123,7 +129,7 @@ export default class pForm extends React.Component {
    backgroundColor={cyan800}   >
    
    </Avatar>
-   <h6>Show your clients who you are! Upload a photo for your profile</h6>
+   <h6>Upload a photo for your profile</h6>
   <ReactS3Uploader
     signingUrl="/s3/sign"
     accept="image/*"
@@ -157,13 +163,55 @@ export default class pForm extends React.Component {
     case 1:
       return (
           <div>
-            <TextField style={{marginTop: 0}} floatingLabelText="Ad group name" />
-            <p>
-              Ad group status is different than the statuses for campaigns, ads, and keywords, though the
-              statuses can affect each other. Ad groups are contained within a campaign, and each campaign can
-              have one or more ad groups. Within each ad group are ads, keywords, and bids.
-            </p>
-            <p>Something something whatever cool</p>
+          <Paper style={style} zDepth={4}>
+          <h6> Write a short description describing your practice</h6>
+          <Textfield 
+          label="Short Description"
+          rows={3}
+          style={textStyle}
+          onChange={this.onChangeIntro}
+          value={this.state.oneline}
+          expandable={false}      
+           />
+        
+           <TextField 
+            hintText="Certification Type"
+            underlineShow={true} 
+            value={this.state.certtype }
+            onChange={this.onChangeCertType}
+            />
+  
+    <Divider />
+
+    <TextField 
+      hintText="Certifcation Body"
+      underlineShow={true}
+      value={this.state.certbody }
+      onChange={this.onChangeCertBody}
+       />
+      
+    <Divider />
+    
+    <Divider />
+
+    <TextField 
+    hintText="Certifcation Number"  
+    value={this.state.certnumber }
+    onChange={this.onChangeCertNumber}
+    underlineShow={true} />
+    </Paper>
+    
+    <TextField 
+    floatingLabelText="Professional Biography" 
+    multiLine={true}
+    rows={5}
+    underlineShow={true}
+    value={this.state.bio}
+    onChange={this.onChangeBio}
+     />
+        
+    
+    
           </div>
         );
     case 2:
