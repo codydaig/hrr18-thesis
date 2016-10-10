@@ -75,10 +75,20 @@ const autoComplete = {
   },
   credentials: {
     certType : [
-      "RCC", "CCC", "RPsych", "LMFT", "Psychiatrist" 
+      "RCC", "CCC", "RPsych", "LMFT", "Psychiatrist","RSW","MFT","LMFT"
     ],
     certBody : [
-      "BCACC","CCPA"
+      "BCACC","CCPA","OACPP"
+    ],
+    service: [
+      "Adults",
+      "Children",
+      "Couples",
+      "Elders",
+      "Youth",
+      "Adolescents",
+      "Families",
+      "Communities"
     ],
     issues : [
       "Anxiety",
@@ -881,3 +891,4 @@ const autoComplete = {
 
 
 }
+export default autoComplete

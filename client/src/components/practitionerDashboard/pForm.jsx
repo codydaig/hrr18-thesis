@@ -19,14 +19,16 @@ import {cyan800,grey800} from 'material-ui/styles/colors'
 import FlatButton from 'material-ui/FlatButton';
 import ExpandTransition from 'material-ui/internal/ExpandTransition';
 import Infinite from 'react-infinite'
-
-
+import autoComplete from '../../autocomplete/autocomplete'
+import FloatingActionButton from 'material-ui/FloatingActionButton';
+import ContentAdd from 'material-ui/svg-icons/content/add';
+import Chip from 'material-ui/Chip';
 
 export default class pForm extends React.Component {
   constructor(props){
     super(props)
 
-    this.state ={
+    this.state = {
       oneline: '',
       website: '',
       photo: 'https://s3-us-west-2.amazonaws.com/therappimages/1476084136_human.png',
@@ -41,7 +43,33 @@ export default class pForm extends React.Component {
       provinceStateSelection: '',
       loading: false,
       finished: false,
-      stepIndex: 0
+      stepIndex: 0,
+      areaSelection: '',
+      areas: [],
+      serve: [],
+      serveSelection:'',
+      modalities: [],
+      modalitiesSelection: '',
+      issues: [],
+      issuesSelection: '',
+      chipData: [
+      {key: 0, label: 'Angular'},
+      {key: 2, label: 'JQuery'},
+      {key: 6, label: 'Polymer'},
+      {key: 3, label: 'ReactJS'},
+      ]
+
+     
+    }
+
+    this.styles = {
+      chip: {
+        margin: 4,
+      },
+      wrapper: {
+        display: 'flex',
+        flexWrap: 'wrap',
+      },
     }
 
     this.submitform = this.submitform.bind(this)
@@ -55,15 +83,52 @@ export default class pForm extends React.Component {
     this.submitform = this.submitform.bind(this)
     this.onChangeProvinceState = this.onChangeProvinceState.bind(this)
     this.uploadComplete = this.uploadComplete.bind(this)
-    this.renderPractDetails = this.renderPractDetails.bind(this)
     this.dummyAsync = this.dummyAsync.bind(this)
     this.handleNext = this.handleNext.bind(this)
     this.handlePrev = this.handlePrev.bind(this)
     this.getStepContent = this.getStepContent.bind(this)
     this.renderContent = this.renderContent.bind(this)
+    this.addArea = this.addArea.bind(this)
+    this.onChangeArea = this.onChangeArea.bind(this)
+    this.handleRequestDelete = this.handleRequestDelete.bind(this)
+    this.addService = this.addService.bind(this)
+    this.onChangeService = this.onChangeService.bind(this) 
+  }
 
+
+  onChangeService(value){
+    this.setState({
+      serveSelection : value
+    })
+    console.log(this.state)
+  }
+  addService(){
+    const serviceList = autoComplete.credentials.service
+    const serviceIdx = serviceList.indexOf(this.state.serveSelection)
+    this.state.serve.push({key:serviceIdx, label: this.state.serveSelection})
+    this.forceUpdate()
 
   }
+  handleRequestDelete (key) {
+    this.serve = this.state.serve;
+    const chipToDelete = this.serve.map((chip) => chip.key).indexOf(key);
+    this.serve.splice(chipToDelete, 1);
+    this.setState({serve: this.serve});
+  };
+
+  renderChip(data) {
+    return (
+      <Chip
+        key={data.key}
+        onRequestDelete={() => this.handleRequestDelete(data.key)}
+        style={this.styles.chip}
+      >
+        {data.label}
+      </Chip>
+    )
+  }
+
+
 
   dummyAsync(cb) {
     this.setState({loading: true}, () => {
@@ -101,24 +166,34 @@ export default class pForm extends React.Component {
       flexDirection: 'column',
       margin: 'auto',
       width: '100%',
-      marginTop: 30,
+      marginTop: 25,
       position:'relative'
     }
   
-    const avatarStyle ={
+    const avatarStyle = {
       position: 'relative',
       marginTop:10
     }
-
 
     const textStyle ={
       width: '80%'
     }
 
+
+    const chipStyles = {
+      chip: {
+        margin: 4,
+      },
+      wrapper: {
+        display: 'flex',
+        flexWrap: 'wrap',
+      },
+    }
+
     switch (stepIndex) {
     case 0:
       return (
-       <div>
+    <div>
      <Paper style={style} zDepth={4}>
    <br/>
   
@@ -126,10 +201,12 @@ export default class pForm extends React.Component {
    style={avatarStyle}
    size={100}
    src={this.state.photo}
-   backgroundColor={cyan800}   >
+   backgroundColor={cyan800}
+   >
    
    </Avatar>
    <h6>Upload a photo for your profile</h6>
+ 
   <ReactS3Uploader
     signingUrl="/s3/sign"
     accept="image/*"
@@ -137,10 +214,10 @@ export default class pForm extends React.Component {
     contentDisposition="auto"
     onFinish={this.uploadComplete}
     />
+  
    <br/>
     <h6>Tell us where in the  US or Canada you are</h6>
-    
-    <SelectField value={this.state.value} onChange={this.countryChange} style={{fontSize:12}}>
+      <SelectField value={this.state.value} onChange={this.countryChange} style={{fontSize:12}}>
       <MenuItem value={1} primaryText="United States" label="United States"/>
       <MenuItem value={2} primaryText="Canada" label="Canada" />
     </SelectField>
@@ -157,6 +234,7 @@ export default class pForm extends React.Component {
      value={this.state.website }
      onChange={this.onChangeWebsite}
      />
+     <br/>
    </Paper>
   </div>
         );
@@ -164,64 +242,104 @@ export default class pForm extends React.Component {
       return (
           <div>
           <Paper style={style} zDepth={4}>
-          <h6> Write a short description describing your practice</h6>
-          <Textfield 
-          label="Short Description"
-          rows={3}
-          style={textStyle}
-          onChange={this.onChangeIntro}
-          value={this.state.oneline}
-          expandable={false}      
-           />
-        
-           <TextField 
+          <h6 style={{margin:5}}>Tell us about your credentials,  if desired upload documention to gain verified status </h6>
+           <AutoComplete 
             hintText="Certification Type"
             underlineShow={true} 
             value={this.state.certtype }
-            onChange={this.onChangeCertType}
+            onNewRequest={this.onChangeCertType}
+            dataSource={autoComplete.credentials.certType}
+            onUpdateInput={this.onChangeCertType}
             />
-  
-    <Divider />
-
-    <TextField 
-      hintText="Certifcation Body"
-      underlineShow={true}
-      value={this.state.certbody }
-      onChange={this.onChangeCertBody}
-       />
+ 
+           <AutoComplete
+             hintText="Certifcation Body"
+             underlineShow={true}
+             value={this.state.certbody}
+             onNewRequest={this.onChangeCertBody}
+             dataSource={autoComplete.credentials.certBody}
+             onUpdateInput={this.onChangeCertBody}
+            />
       
-    <Divider />
-    
-    <Divider />
-
-    <TextField 
-    hintText="Certifcation Number"  
-    value={this.state.certnumber }
-    onChange={this.onChangeCertNumber}
-    underlineShow={true} />
-    </Paper>
-    
-    <TextField 
-    floatingLabelText="Professional Biography" 
-    multiLine={true}
-    rows={5}
-    underlineShow={true}
-    value={this.state.bio}
-    onChange={this.onChangeBio}
-     />
-        
-    
-    
+           <TextField 
+            hintText="Certifcation Number"  
+            value={this.state.certnumber }
+            onChange={this.onChangeCertNumber}
+            underlineShow={true} 
+            />
+           <h6>Upload your credentials</h6>
+           <ReactS3Uploader
+             signingUrl="/s3/sign"
+             accept="pdf/*"
+             uploadRequestHeaders={{ 'x-amz-acl': 'public-read' }}
+             contentDisposition="auto"
+             onFinish={this.uploadComplete}
+             />
+            <h6>Are you able to see clients outside your current state/province? 
+            <br/>
+            Read this document to find out</h6>
+           
+           <AutoComplete
+             hintText="Areas Licensed to Practice"
+             underlineShow={true}
+             dataSource={this.state.provincestate}
+             onNewRequest={this.onChangeArea}
+            />
+ 
+          <FlatButton
+           label="Add" 
+           primary={true} 
+           onTouchTap={this.addArea}
+           />
+          <br/>
+          <div>
+          {this.state.areas.map((area)=>{
+            console.log(area)
+            return <h6>{area}</h6>
+          })}
           </div>
+         </Paper>    
+         </div>
         );
     case 2:
       return (
-          <p>
-            Try out different ad text to see what brings in the most customers, and learn how to
-            enhance your ads using features like ad extensions. If you run into any problems with your
-            ads, find out how to tell if they're running and how to resolve approval issues.
-          </p>
-        );
+            <Paper style={style} zDepth={4}>
+            <div style={style}>
+            <h7>Who do you serve?</h7>
+            <AutoComplete
+             dataSource={autoComplete.credentials.service}
+             onNewRequest={this.onChangeService}
+            />
+
+            <FlatButton
+             label="Add" 
+             primary={true}
+             onTouchTap={this.addService} 
+            />
+
+           <div style={chipStyles.wrapper}>
+            {this.state.serve.map(this.renderChip, this)}
+           </div>
+         <br/>
+            <h7>What modulaties do you use?</h7>
+             <AutoComplete
+             dataSource={autoComplete.credentials.modalities}
+            />
+            <FlatButton
+             label="Add" 
+             primary={true} 
+              />
+            <h7>What issues do you address?</h7>
+             <AutoComplete
+             dataSource={autoComplete.credentials.issues}
+            />
+            <FlatButton
+             label="Add" 
+             primary={true} 
+              />
+              </div>
+            </Paper>
+            )
     default:
       return 'You\'re a long way from home sonny jim!';
     }
@@ -268,7 +386,17 @@ export default class pForm extends React.Component {
       </div>
     );
   }
+  
+  addArea () {
+    this.state.areas.push(this.state.areaSelection)
+    console.log(this.state)
+  }
 
+  onChangeArea (value) {
+    this.setState({
+      areaSelection: value
+    })
+  }
 
   uploadComplete(url){
     const imgURL = 'https://s3-us-west-2.amazonaws.com/therappimages/' + url.filename
@@ -314,10 +442,12 @@ export default class pForm extends React.Component {
     })
   }
 
-  onChangeCertBody(event){
+  onChangeCertBody(value){
+    console.log(event)
     this.setState({
-      certbody: event.target.value
+      certbody: value
     })
+    console.log(this.state)
   }
 
   onChangeCertNumber(event){
@@ -365,38 +495,8 @@ export default class pForm extends React.Component {
     browserHistory.push('/pdash')
   }
 
-  renderPractDetails (){
-    console.log('render!!')
-    return (
-          <p>
-            Select campaign settings. Campaign settings can include your budget, network, bidding
-            options and adjustments, location targeting, campaign end date, and other settings that
-            affect an entire campaign.
-          </p>
-        );
-  }
-
-
   render () {
     const {loading, stepIndex} = this.state;
-
-    const style = {
-      display:'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
-      flexDirection: 'column',
-      margin: 'auto',
-      width: '35%',
-      marginTop: 30,
-      position:'relative'
-    }
-
-    const avatarStyle ={
-      position: 'relative',
-      marginTop:10
-   
-    }
-
     return (
    <div style={{width: '100%', maxWidth: 700, margin: 'auto'}}>
         <Stepper activeStep={stepIndex}>
@@ -407,7 +507,7 @@ export default class pForm extends React.Component {
             <StepLabel>Practice Details</StepLabel>
           </Step>
           <Step>
-            <StepLabel>Confirm</StepLabel>
+            <StepLabel>Details Continued</StepLabel>
           </Step>
         </Stepper>
         <ExpandTransition loading={loading} open={true}>
@@ -417,103 +517,3 @@ export default class pForm extends React.Component {
    )
   }
 }
-
-/*
-
- <div>
-     <Paper style={style} zDepth={2}>
-   <br/>
-  
-  <Avatar
-   style={avatarStyle}
-   size={100}
-   src={this.state.photo}
-   backgroundColor={cyan800}   >
-   
-   </Avatar>
-   <h6>Show your clients who you are! Upload a photo for your profile</h6>
-  <ReactS3Uploader
-    signingUrl="/s3/sign"
-    accept="image/*"
-    uploadRequestHeaders={{ 'x-amz-acl': 'public-read' }}
-    contentDisposition="auto"
-    onFinish={this.uploadComplete}
-    />
-   <br/>
-    <h6>Tell us where in the  US or Canada you are</h6>
-    
-    <SelectField value={this.state.value} onChange={this.countryChange} style={{fontSize:12}}>
-      <MenuItem value={1} primaryText="United States" label="United States"/>
-      <MenuItem value={2} primaryText="Canada" label="Canada" />
-    </SelectField>
-     
-    <AutoComplete
-      hintText="Province or State"
-      dataSource={this.state.provincestate}
-      onNewRequest={this.onChangeProvinceState}
-    />
-    <h6>Do you have a website?</h6>
-    <TextField 
-     hintText="Website"
-     underlineShow={true} 
-     value={this.state.website }
-     onChange={this.onChangeWebsite}
-     />
-<br/>
-         <RaisedButton label="Next" onTouchTap={this.renderPractDetails} primary={true} style={{width:'100%'}} />
-   </Paper>
-  </div>
-
- <TextField 
-      hintText="One line introduction"
-      underlineShow={true} 
-      value={this.state.oneline }
-      onChange={this.onChangeIntro}
-    />
-
-
-
-    <TextField 
-    floatingLabelText="Professional Biography" 
-    multiLine={true}
-    rows={5}
-    style={{fontSize:10}}
-    underlineShow={true}
-    value={this.state.bio}
-    onChange={this.onChangeBio}
-     />
-
- <TextField 
-      hintText="Certification Type"
-      underlineShow={true} 
-      value={this.state.certtype }
-      onChange={this.onChangeCertType}
-      />
-  
-    <Divider />
-
-    <TextField 
-      hintText="Certiifcation Body"
-      underlineShow={true}
-      value={this.state.certbody }
-      onChange={this.onChangeCertBody}
-       />
-      
-    <Divider />
-    
-    <Divider />
-
-    <TextField 
-    hintText="Certiifcation Number"  
-    value={this.state.certnumber }
-    onChange={this.onChangeCertNumber}
-    underlineShow={true} />
-    <Divider />
-    
-    <Divider />
-
-     
-    <Divider />
-
-
-*/
