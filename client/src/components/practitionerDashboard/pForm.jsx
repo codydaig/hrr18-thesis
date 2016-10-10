@@ -52,20 +52,13 @@ export default class pForm extends React.Component {
       modalitiesSelection: '',
       issues: [],
       issuesSelection: '',
-      chipData: [
-      {key: 0, label: 'Angular'},
-      {key: 2, label: 'JQuery'},
-      {key: 6, label: 'Polymer'},
-      {key: 3, label: 'ReactJS'},
-      ]
-
-     
     }
 
     this.styles = {
       chip: {
         margin: 4,
       },
+
       wrapper: {
         display: 'flex',
         flexWrap: 'wrap',
@@ -90,37 +83,74 @@ export default class pForm extends React.Component {
     this.renderContent = this.renderContent.bind(this)
     this.addArea = this.addArea.bind(this)
     this.onChangeArea = this.onChangeArea.bind(this)
-    this.handleRequestDelete = this.handleRequestDelete.bind(this)
+    this.handleRequestDeleteServe = this.handleRequestDeleteServe.bind(this)
     this.addService = this.addService.bind(this)
-    this.onChangeService = this.onChangeService.bind(this) 
+    this.onChangeService = this.onChangeService.bind(this)
+    this.onChangeModalities = this.onChangeModalities.bind(this)
+    this.addModality = this.addModality.bind(this)
   }
 
 
+
+  onChangeModalities(value){
+    this.setState({
+      modalitiesSelection: value
+    })
+  }
+
+  addModality(){
+    const modalitiesList = autoComplete.credentials.modalities
+    const mdIdx = modalitiesList.indexOf(this.state.modalitiesSelection)
+    this.state.modalities.push({key:mdIdx, label: this.state.modalitiesSelection})
+    this.setState({modalitiesSelection:''})
+    this.forceUpdate()
+    console.log(this.state.modalities)
+  }
   onChangeService(value){
     this.setState({
       serveSelection : value
     })
-    console.log(this.state)
   }
+
   addService(){
     const serviceList = autoComplete.credentials.service
     const serviceIdx = serviceList.indexOf(this.state.serveSelection)
     this.state.serve.push({key:serviceIdx, label: this.state.serveSelection})
+    this.setState({serveSelection:''})
     this.forceUpdate()
-
   }
-  handleRequestDelete (key) {
+
+  handleRequestDeleteServe (key) {
     this.serve = this.state.serve;
     const chipToDelete = this.serve.map((chip) => chip.key).indexOf(key);
     this.serve.splice(chipToDelete, 1);
     this.setState({serve: this.serve});
-  };
-
+  }
+   
   renderChip(data) {
     return (
       <Chip
         key={data.key}
-        onRequestDelete={() => this.handleRequestDelete(data.key)}
+        onRequestDelete={() => this.handleRequestDeleteServe(data.key)}
+        style={this.styles.chip}
+      >
+        {data.label}
+      </Chip>
+    )
+  }
+
+  handleRequestDeleteModalities (key) {
+    this.modalities = this.state.modalities;
+    const chipToDelete = this.serve.map((chip) => chip.key).indexOf(key);
+    this.serve.splice(chipToDelete, 1);
+    this.setState({modalities: this.modalities});
+  }
+   
+  renderChipModalities(data) {
+    return (
+      <Chip
+        key={data.key}
+        onRequestDelete={() => this.handleRequestDeleteModalities(data.key)}
         style={this.styles.chip}
       >
         {data.label}
@@ -130,11 +160,15 @@ export default class pForm extends React.Component {
 
 
 
+
+
+
+
   dummyAsync(cb) {
     this.setState({loading: true}, () => {
       this.asyncTimer = setTimeout(cb, 500);
     });
-  };
+  }
 
   handleNext () {
     const {stepIndex} = this.state;
@@ -145,7 +179,7 @@ export default class pForm extends React.Component {
         finished: stepIndex >= 2,
       }));
     }
-  };
+  }
 
   handlePrev () {
     const {stepIndex} = this.state;
@@ -155,7 +189,7 @@ export default class pForm extends React.Component {
         stepIndex: stepIndex - 1,
       }));
     }
-  };
+  }
 
   getStepContent(stepIndex) {
     
@@ -294,7 +328,6 @@ export default class pForm extends React.Component {
           <br/>
           <div>
           {this.state.areas.map((area)=>{
-            console.log(area)
             return <h6>{area}</h6>
           })}
           </div>
@@ -304,11 +337,13 @@ export default class pForm extends React.Component {
     case 2:
       return (
             <Paper style={style} zDepth={4}>
+
             <div style={style}>
             <h7>Who do you serve?</h7>
             <AutoComplete
              dataSource={autoComplete.credentials.service}
              onNewRequest={this.onChangeService}
+             searchText={this.state.serveSelection}
             />
 
             <FlatButton
@@ -320,15 +355,24 @@ export default class pForm extends React.Component {
            <div style={chipStyles.wrapper}>
             {this.state.serve.map(this.renderChip, this)}
            </div>
-         <br/>
+           <br/>
+           
             <h7>What modulaties do you use?</h7>
              <AutoComplete
              dataSource={autoComplete.credentials.modalities}
+             onNewRequest={this.onChangeModalities}
+             searchText={this.state.modalitiesSelection}
             />
             <FlatButton
              label="Add" 
-             primary={true} 
+             primary={true}
+             onTouchTap={this.addModality}
               />
+
+           <div style={chipStyles.wrapper}>
+            {this.state.modalities.map(this.renderChipModalities, this)}
+           </div>
+
             <h7>What issues do you address?</h7>
              <AutoComplete
              dataSource={autoComplete.credentials.issues}

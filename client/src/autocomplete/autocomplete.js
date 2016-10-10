@@ -88,7 +88,8 @@ const autoComplete = {
       "Youth",
       "Adolescents",
       "Families",
-      "Communities"
+      "Communities",
+      "Veterans"
     ],
     issues : [
       "Anxiety",
@@ -127,7 +128,8 @@ const autoComplete = {
       "Obsessive compulsive behaviors",
       "Bipolar disorders",
       "Personality disorders",
-      "Learning disabilities"
+      "Learning disabilities",
+      "PTSD"
     ],
     modalities: [
       "Person-centred",
