@@ -249,7 +249,12 @@ app.post('/updateprofile/:_id', (req, res) => {
     certnumber: req.body.certnumber,
     bio: req.body.bio,
     photo: req.body.photo,
-    stateprovince : req.body.stateprovince 
+    provincestate : req.body.provincestate,
+    areas: req.body.areas,
+    issues: req.body.issues,
+    languages: req.body.languages,
+    modalities: req.body.modalities,
+    serve: req.body.serve    
   }).then(()=>{ 
     res.sendStatus(200) 
   })

@@ -52,6 +52,8 @@ export default class pForm extends React.Component {
       modalitiesSelection: '',
       issues: [],
       issuesSelection: '',
+      languages: [],
+      languagesSelection: '',
     }
 
     this.styles = {
@@ -96,6 +98,10 @@ export default class pForm extends React.Component {
     this.addIssues = this.addIssues.bind(this)
     this.renderChipAreas = this.renderChipAreas.bind(this)
     this.handleRequestDeleteAreas = this.handleRequestDeleteAreas.bind(this)
+    this.onChangeLanguages = this.onChangeLanguages.bind(this)
+    this.addLanguage = this.addLanguage.bind(this)
+    this.renderChipLanguage = this.renderChipLanguage.bind(this)
+    this.handleRequestDeleteLanguage = this.handleRequestDeleteLanguage.bind(this)
   }
 
   onChangeModalities(value){
@@ -104,6 +110,39 @@ export default class pForm extends React.Component {
     })
   }
 
+  onChangeLanguages(value){
+    this.setState({
+      languagesSelection: value
+    })
+  }
+
+  addLanguage(){
+    const languagesList = autoComplete.languages
+    const mdIdx = languagesList.indexOf(this.state.languagesSelection)
+    this.state.languages.push({key:mdIdx, label: this.state.languagesSelection})
+    this.setState({languagesSelection:''})
+    this.forceUpdate()
+  }              
+          
+  renderChipLanguage(data) {
+    return (
+      <Chip
+        key={data.key}
+        onRequestDelete={() => this.handleRequestDeleteLanguage(data.key)}
+        style={this.styles.chip}
+      >
+        {data.label}
+      </Chip>
+    )
+  }
+
+  handleRequestDeleteLanguage(key) {
+    this.languages = this.state.languages;
+    const chipToDelete = this.languages.map((chip) => chip.key).indexOf(key);
+    this.languages.splice(chipToDelete, 1);
+    this.setState({languages: this.languages});
+  }
+       
   onChangeIssues(value){
     this.setState({
       issuesSelection: value
@@ -116,7 +155,6 @@ export default class pForm extends React.Component {
     this.state.issues.push({key:mdIdx, label: this.state.issuesSelection})
     this.setState({issuesSelection:''})
     this.forceUpdate()
-    console.log(this.state.issues)
   }
 
   addModality(){
@@ -125,7 +163,6 @@ export default class pForm extends React.Component {
     this.state.modalities.push({key:mdIdx, label: this.state.modalitiesSelection})
     this.setState({modalitiesSelection:''})
     this.forceUpdate()
-    console.log(this.state.modalities)
   }
   onChangeService(value){
     this.setState({
@@ -243,7 +280,7 @@ export default class pForm extends React.Component {
       this.dummyAsync(() => this.setState({
         loading: false,
         stepIndex: stepIndex + 1,
-        finished: stepIndex >= 2,
+        finished: stepIndex >= 3,
       }));
     }
   }
@@ -316,7 +353,7 @@ export default class pForm extends React.Component {
   
    <br/>
     <h6>Tell us where in the  US or Canada you are</h6>
-      <SelectField value={this.state.value} onChange={this.countryChange} style={{fontSize:12}}>
+      <SelectField value={this.state.value} onChange={this.countryChange}>
       <MenuItem value={1} primaryText="United States" label="United States"/>
       <MenuItem value={2} primaryText="Canada" label="Canada" />
     </SelectField>
@@ -420,8 +457,9 @@ export default class pForm extends React.Component {
             {this.state.serve.map(this.renderChip, this)}
            </div>
            <br/>
-           
-            <h7>What modulaties do you use?</h7>
+                        
+                   
+            <h7>What modalities do you use?</h7>
              <AutoComplete
              dataSource={autoComplete.credentials.modalities}
              onNewRequest={this.onChangeModalities}
@@ -454,30 +492,132 @@ export default class pForm extends React.Component {
              </div>
             </Paper>
             )
+    case 3: 
+      return (
+              <Paper style={style} zDepth={4}>
+              <div style={style}>
+              <br/>
+              <h7>What languages do you speak?</h7>
+              <AutoComplete
+               dataSource={autoComplete.languages}
+               onNewRequest={this.onChangeLanguages}
+               searchText={this.state.languagesSelection}
+              />
+
+              <FlatButton
+                label="Add" 
+                primary={true}
+                onTouchTap={this.addLanguage} 
+              />
+
+             <div style={chipStyles.wrapper}>
+             {this.state.languages.map(this.renderChip, this)}
+            
+             <h7>Give us a one line description to promote your practice in the directory</h7>
+             <Textfield
+               onChange={this.onChangeIntro}
+               value={this.state.oneline}
+               label=""
+               rows={3}
+               style={{width: '95%', position:'relative', margin:10}}
+             />
+
+              
+             <h7>Give us a full bio for your profile page</h7>
+             <Textfield
+               onChange={this.onChangeBio}
+               value={this.state.bio}
+               label=""
+               rows={5}
+               style={{width: '95%'}}
+             />
+
+             </div>
+             </div>
+            </Paper>
+            )    
     default:
-      return 'You\'re a long way from home sonny jim!';
+      return '';
     }
   }
 
   renderContent () {
+    const style = {
+      display:'flex',
+      justifyContent: 'center',
+      alignItems: 'center',
+      flexDirection: 'column',
+      margin: 'auto',
+      width: '100%',
+      marginTop: 25,
+      position:'relative',
+      overflow: 'hidden'
+    }
+
+    const avatarStyle = {
+      position: 'relative',
+      marginTop:10
+    }
+
+    const textStyle ={
+      width: '80%'
+    }
+
+
     const {finished, stepIndex} = this.state;
     const contentStyle = {margin: '0 16px', overflow: 'hidden'};
 
     if (finished) {
+     
       return (
-        <div style={contentStyle}>
-          <p>
-            <a
-              href="#"
-              onClick={(event) => {
-                event.preventDefault();
-                this.setState({stepIndex: 0, finished: false});
-              }}
-            >
-              Click here
-            </a> to reset the example.
-          </p>
-        </div>
+             <Infinite containerHeight={600} elementHeight={600}>
+             <Paper style={style} zDepth={4}>
+               <br/>
+               <h7>Please confirm Details for {localStorage.name}</h7>
+              <Avatar
+                style={avatarStyle}
+                size={100}
+                src={this.state.photo}
+                backgroundColor={cyan800}
+               />
+               <br/>
+               <h7> I Live in {this.state.provinceStateSelection} </h7>
+               <h7>My website is {this.state.website}</h7>
+               <h7>I am a licensed {this.state.certtype}</h7>
+               <h7>I was certified by {this.state.certbody}</h7>
+               <h7> My cerfication number is {this.state.certnumber}</h7>
+               <h7>The areas I am licensed to practice are </h7>
+               {this.state.areas.map((area)=>{
+                 return <h7> {area.label}</h7>
+               })}
+               <h7>I serve</h7>
+               {this.state.serve.map((serve)=>{
+                 return <h7>{serve.label}</h7>
+               })}
+               <h7>The modalities I use are</h7>
+               {this.state.modalities.map((mod)=>{
+                 return <h7>{mod.label}</h7> 
+               })}
+               <h7>Issues I address are</h7>
+               {this.state.issues.map((issue)=>{
+                 return <h7>{issue.label}</h7>
+               })}
+               <h7>Languages I speak are</h7>
+               {this.state.languages.map((language)=>{
+                 return <h7>{language.label}</h7>
+               })}
+               <h7>One line intro for directory</h7>
+                {this.state.oneline}
+                <h7>Biography</h7>
+               <br/>
+               <RaisedButton
+               label="Submit"
+               onTouchTap={this.submitform}
+               primary={true}
+               />
+               <br/>
+             </Paper>
+               </Infinite>
       );
     }
 
@@ -492,7 +632,7 @@ export default class pForm extends React.Component {
             style={{marginRight: 12}}
           />
           <RaisedButton
-            label={stepIndex === 2 ? 'Finish' : 'Next'}
+            label={stepIndex === 3 ? 'Finish' : 'Next'}
             primary={true}
             onTouchTap={this.handleNext}
           />
@@ -539,14 +679,14 @@ export default class pForm extends React.Component {
     })
   }
 
-  onChangeCertType(event){
+  onChangeCertType(value){
+    console.log(value)
     this.setState({
-      certtype: event.target.value
+      certtype: value
     })
   }
 
   onChangeCertBody(value){
-    console.log(event)
     this.setState({
       certbody: value
     })
@@ -574,10 +714,14 @@ export default class pForm extends React.Component {
       certbody: this.state.certbody,
       certnumber: this.state.certnumber,
       bio: this.state.bio,
-      stateprovince : this.state.provinceStateSelection,
-      photo: this.state.photo
+      provincestate: this.state.provinceStateSelection,
+      photo: this.state.photo,
+      areas: this.state.areas,
+      issues: this.state.issues,
+      languages: this.state.languages,
+      modalities: this.state.modalities,
+      serve: this.state.serve
     }
-    console.log(payload, url)
     axios.post(url, payload).then(()=>{
       console.log('success')
     }).catch((err)=>{console.log(err)})
@@ -592,7 +736,12 @@ export default class pForm extends React.Component {
       timekey: '',
       photo: '',
       stateprovince: '',
-      bio: ''
+      bio: '',
+      areas:[],
+      issues: [],
+      languages:[],
+      modalities:[],
+      serve:[]
     })
 
     browserHistory.push('/pdash')
@@ -607,12 +756,15 @@ export default class pForm extends React.Component {
             <StepLabel>General Information</StepLabel>
           </Step>
           <Step>
-            <StepLabel>Practice Details</StepLabel>
+            <StepLabel>Credentials</StepLabel>
           </Step>
           <Step>
-            <StepLabel>Details Continued</StepLabel>
+            <StepLabel>Practice Details</StepLabel>
           </Step>
-        </Stepper>
+           <Step>
+            <StepLabel>Bio</StepLabel>
+          </Step>
+          </Stepper>
         <ExpandTransition loading={loading} open={true}>
           {this.renderContent()}
         </ExpandTransition>

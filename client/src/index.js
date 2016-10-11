@@ -1,13 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import ApolloClient, {createNetworkInterface} from 'apollo-client';
-import { ApolloProvider } from 'react-apollo';
 import {Router,browserHistory,applyRouterMiddleware} from 'react-router'
 import { useScroll } from 'react-router-scroll';
 import routes from './routes'
 import App from './components/App/App'
-import { graphql } from 'react-apollo';
-import gql from 'graphql-tag';
+
+import ApolloClient, {createNetworkInterface} from 'apollo-client';
+import { ApolloProvider } from 'react-apollo';
+
 
 const client = new ApolloClient({
   networkInterface : createNetworkInterface({
