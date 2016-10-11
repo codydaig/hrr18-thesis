@@ -254,7 +254,8 @@ app.post('/updateprofile/:_id', (req, res) => {
     issues: req.body.issues,
     languages: req.body.languages,
     modalities: req.body.modalities,
-    serve: req.body.serve    
+    serve: req.body.serve,
+    rate: req.body.rate    
   }).then(()=>{ 
     res.sendStatus(200) 
   })

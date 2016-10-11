@@ -54,6 +54,7 @@ export default class pForm extends React.Component {
       issuesSelection: '',
       languages: [],
       languagesSelection: '',
+      rate:''
     }
 
     this.styles = {
@@ -496,6 +497,14 @@ export default class pForm extends React.Component {
       return (
               <Paper style={style} zDepth={4}>
               <div style={style}>
+               <h7>How much do you charge?</h7>
+              <TextField 
+                hintText="Rate"
+                underlineShow={true} 
+                value={this.state.rate }
+                onChange={this.onChangeRate}
+               />
+           
               <br/>
               <h7>What languages do you speak?</h7>
               <AutoComplete
@@ -512,27 +521,25 @@ export default class pForm extends React.Component {
 
              <div style={chipStyles.wrapper}>
              {this.state.languages.map(this.renderChip, this)}
-            
+            </div>
              <h7>Give us a one line description to promote your practice in the directory</h7>
              <Textfield
                onChange={this.onChangeIntro}
                value={this.state.oneline}
                label=""
-               rows={3}
+               rows={2}
                style={{width: '95%', position:'relative', margin:10}}
              />
-
-              
+             
              <h7>Give us a full bio for your profile page</h7>
              <Textfield
                onChange={this.onChangeBio}
                value={this.state.bio}
                label=""
-               rows={5}
+               rows={4}
                style={{width: '95%'}}
              />
 
-             </div>
              </div>
             </Paper>
             )    
@@ -679,6 +686,12 @@ export default class pForm extends React.Component {
     })
   }
 
+  onChangeRate(event){
+    this.setState({
+      rate: event.target.value
+    })
+  }
+
   onChangeCertType(value){
     console.log(value)
     this.setState({
@@ -720,7 +733,8 @@ export default class pForm extends React.Component {
       issues: this.state.issues,
       languages: this.state.languages,
       modalities: this.state.modalities,
-      serve: this.state.serve
+      serve: this.state.serve,
+      rate: this.state.rate
     }
     axios.post(url, payload).then(()=>{
       console.log('success')
@@ -741,7 +755,8 @@ export default class pForm extends React.Component {
       issues: [],
       languages:[],
       modalities:[],
-      serve:[]
+      serve:[],
+      rate:''
     })
 
     browserHistory.push('/pdash')
