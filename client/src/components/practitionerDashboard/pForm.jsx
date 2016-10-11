@@ -88,14 +88,35 @@ export default class pForm extends React.Component {
     this.onChangeService = this.onChangeService.bind(this)
     this.onChangeModalities = this.onChangeModalities.bind(this)
     this.addModality = this.addModality.bind(this)
+    this.handleRequestDeleteModalities = this.handleRequestDeleteModalities.bind(this)
+    this.renderChipModalities = this.renderChipModalities.bind(this)
+    this.handleRequestDeleteIssues = this.handleRequestDeleteIssues.bind(this)
+    this.renderChipIssues = this.renderChipIssues.bind(this)
+    this.onChangeIssues = this.onChangeIssues.bind(this)
+    this.addIssues = this.addIssues.bind(this)
+    this.renderChipAreas = this.renderChipAreas.bind(this)
+    this.handleRequestDeleteAreas = this.handleRequestDeleteAreas.bind(this)
   }
-
-
 
   onChangeModalities(value){
     this.setState({
       modalitiesSelection: value
     })
+  }
+
+  onChangeIssues(value){
+    this.setState({
+      issuesSelection: value
+    })
+  }
+
+  addIssues(){
+    const issuesList = autoComplete.credentials.issues
+    const mdIdx = issuesList.indexOf(this.state.issuesSelection)
+    this.state.issues.push({key:mdIdx, label: this.state.issuesSelection})
+    this.setState({issuesSelection:''})
+    this.forceUpdate()
+    console.log(this.state.issues)
   }
 
   addModality(){
@@ -141,8 +162,8 @@ export default class pForm extends React.Component {
 
   handleRequestDeleteModalities (key) {
     this.modalities = this.state.modalities;
-    const chipToDelete = this.serve.map((chip) => chip.key).indexOf(key);
-    this.serve.splice(chipToDelete, 1);
+    const chipToDelete = this.modalities.map((chip) => chip.key).indexOf(key);
+    this.modalities.splice(chipToDelete, 1);
     this.setState({modalities: this.modalities});
   }
    
@@ -158,11 +179,57 @@ export default class pForm extends React.Component {
     )
   }
 
+  handleRequestDeleteIssues (key) {
+    this.issues = this.state.issues;
+    const chipToDelete = this.issues.map((chip) => chip.key).indexOf(key);
+    this.issues.splice(chipToDelete, 1);
+    this.setState({issues: this.issues});
+  }
+   
+  renderChipIssues(data) {
+    return (
+      <Chip
+        key={data.key}
+        onRequestDelete={() => this.handleRequestDeleteIssues(data.key)}
+        style={this.styles.chip}
+      >
+        {data.label}
+      </Chip>
+    )
+  }
 
+  addArea () {
+    const areasList = this.state.provincestate
+    const areasIdx = areasList.indexOf(this.state.areaSelection)
+    this.state.areas.push({key:areasIdx, label: this.state.areaSelection})
+    this.setState({areaSelection:''})
+    this.forceUpdate()
+  }
 
+  onChangeArea (value) {
+    this.setState({
+      areaSelection: value
+    })
+  }
 
-
-
+  handleRequestDeleteAreas (key) {
+    this.areas = this.state.areas;
+    const chipToDelete = this.areas.map((chip) => chip.key).indexOf(key);
+    this.areas.splice(chipToDelete, 1);
+    this.setState({areas: this.areas});
+  }
+   
+  renderChipAreas(data) {
+    return (
+      <Chip
+        key={data.key}
+        onRequestDelete={() => this.handleRequestDeleteAreas(data.key)}
+        style={this.styles.chip}
+      >
+        {data.label}
+      </Chip>
+    )
+  }
 
   dummyAsync(cb) {
     this.setState({loading: true}, () => {
@@ -213,7 +280,6 @@ export default class pForm extends React.Component {
       width: '80%'
     }
 
-
     const chipStyles = {
       chip: {
         margin: 4,
@@ -237,7 +303,6 @@ export default class pForm extends React.Component {
    src={this.state.photo}
    backgroundColor={cyan800}
    >
-   
    </Avatar>
    <h6>Upload a photo for your profile</h6>
  
@@ -276,7 +341,7 @@ export default class pForm extends React.Component {
       return (
           <div>
           <Paper style={style} zDepth={4}>
-          <h6 style={{margin:5}}>Tell us about your credentials,  if desired upload documention to gain verified status </h6>
+          <h6 style={{margin:5}}>Tell us about your credentials, if desired upload documention to gain verified status </h6>
            <AutoComplete 
             hintText="Certification Type"
             underlineShow={true} 
@@ -318,6 +383,7 @@ export default class pForm extends React.Component {
              underlineShow={true}
              dataSource={this.state.provincestate}
              onNewRequest={this.onChangeArea}
+              searchText={this.state.areaSelection}
             />
  
           <FlatButton
@@ -326,12 +392,10 @@ export default class pForm extends React.Component {
            onTouchTap={this.addArea}
            />
           <br/>
-          <div>
-          {this.state.areas.map((area)=>{
-            return <h6>{area}</h6>
-          })}
-          </div>
-         </Paper>    
+            <div style={chipStyles.wrapper}>
+            {this.state.areas.map(this.renderChipAreas, this)}
+            </div>
+           </Paper>    
          </div>
         );
     case 2:
@@ -369,19 +433,25 @@ export default class pForm extends React.Component {
              onTouchTap={this.addModality}
               />
 
-           <div style={chipStyles.wrapper}>
+            <div style={chipStyles.wrapper}>
             {this.state.modalities.map(this.renderChipModalities, this)}
-           </div>
+            </div>
 
             <h7>What issues do you address?</h7>
              <AutoComplete
              dataSource={autoComplete.credentials.issues}
+             onNewRequest={this.onChangeIssues}
+             searchText={this.state.issuesSelection}
             />
             <FlatButton
              label="Add" 
              primary={true} 
+             onTouchTap={this.addIssues}
               />
-              </div>
+            <div style={chipStyles.wrapper}>
+            {this.state.issues.map(this.renderChipIssues, this)}
+            </div>
+             </div>
             </Paper>
             )
     default:
@@ -431,17 +501,6 @@ export default class pForm extends React.Component {
     );
   }
   
-  addArea () {
-    this.state.areas.push(this.state.areaSelection)
-    console.log(this.state)
-  }
-
-  onChangeArea (value) {
-    this.setState({
-      areaSelection: value
-    })
-  }
-
   uploadComplete(url){
     const imgURL = 'https://s3-us-west-2.amazonaws.com/therappimages/' + url.filename
     this.setState({
